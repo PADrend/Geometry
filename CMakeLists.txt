@@ -75,9 +75,7 @@ endif()
 set_target_properties(Geometry PROPERTIES VERSION ${GEOMETRY_VERSION_STRING}
                                           SOVERSION ${GEOMETRY_VERSION_MAJOR})
 
-if(IS_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/tests)
-	add_subdirectory(tests)
-endif()
+add_subdirectory(tests)
 
 # Install the library
 install(TARGETS Geometry EXPORT LibraryExport
