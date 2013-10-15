@@ -31,7 +31,7 @@ if(GEOMETRY_BUILD_TESTS)
 		Vec3Test.cpp
 		VecHelperTest.cpp
 		VecNTest.cpp
-		GeometryTest.cpp
+		GeometryTestMain.cpp
 	)
 
 	target_link_libraries(GeometryTest LINK_PRIVATE Geometry)
