@@ -1,0 +1,128 @@
+#
+# This file is part of the Geometry library.
+# Copyright (C) 2009-2013 Benjamin Eikel <benjamin@eikel.org>
+#
+# This library is subject to the terms of the Mozilla Public License, v. 2.0.
+# You should have received a copy of the MPL along with this library; see the 
+# file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
+#
+cmake_minimum_required(VERSION 2.8.11)
+project(Geometry CXX)
+
+set(GEOMETRY_VERSION_MAJOR 0)
+set(GEOMETRY_VERSION_MINOR 1)
+set(GEOMETRY_VERSION_PATCH 3)
+set(GEOMETRY_VERSION_STRING ${GEOMETRY_VERSION_MAJOR}.${GEOMETRY_VERSION_MINOR}.${GEOMETRY_VERSION_PATCH})
+
+# Set up install directories
+include(GNUInstallDirs)
+set(CMAKE_INSTALL_CMAKECONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/Geometry)
+
+# Add the library
+add_library(Geometry
+	BoundingSphere.cpp
+	BoxHelper.cpp
+	BoxIntersection.cpp
+	Frustum.cpp
+	RayBoxIntersection.cpp
+	Tools.cpp
+)
+set_property(TARGET Geometry PROPERTY PUBLIC_HEADER
+	Angle.h
+	BoundingSphere.h
+	Box.h
+	BoxHelper.h
+	BoxIntersection.h
+	Convert.h
+	Definitions.h
+	DualQuaternion.h
+	Frustum.h
+	Interpolation.h
+	Line.h
+	LineTriangleIntersection.h
+	Matrix3x3.h
+	Matrix4x4.h
+	Plane.h
+	Point.h
+	PointOctree.h
+	Quaternion.h
+	RayBoxIntersection.h
+	Rect.h
+	Sphere.h
+	SRT.h
+	Tetrahedron.h
+	Tools.h
+	Triangle.h
+	Vec2.h
+	Vec3.h
+	Vec4.h
+	VecHelper.h
+	VecN.h
+)
+
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+if(COMPILER_SUPPORTS_CXX11)
+	set_property(TARGET Geometry APPEND_STRING PROPERTY COMPILE_FLAGS "-std=c++11 ")
+elseif(COMPILER_SUPPORTS_CXX0X)
+	set_property(TARGET Geometry APPEND_STRING PROPERTY COMPILE_FLAGS "-std=c++0x ")
+else()
+	message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+endif()
+
+# Set version of library
+set_target_properties(Geometry PROPERTIES VERSION ${GEOMETRY_VERSION_STRING}
+                                          SOVERSION ${GEOMETRY_VERSION_MAJOR})
+
+if(IS_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/tests)
+	add_subdirectory(tests)
+endif()
+
+# Install the library
+install(TARGETS Geometry EXPORT LibraryExport
+	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT runtimelibraries
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT runtimelibraries
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT developmentlibraries
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Geometry COMPONENT headers
+)
+
+# Set include directories for users of this library
+target_include_directories(Geometry
+                           INTERFACE
+                           "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>"
+                           "$<INSTALL_INTERFACE:$<INSTALL_PREFIX>/${CMAKE_INSTALL_INCLUDEDIR}>")
+
+# Library export
+install(EXPORT LibraryExport DESTINATION ${CMAKE_INSTALL_CMAKECONFIGDIR} FILE GeometryTargets.cmake COMPONENT developmentlibraries)
+
+# Create the configuration files
+include(CMakePackageConfigHelpers)
+configure_package_config_file(GeometryConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/GeometryConfig.cmake
+                              INSTALL_DESTINATION ${CMAKE_INSTALL_CMAKECONFIGDIR}
+                              PATH_VARS CMAKE_INSTALL_CMAKECONFIGDIR
+                              NO_SET_AND_CHECK_MACRO
+                              NO_CHECK_REQUIRED_COMPONENTS_MACRO)
+write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/GeometryConfigVersion.cmake
+                                 VERSION ${GEOMETRY_VERSION_STRING}
+                                 COMPATIBILITY SameMajorVersion)
+
+# Install the configuration files
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/GeometryConfig.cmake ${CMAKE_CURRENT_BINARY_DIR}/GeometryConfigVersion.cmake
+        DESTINATION ${CMAKE_INSTALL_CMAKECONFIGDIR} COMPONENT developmentlibraries)
+
+# Packaging
+include(InstallRequiredSystemLibraries)
+
+set(CPACK_PACKAGE_NAME "libgeometry${GEOMETRY_VERSION_MAJOR}")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Geometry library")
+set(CPACK_PACKAGE_VENDOR "Benjamin Eikel; Claudius Jaehn; Ralf Petring")
+set(CPACK_PACKAGE_CONTACT "Benjamin Eikel <benjamin@eikel.org>")
+set(CPACK_PACKAGE_VERSION_MAJOR ${GEOMETRY_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${GEOMETRY_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${GEOMETRY_VERSION_PATCH})
+set(CPACK_PACKAGE_FILE_NAME "libGeometry")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+set(CPACK_STRIP_FILES ON)
+
+include(CPack)
