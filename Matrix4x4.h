@@ -195,13 +195,13 @@ class _Matrix4x4 {
 			return *this;
 		}
 		_Matrix4x4<value_t> & operator *= (value_t d) {
-			for (uint_fast8_t i=0;i<16;i++)
-				m[i]*=d;
+			for (auto & elem : m)
+				elem*=d;
 			return *this;
 		}
 		_Matrix4x4<value_t> & operator /= (value_t d) {
-			for (uint_fast8_t i=0;i<16;i++)
-				m[i]/=d;
+			for (auto & elem : m)
+				elem/=d;
 			return *this;
 		}
 		_Matrix4x4<value_t>& translate(value_t x,value_t y,value_t z) {

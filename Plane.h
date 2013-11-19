@@ -46,14 +46,14 @@ class _Plane {
 		/*! (ctor)
 			@param _normal normalized normal-vector (length = 1.0)
 			@param _offset offset from the origin */
-		_Plane(const vec3_t & _normal,const value_t _offset) :
-				normal(_normal),offset(_offset) {}
+		_Plane(vec3_t  _normal,const value_t _offset) :
+				normal(std::move(_normal)),offset(_offset) {}
 
 		/*! (ctor)
 			@param _pos  one point on the plane
 			@param _normal normalized normal-vector (length = 1.0)	*/
-		_Plane(const vec3_t & _pos,const vec3_t & _normal) :
-				normal(_normal),offset(_pos.dot(normal)) {}
+		_Plane(const vec3_t & _pos,vec3_t  _normal) :
+				normal(std::move(_normal)),offset(_pos.dot(normal)) {}
 
 		/*! (ctor)
 			@param a,b,c Points defining the plane 	*/

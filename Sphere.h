@@ -43,7 +43,7 @@ class _Sphere {
 		}
 
 		//! Construct a sphere with the given center and radius.
-		_Sphere(vec3_t _center, value_t _radius) : center(_center), radius(_radius) {
+		_Sphere(vec3_t _center, value_t _radius) : center(std::move(_center)), radius(_radius) {
 		}
 	//@}
 

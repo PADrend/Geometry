@@ -71,8 +71,8 @@ class _SRT {
 		 * [ctor]  pos, dir, up [,scale]
 		 *	\note dir and up are normalized automatically.
 		 */
-		_SRT(const vec3_t & _pos, const vec3_t & _dir, const vec3_t & _up, value_t _scale = 1.0) :
-			s(_scale), r(), t(_pos), rotationCounter(0) {
+		_SRT(vec3_t  _pos, const vec3_t & _dir, const vec3_t & _up, value_t _scale = 1.0) :
+			s(_scale), r(), t(std::move(_pos)), rotationCounter(0) {
 			r.setRotation(_dir, _up);
 		}
 	/**

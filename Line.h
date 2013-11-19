@@ -34,8 +34,8 @@ class _LineBase {
 	//! @name Construction
 	//@{
 	protected:
-		_LineBase(const vec_t & _origin, const vec_t & _direction, value_t _minParam, value_t _maxParam) :
-			origin(_origin), direction(_direction), minParam(_minParam), maxParam(_maxParam) {
+		_LineBase(vec_t  _origin, vec_t  _direction, value_t _minParam, value_t _maxParam) :
+			origin(std::move(_origin)), direction(std::move(_direction)), minParam(_minParam), maxParam(_maxParam) {
 		}
 	//@}
 
