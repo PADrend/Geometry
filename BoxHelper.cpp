@@ -95,15 +95,15 @@ std::vector<Box_f> splitUpBox(const Box_f & box,
 
 	float lastZ = box.getMinZ();
 	float newMaxZ = 0.0f;
-	for (unsigned int  cz = 1; cz <= partsZ; ++cz)
+	for (unsigned int cz = 1; cz <= partsZ; ++cz)
 	{
 		float lastY = box.getMinY();
 		float newMaxY = 0.0f;
-		for (unsigned int  cy = 1; cy <= partsY; ++cy)
+		for (unsigned int cy = 1; cy <= partsY; ++cy)
 		{
 			float lastX = box.getMinX();
 			float newMaxX;
-			for (unsigned int  cx = 1; cx <= partsX; ++cx)
+			for (unsigned int cx = 1; cx <= partsX; ++cx)
 			{
 				// Interpolate between minimum and maximum values.
 				if (cx == partsX)

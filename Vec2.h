@@ -95,7 +95,7 @@ class _Vec2 {
 			return length<value_t>();
 		}
 
-		inline value_t&  operator[](const unsigned int nr)	{
+		inline value_t& operator[](const unsigned int nr)	{
 			// assert nr<2;
 			return vec[nr];
 		}
@@ -235,10 +235,10 @@ class _Vec2 {
 			return std::abs(x()-other.x()) <= epsilon && std::abs(y()-other.y()) <= epsilon;
 		}
 		inline int operator==(const vec2_t &p1) const {
-			return  (p1.x() == x() && p1.y() == y() ) ;
+			return (p1.x() == x() && p1.y() == y() ) ;
 		}
 		inline int operator!=(const vec2_t &p1) const {
-			return  (p1.x() != x() || p1.y() != y() ) ;
+			return (p1.x() != x() || p1.y() != y() ) ;
 		}
 		/**
 		 * do not implement <, >, <=, >= methods because these are ambiguous

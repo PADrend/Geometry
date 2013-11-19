@@ -34,7 +34,7 @@ class _LineBase {
 	//! @name Construction
 	//@{
 	protected:
-		_LineBase(vec_t  _origin, vec_t  _direction, value_t _minParam, value_t _maxParam) :
+		_LineBase(vec_t _origin, vec_t _direction, value_t _minParam, value_t _maxParam) :
 			origin(std::move(_origin)), direction(std::move(_direction)), minParam(_minParam), maxParam(_maxParam) {
 		}
 	//@}
@@ -289,8 +289,8 @@ class _Segment : public _LineBase<vec_t,_Segment> {
 		const vec_t & getFirstPoint()const		{	return base_t::getOrigin();	}
 		vec_t getSecondPoint()const				{	return base_t::getPoint(base_t::getMaxParam());	}
 
-		void setFirstPoint(const vec_t & p)		{	(*this) =  segment_t(p,getSecondPoint());	}
-		void setSecondPoint(const vec_t & p)	{	(*this) =  segment_t(getFirstPoint(),p);	}
+		void setFirstPoint(const vec_t & p)		{	(*this) = segment_t(p,getSecondPoint());	}
+		void setSecondPoint(const vec_t & p)	{	(*this) = segment_t(getFirstPoint(),p);	}
 };
 
 typedef _Segment<Vec2f> Segment2;

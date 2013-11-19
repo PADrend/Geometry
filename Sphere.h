@@ -58,7 +58,7 @@ class _Sphere {
 		bool isValid() const {
 			return radius >= 0;
 		}
-		bool operator==(const  _Sphere<value_t> & other) const {
+		bool operator==(const _Sphere<value_t> & other) const {
 			return center == other.center && radius == other.radius;
 		}
 		/**

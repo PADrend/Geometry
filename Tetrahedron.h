@@ -193,7 +193,7 @@ class Tetrahedron {
 			const vec4_t v1(getVertexB(), 1);
 			const vec4_t v2(getVertexC(), 1);
 			const vec4_t v3(getVertexD(), 1);
-			const value_t det  = matrix4x4_t(v0, v1, v2, v3).det();
+			const value_t det = matrix4x4_t(v0, v1, v2, v3).det();
 			if(det==0){ // degenerate tetrahedron
 				return std::make_pair(false,vec4_t());
 			}

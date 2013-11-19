@@ -33,12 +33,12 @@ namespace Geometry {
 //! [dtor]
 Frustum::Frustum() {
 	setPosition(Vec3(0,0,0),Vec3(0,0,1),Vec3(0,1,0));
-	setPerspective(Angle::deg(60.0f),  1.0,0.1,1000.0);
+	setPerspective(Angle::deg(60.0f), 1.0,0.1,1000.0);
 }
 
 //! [dtor]
 Frustum::Frustum(const Angle & angle,float ratio,float _near,float _far){
-	setPerspective(angle,  ratio,  _near,  _far);
+	setPerspective(angle, ratio, _near, _far);
 	//ctor
 }
 

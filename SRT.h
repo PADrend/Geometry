@@ -71,7 +71,7 @@ class _SRT {
 		 * [ctor]  pos, dir, up [,scale]
 		 *	\note dir and up are normalized automatically.
 		 */
-		_SRT(vec3_t  _pos, const vec3_t & _dir, const vec3_t & _up, value_t _scale = 1.0) :
+		_SRT(vec3_t _pos, const vec3_t & _dir, const vec3_t & _up, value_t _scale = 1.0) :
 			s(_scale), r(), t(std::move(_pos)), rotationCounter(0) {
 			r.setRotation(_dir, _up);
 		}
@@ -244,9 +244,9 @@ class _SRT {
 		}
 	//@}
 };
-typedef  _SRT<float> SRT;
-typedef  _SRT<float> SRTf;
-typedef  _SRT<double> SRTd;
+typedef _SRT<float> SRT;
+typedef _SRT<float> SRTf;
+typedef _SRT<double> SRTd;
 }
 
 #endif /* GEOMETRY_SRT_H */

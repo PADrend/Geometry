@@ -587,9 +587,9 @@ class _Matrix4x4 {
 };
 
 
-typedef  _Matrix4x4<float> Matrix4x4f;
-typedef  _Matrix4x4<double> Matrix4x4d;
-typedef  _Matrix4x4<float> Matrix4x4;
+typedef _Matrix4x4<float> Matrix4x4f;
+typedef _Matrix4x4<double> Matrix4x4d;
+typedef _Matrix4x4<float> Matrix4x4;
 }
 
 #endif /* GEOMETRY_MATRIX4X4_H */

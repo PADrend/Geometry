@@ -46,13 +46,13 @@ class _Plane {
 		/*! (ctor)
 			@param _normal normalized normal-vector (length = 1.0)
 			@param _offset offset from the origin */
-		_Plane(vec3_t  _normal,const value_t _offset) :
+		_Plane(vec3_t _normal,const value_t _offset) :
 				normal(std::move(_normal)),offset(_offset) {}
 
 		/*! (ctor)
-			@param _pos  one point on the plane
+			@param _pos one point on the plane
 			@param _normal normalized normal-vector (length = 1.0)	*/
-		_Plane(const vec3_t & _pos,vec3_t  _normal) :
+		_Plane(const vec3_t & _pos,vec3_t _normal) :
 				normal(std::move(_normal)),offset(_pos.dot(normal)) {}
 
 		/*! (ctor)
@@ -73,7 +73,7 @@ class _Plane {
 		bool _getIntersection(const _LineBase & line, vec3_t & intersection)const {
 			const value_t u = normal.dot( line.getDirection());
 			if ( u != 0 ){
-				const value_t t = normal.dot( normal*offset - line.getOrigin()  ) / u;
+				const value_t t = normal.dot( normal*offset - line.getOrigin() ) / u;
 				if(t>=line.getMinParam() && t<=line.getMaxParam()){
 					intersection = line.getPoint(t);
 					return true;

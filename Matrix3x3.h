@@ -31,7 +31,7 @@ namespace Geometry {
  * [_Matrix3x3]
  */
 template<typename T_>
-class _Matrix3x3  {
+class _Matrix3x3 {
 	public:
 		typedef T_ value_t;
 		typedef _Angle<value_t> angle_t;

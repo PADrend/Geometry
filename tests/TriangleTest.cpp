@@ -115,9 +115,9 @@ void TriangleTest::testTriangleArea() {
 	
 	const double delta = 9.0e-5; // use a larger delta here; the calculations are not extremely accurate
 		
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(50.0,  Geometry::Triangle<Geometry::Vec3d>( Geometry::Vec3d(0.0, 0.0, 0.0),Geometry::Vec3d(10.0, 0.0, 0.0),Geometry::Vec3d(-5.0, 10.0, 0.0) ).calcArea(), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(50.0,  Geometry::Triangle<Geometry::Vec3d>( Geometry::Vec3d(0.0, 0.0, 0.0),Geometry::Vec3d(10.0, 0.0, 0.0),Geometry::Vec3d(5.0, 10.0, 0.0) ).calcArea(), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0,  Geometry::Triangle<Geometry::Vec3d>( Geometry::Vec3d(0.0, 0.0, 0.0),Geometry::Vec3d(0.0, 0.0, 0.0),Geometry::Vec3d(0.0, 0.0, 0.0) ).calcArea(), delta);
+	CPPUNIT_ASSERT_DOUBLES_EQUAL(50.0, Geometry::Triangle<Geometry::Vec3d>( Geometry::Vec3d(0.0, 0.0, 0.0),Geometry::Vec3d(10.0, 0.0, 0.0),Geometry::Vec3d(-5.0, 10.0, 0.0) ).calcArea(), delta);
+	CPPUNIT_ASSERT_DOUBLES_EQUAL(50.0, Geometry::Triangle<Geometry::Vec3d>( Geometry::Vec3d(0.0, 0.0, 0.0),Geometry::Vec3d(10.0, 0.0, 0.0),Geometry::Vec3d(5.0, 10.0, 0.0) ).calcArea(), delta);
+	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, Geometry::Triangle<Geometry::Vec3d>( Geometry::Vec3d(0.0, 0.0, 0.0),Geometry::Vec3d(0.0, 0.0, 0.0),Geometry::Vec3d(0.0, 0.0, 0.0) ).calcArea(), delta);
 	
 	const Geometry::Vec3d a(1.0, 1.0, 1.0);
 	const Geometry::Vec3d b(11.0, 1.0, 1.0);
@@ -136,6 +136,6 @@ void TriangleTest::testTriangleArea() {
 		const Geometry::Vec3d b2(r*b);
 		const Geometry::Vec3d c2(r*c);
 		const Geometry::Triangle<Geometry::Vec3d> triangle(a2, b2, c2);
-		CPPUNIT_ASSERT_DOUBLES_EQUAL(100.0,  triangle.calcArea(), delta);
+		CPPUNIT_ASSERT_DOUBLES_EQUAL(100.0, triangle.calcArea(), delta);
 	}
 }

@@ -76,7 +76,7 @@ class _Vec3 {
 			interpolation between v1 and sv2, according to the factor blend
 			@param v1, v2 vectors to be interpolated
 			@param blend blendingfactor (should be between 0 and 1)	*/
-		_Vec3(const vec3_t & v1, const vec3_t & v2, value_t blend)  {
+		_Vec3(const vec3_t & v1, const vec3_t & v2, value_t blend) {
 			static_assert(std::is_floating_point<value_t>::value, "template argument not a floating point type");
 			*this = Interpolation::linear(v1, v2, blend);
 		}
@@ -95,10 +95,10 @@ class _Vec3 {
 	 */
 	//@{
 		/*! array-access operator */
-		inline value_t&  operator[](uint_fast8_t nr) 			{	return vec[nr];	}
+		inline value_t& operator[](uint_fast8_t nr) 			{	return vec[nr];	}
 
 		/*! const array-access operator	*/
-		inline const value_t&  operator[](uint_fast8_t nr) const {	return vec[nr];	}
+		inline const value_t& operator[](uint_fast8_t nr) const {	return vec[nr];	}
 
 		/*! @return the underlying array of this	*/
 		inline const value_t * getVec() const 					{	return vec;	}

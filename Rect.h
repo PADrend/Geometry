@@ -294,10 +294,10 @@ class _Rect {
 		//@}
 };
 
-typedef  _Rect<float> Rect;
-typedef  _Rect<float> Rect_f;
-typedef  _Rect<int> Rect_i;
-typedef  _Rect<double> Rect_d;
+typedef _Rect<float> Rect;
+typedef _Rect<float> Rect_f;
+typedef _Rect<int> Rect_i;
+typedef _Rect<double> Rect_d;
 
 }
 
