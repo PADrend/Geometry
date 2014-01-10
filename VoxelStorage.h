@@ -289,7 +289,8 @@ class VoxelStorage{
 			}
 		}
 	public:
-		VoxelStorage( const Voxel_t& _nullVoxel) : nullVoxel(_nullVoxel){}
+		VoxelStorage( VoxelStorage&& other) : nullVoxel(other.nullVoxel),root(std::move(other.root)){}
+		explicit VoxelStorage( const Voxel_t& _nullVoxel) : nullVoxel(_nullVoxel){}
 
 		//! Set the value @p voxel at the given @p position without consolidating (combining uniform subtrees)
 		void _set(const Vec3_t& pos, const Voxel_t& voxel){
