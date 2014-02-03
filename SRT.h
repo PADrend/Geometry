@@ -14,11 +14,14 @@
 #include "Angle.h"
 #include "Interpolation.h"
 #include "Matrix3x3.h"
+#include "Quaternion.h"
 #include "Vec3.h"
+#include <array>
 #include <istream>
 #include <ostream>
 
 namespace Geometry {
+	
 /**
  * SRT - scale,rotate and translate.
  * @see 3D Game Engine Design, David H. Eberly, http://www.geometrictools.com/
@@ -75,6 +78,17 @@ class _SRT {
 			s(_scale), r(), t(std::move(_pos)), rotationCounter(0) {
 			r.setRotation(_dir, _up);
 		}
+		
+		/*! [ x,y,z, rx,ry,rz,rw, scale ]
+			\see toArray()	*/
+		_SRT(const std::array<value_t,8>& arr) : 
+					s( arr[7] ),
+					r( Quaternion(arr[3],arr[4],arr[5],arr[6]).toMatrix() ),
+					t( arr[0],arr[1],arr[2] ), 
+					rotationCounter(0) {
+		}
+		
+		
 	/**
 	 * @name Information
 	 */
@@ -231,6 +245,15 @@ class _SRT {
 			fa[7] = static_cast<value_t>(t.getY());
 			fa[11] = static_cast<value_t>(t.getZ());
 			fa[15] = static_cast<value_t>(1.0f);
+		}
+		
+		std::array<value_t,8> toArray()const{
+			std::array<value_t,8> arr;
+			arr[0] = t.x(),		arr[1] = t.y(),		arr[2] = t.z();
+			const auto & q = Quaternion::matrixToQuaternion(r);
+			arr[3] = q.x(),		arr[4] = q.y(),		arr[5] = q.z(),		arr[6] = q.w();
+			arr[7] = s;
+			return arr;
 		}
 	//@}
 
