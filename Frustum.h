@@ -16,6 +16,7 @@
 #include "SRT.h"
 #include "Vec3.h"
 #include "Plane.h"
+#include <stdexcept>
 
 namespace Geometry {
 template<typename value_t> class _Box;
@@ -64,8 +65,10 @@ class Frustum {
 		inline Vec3 operator[](corner_t nr) const;
 		bool operator==(const Frustum & other) const;
 
-		/// \todo And what does this do? A documentation would be really helpfull!
-		inline Vec3 getPlane(side_t side, float* dist) const;
+		const Plane & getPlane(side_t side) const {	
+			if(side>5) throw std::out_of_range("Frustum:getPlane(...)");
+			return planes[side];	
+		}
 		//@}
 
 		/**
@@ -124,11 +127,6 @@ inline bool Frustum::pointInFrustum(const Vec3 &p)const {
 }
 inline Vec3 Frustum::operator[](corner_t nr) const {
 	return corners[nr];
-}
-
-inline Vec3 Frustum::getPlane(side_t side, float* dist) const {
-	*dist = planes[side].getOffset();
-	return planes[side].getNormal();
 }
 
 }
