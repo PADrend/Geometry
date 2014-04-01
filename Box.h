@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <cmath>
 #include <istream>
+#include <limits>
 #include <ostream>
 #include <stdexcept>
 #include <vector>
@@ -292,7 +293,9 @@ inline corner_t _Box<value_t>::getOctant(const vec3_t &v)const{
 
 template<typename value_t>
 inline bool _Box<value_t>::isValid()const{
-	return min.getX() <= max.getX() && min.getY() <= max.getY() && min.getZ() <= max.getZ();
+	return	max.getX() - min.getX() >= -std::numeric_limits<value_t>::epsilon() &&
+			max.getY() - min.getY() >= -std::numeric_limits<value_t>::epsilon() &&
+			max.getZ() - min.getZ() >= -std::numeric_limits<value_t>::epsilon();
 }
 
 template<typename value_t>
