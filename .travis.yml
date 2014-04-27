@@ -4,7 +4,7 @@ compiler:
   - clang
 cache: apt
 before_install:
- - sudo add-apt-repository -qq ppa:kalakris/cmake
+ - sudo add-apt-repository ppa:kalakris/cmake
  - sudo apt-get update -qq
  - sudo apt-get install -qq libcppunit-dev cmake
 before_script: mkdir build && cd build
