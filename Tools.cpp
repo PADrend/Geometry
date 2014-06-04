@@ -14,6 +14,7 @@
 #include "Frustum.h"
 #include "Matrix4x4.h"
 #include "Rect.h"
+#include "Sphere.h"
 #include "Vec3.h"
 #include <cstdint>
 
@@ -72,5 +73,28 @@ Frustum calcEnclosingOrthoFrustum(const Box & box, const Matrix4x4f & modelView)
 	frustum.setOrthogonal(left, right, bottom, top, near, far);
 	return frustum;
 }
+
+//! \see http://www.scratchapixel.com/lessons/3d-basic-lessons/lesson-7-intersecting-simple-shapes/ray-sphere-intersection/
+std::tuple<bool, float, float> normLineSphereIntersections(const Line3f& line, const Sphere_f& sphere){
+	const Vec3f relCenter = sphere.getCenter() - line.getOrigin(); 
+	const float tca = relCenter.dot(line.getDirection());
+
+	const float dSquared = relCenter.lengthSquared() - tca * tca;
+	const float radiusSquared = sphere.getRadius() * sphere.getRadius();
+	if(dSquared > radiusSquared){
+		return std::make_tuple(false,0.0f,0.0f);
+	}else{
+		const float thc = std::sqrt(radiusSquared-dSquared);
+		return std::make_tuple(true,tca-thc, tca+thc);
+	}
+}
+
+std::tuple<bool, float, float> lineSphereIntersections(const Line3f& line, const Sphere_f& sphere){
+	const float length = line.getDirection().length();
+	const Line3 normalizedLine( line.getOrigin(), line.getDirection()/length );
+	const auto result = normLineSphereIntersections(normalizedLine,sphere);
+	return std::make_tuple( std::get<0>(result),std::get<1>(result)/length,std::get<2>(result)/length);
+}
+
 
 }

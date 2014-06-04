@@ -16,6 +16,7 @@
 #include "Vec3.h"
 #include "Vec4.h"
 #include <utility>
+#include <tuple>
 
 namespace Geometry {
 template<typename value_t> class _Box;
@@ -25,6 +26,8 @@ template<typename _T> class _Matrix4x4;
 typedef _Matrix4x4<float> Matrix4x4f;
 template<typename _T> class _Rect;
 typedef _Rect<float> Rect_f;
+template<typename T_> class _Sphere;
+typedef _Sphere<float> Sphere_f;
 
 // note:  planeNormal (dot) (  (rayPos-planePos) + i * rayDir) = 0
 // -> Si = planeNormal  (dot) (rayPos-planePos) / (planeNormal  (dot) rayDir )
@@ -37,6 +40,10 @@ inline bool rayPlaneIntersection(const Plane & plane, const Ray3f & ray,Vec3f & 
 bool rayPlaneIntersection(const Plane & plane, const Ray3f & ray,Vec3f & intersectionPoint) {
 	return plane.getIntersection(ray,intersectionPoint);
 }
+
+/*! (intersects?, lineIntersectionValue1, lineIntersectionValue2) */
+std::tuple<bool, float, float> normLineSphereIntersections(const Line3f& normalizedLine, const Sphere_f& sphere);
+std::tuple<bool, float, float> lineSphereIntersections(const Line3f& line, const Sphere_f& sphere);
 
 /**
  * Calculate a pair of points on the given lines @a lineA and @a lineB that is closest to each other.
