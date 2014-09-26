@@ -143,7 +143,7 @@ class _SRT {
 		}
 
 		void rotateLocal(const angle_t & angle, const vec3_t & axis) {
-			if(((rotationCounter += std::abs(static_cast<uint16_t>(100 * angle.rad())) + 1)) > 200) {
+			if(((rotationCounter += static_cast<uint16_t>(100 * angle.rad())) + 1) > 200) {
 				rotationCounter = 0;
 				r.normOrthoLize();
 			}
@@ -157,7 +157,7 @@ class _SRT {
 		}
 
 		void rotateRel(const angle_t & angle, const vec3_t & axis) {
-			if(((rotationCounter += std::abs(static_cast<uint16_t>(100 * angle.rad())) + 1)) > 200) {
+			if(((rotationCounter += static_cast<uint16_t>(100 * angle.rad())) + 1) > 200) {
 				rotationCounter = 0;
 				r.normOrthoLize();
 			}

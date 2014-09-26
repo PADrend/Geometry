@@ -378,7 +378,7 @@ class _Vec3 {
 
 		/*! returns a normalized copy of this.	*/
 		inline vec3_t getAbs()const {
-			return vec3_t(abs(vec[0]), abs(vec[1]), abs(vec[2]));
+			return vec3_t(std::abs(vec[0]), std::abs(vec[1]), std::abs(vec[2]));
 		}
 
 		/*! calculates the projection of this on a plane.
