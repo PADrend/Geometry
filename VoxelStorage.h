@@ -14,7 +14,6 @@
 #include "Vec3.h"
 #include <array>
 #include <cassert>
-#include <iostream>
 #include <stack>
 #include <tuple>
 #include <vector>

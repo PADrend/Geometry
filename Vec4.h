@@ -16,8 +16,6 @@
 #include <cmath>
 #include <cstdint>
 #include <iostream>
-#include <istream>
-#include <ostream>
 #include <type_traits>
 
 namespace Geometry {

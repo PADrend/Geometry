@@ -16,10 +16,10 @@
 #include <cstddef>
 #include <cstdint>
 #include <functional>
+#include <istream>
+#include <ostream>
 #include <stdexcept>
 #include <vector>
-
-#include <iostream>
 
 namespace Geometry {
 

@@ -14,11 +14,11 @@
 #include "Angle.h"
 #include "Interpolation.h"
 #include "Vec3.h"
+#include <cstdint>
 #include <cstdlib>
 #include <cmath>
 #include <iostream>
 #include <limits>
-#include <cstdint>
 
 namespace Geometry {
 

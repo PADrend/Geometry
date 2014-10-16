@@ -17,10 +17,9 @@
 #include "Vec3.h"
 #include "Vec4.h"
 #include <cmath>
-#include <istream>
-#include <ostream>
-#include <stdexcept>
 #include <cstdint>
+#include <iostream>
+#include <stdexcept>
 
 namespace Geometry {
 
