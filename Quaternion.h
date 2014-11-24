@@ -249,20 +249,21 @@ class Quaternion {
 		/*  source:
 		 *  http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
 		 */
-		Matrix3x3 toMatrix() {
-			normalize();
+		Matrix3x3 toMatrix() const {
+			Quaternion q(*this);
+			q.normalize();
 
-			value_t wx = w() * x();
-			value_t wy = w() * y();
-			value_t wz = w() * z();
+			value_t wx = q.w() * q.x();
+			value_t wy = q.w() * q.y();
+			value_t wz = q.w() * q.z();
 
-			value_t xx = x() * x();
-			value_t xy = x() * y();
-			value_t xz = x() * z();
+			value_t xx = q.x() * q.x();
+			value_t xy = q.x() * q.y();
+			value_t xz = q.x() * q.z();
 
-			value_t yy = y() * y();
-			value_t yz = y() * z();
-			value_t zz = z() * z();
+			value_t yy = q.y() * q.y();
+			value_t yz = q.y() * q.z();
+			value_t zz = q.z() * q.z();
 
 			Matrix3x3 mat;
 			mat.set(0, 0, 1.0 - 2.0 * (yy + zz));
