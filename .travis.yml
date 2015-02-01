@@ -6,7 +6,7 @@ cache: apt
 before_install:
  - sudo add-apt-repository --yes ppa:kalakris/cmake
  - sudo apt-get update -qq
- - sudo apt-get install -qq libcppunit-dev cmake
+ - sudo apt-get install -qq libcppunit-dev cmake valgrind
 before_script: mkdir build && cd build
 script: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGEOMETRY_BUILD_TESTS=ON .. && make && ctest -D ContinuousMemCheck
 
