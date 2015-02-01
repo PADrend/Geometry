@@ -75,7 +75,15 @@ endif()
 set_target_properties(Geometry PROPERTIES VERSION ${GEOMETRY_VERSION_STRING}
                                           SOVERSION ${GEOMETRY_VERSION_MAJOR})
 
-add_subdirectory(tests)
+option(GEOMETRY_BUILD_TESTS "Defines if CppUnit tests for the Geometry library are built.")
+if(GEOMETRY_BUILD_TESTS)
+	include(CTest)
+	if(UNIX AND NOT APPLE)
+	        find_program(CTEST_MEMORYCHECK_COMMAND NAMES valgrind)
+		set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "-v --tool=memcheck --leak-check=full")
+	endif()
+	add_subdirectory(tests)
+endif()
 
 # Install the library
 install(TARGETS Geometry EXPORT LibraryExport
@@ -124,3 +132,4 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_STRIP_FILES ON)
 
 include(CPack)
+

@@ -8,7 +8,6 @@
 #
 cmake_minimum_required(VERSION 2.8.11)
 
-option(GEOMETRY_BUILD_TESTS "Defines if CppUnit tests for the Geometry library are built.")
 if(GEOMETRY_BUILD_TESTS)
 	add_executable(GeometryTest
 		BoundingSphereTest.cpp
@@ -54,6 +53,5 @@ if(GEOMETRY_BUILD_TESTS)
 		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT tests
 	)
 
-	enable_testing()
 	add_test(NAME GeometryTest COMMAND GeometryTest)
 endif()
