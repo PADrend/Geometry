@@ -77,11 +77,11 @@ set_target_properties(Geometry PROPERTIES VERSION ${GEOMETRY_VERSION_STRING}
 
 option(GEOMETRY_BUILD_TESTS "Defines if CppUnit tests for the Geometry library are built.")
 if(GEOMETRY_BUILD_TESTS)
-	include(CTest)
 	if(UNIX AND NOT APPLE)
-	        find_program(CTEST_MEMORYCHECK_COMMAND NAMES valgrind)
-		set(CTEST_MEMORYCHECK_COMMAND_OPTIONS "-v --tool=memcheck --leak-check=full")
+	        find_program(MEMORYCHECK_COMMAND NAMES valgrind)
+		set(MEMORYCHECK_COMMAND_OPTIONS "-v --tool=memcheck --leak-check=full")
 	endif()
+	include(CTest)
 	add_subdirectory(tests)
 endif()
 
