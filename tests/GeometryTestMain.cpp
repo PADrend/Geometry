@@ -36,5 +36,5 @@ int main(int /*argc*/, char ** /*argv*/) {
 	CppUnit::TextOutputter textOutput(&result, std::cout);
 	textOutput.write();
 
-	return 0;
+	return result.wasSuccessful() ? 0 : 1;
 }
