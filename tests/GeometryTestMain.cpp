@@ -15,7 +15,9 @@
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <fstream>
 
-int main(int /*argc*/, char ** /*argv*/) {
+int main(int argc, char ** argv) {
+	const std::string testPath = (argc > 1) ? std::string(argv[1]) : "";
+
 	CppUnit::TestResult controller;
 
 	CppUnit::TestResultCollector result;
@@ -27,7 +29,7 @@ int main(int /*argc*/, char ** /*argv*/) {
 	CppUnit::TestRunner runner;
 	runner.addTest(CppUnit::TestFactoryRegistry::getRegistry().makeTest());
 
-	runner.run(controller);
+	runner.run(controller, testPath);
 
 	std::ofstream fileStream("cppunit_results.xml");
 	CppUnit::XmlOutputter xmlOutput(&result, fileStream, "UTF-8");
