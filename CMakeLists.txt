@@ -79,7 +79,7 @@ option(GEOMETRY_BUILD_TESTS "Defines if CppUnit tests for the Geometry library a
 if(GEOMETRY_BUILD_TESTS)
 	if(UNIX AND NOT APPLE)
 	        find_program(MEMORYCHECK_COMMAND NAMES valgrind)
-		set(MEMORYCHECK_COMMAND_OPTIONS "--tool=memcheck --leak-check=summary --num-callers=1 --read-inline-info=no --read-var-info=no --keep-stacktraces=none --vgdb=no")
+		set(MEMORYCHECK_COMMAND_OPTIONS "--tool=memcheck --leak-check=summary --num-callers=1 --keep-stacktraces=none --vgdb=no")
 	endif()
 	include(CTest)
 	add_subdirectory(tests)
