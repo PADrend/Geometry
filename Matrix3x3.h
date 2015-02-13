@@ -79,6 +79,8 @@ class _Matrix3x3 {
 				r1c0, r1c1, r1c2,
 				r2c0, r2c1, r2c2);
 		}
+
+		explicit _Matrix3x3(const value_t * m) 	{	std::copy(m, m + 9, data);	}
 	//@}
 
 
