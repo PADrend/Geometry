@@ -25,10 +25,11 @@
   d=B.y()*C.x()-B.x()*C.y();                          \
   if((f>0 && d>=0 && d<=f) || (f<0 && d<=0 && d>=f)) {\
     e=A.x()*C.y()-A.y()*C.x();                        \
-    if(f>0)                                           \
+    if(f>0) {                                         \
       if(e>=0 && e<=f) return 0;                      \
-    else                                              \
+    } else {                                          \
       if(e<=0 && e>=f) return 0;                      \
+    }												  \
   }
 
 #define EDGE_AGAINST_TRI_EDGES(V0,V1,U0,U1,U2) \
@@ -179,11 +180,13 @@ int32_t getTriangleTriangleIntersection(const Triangle<_Vec3<value_t>> & triangl
 
 	// compute and index to the largest component of D
 	value_t max = std::fabs(dir[0]);
-	value_t b = std::fabs(dir[1]);
-	value_t c = std::fabs(dir[2]);
 	uint8_t index = 0;
-	if(b>max) max = b, index = 1;
-	if(c>max) max = c, index = 2;
+	{
+		value_t b = std::fabs(dir[1]);
+		value_t c = std::fabs(dir[2]);
+		if(b>max) max = b, index = 1;
+		if(c>max) max = c, index = 2;
+	}
 
 	// this is the simplified projection onto L
 	value_t pu0 = triangle1.getVertexA()[index];
@@ -201,23 +204,25 @@ int32_t getTriangleTriangleIntersection(const Triangle<_Vec3<value_t>> & triangl
 	_Vec3<value_t> pointA2;
 	if(_computeIntersectionInterval(triangle1, pu0, pu1, pu2, du0, du1, du2, du0du1, du0du2, &intersectionA1, &intersectionA2, pointA1, pointA2)) {
 		// first project onto an axis-aligned plane, that maximizes the area of the triangles
-		_Vec3<value_t> a = plane1.getNormal().getAbs();
 		uint8_t i0, i1;
-		if(a.x() > a.y()) {
-			if(a.x() > a.z()) {
-				i0 = 1; // x is greatest
-				i1 = 2;
+		{
+			_Vec3<value_t> a = plane1.getNormal().getAbs();
+			if(a.x() > a.y()) {
+				if(a.x() > a.z()) {
+					i0 = 1; // x is greatest
+					i1 = 2;
+				} else {
+					i0 = 0; // z is greatest
+					i1 = 1;
+				}
 			} else {
-				i0 = 0; // z is greatest
-				i1 = 1;
-			}
-		} else {
-			if(a.z() > a.y()) {
-				i0 = 0; // z is greatest
-				i1 = 1;
-			} else {
-				i0 = 0; // y is greatest
-				i1 = 2;
+				if(a.z() > a.y()) {
+					i0 = 0; // z is greatest
+					i1 = 1;
+				} else {
+					i0 = 0; // y is greatest
+					i1 = 2;
+				}
 			}
 		}
 		_Vec2<value_t> U0(triangle1.getVertexA()[i0], triangle1.getVertexA()[i1]);
@@ -239,9 +244,9 @@ int32_t getTriangleTriangleIntersection(const Triangle<_Vec3<value_t>> & triangl
 	}
 
 	// compute interval for triangle 2
-	float intersectionB1;
+	float intersectionB1 = 0.0f;
 	_Vec3<value_t> pointB1;
-	float intersectionB2;
+	float intersectionB2 = 0.0f;
 	_Vec3<value_t> pointB2;
 	_computeIntersectionInterval(triangle2, pv0, pv1, pv2, dv0, dv1, dv2, dv0dv1, dv0dv2, &intersectionB1, &intersectionB2, pointB1, pointB2);
 
