@@ -53,6 +53,7 @@ set_property(TARGET Geometry PROPERTY PUBLIC_HEADER
 	Tetrahedron.h
 	Tools.h
 	Triangle.h
+	TriangleTriangleIntersection.h
 	Vec2.h
 	Vec3.h
 	Vec4.h
