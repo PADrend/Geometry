@@ -539,11 +539,16 @@ class _Matrix4x4 {
 				std::abs((l2 / l3) - 1) <= epsilon;
 		}
 
-		//! Be careful: Converting a matrix to an SRT can result in information loss.
-		srt_t _toSRT() const {
+		
+		//! Converts a matrix to a SRT; throws an exception if the transformation can not be captured by a SRT.
+		srt_t toSRT() const {
 			if(!convertsSafelyToSRT())
 				throw std::domain_error("Matrix can not be converted to SRT.");
-
+			return std::move(_toSRT());
+		}
+				
+		//! Converts a matrix to a SRT even if information may be lost.
+		srt_t _toSRT() const {
 			const vec3_t right = getColumnAsVec3(0);
 			const vec3_t up = getColumnAsVec3(1);
 			const vec3_t dir = getColumnAsVec3(2);
