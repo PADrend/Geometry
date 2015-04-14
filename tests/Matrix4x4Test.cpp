@@ -181,38 +181,38 @@ void Matrix4x4Test::testConversion() {
 
 	// Check identity matrix
 	CPPUNIT_ASSERT(Matrix4x4d().convertsSafelyToSRT());
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d()._toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().toSRT(), epsilon));
 	
 	// Check scale matrix
 	// Uniform scaling (positive)
 	CPPUNIT_ASSERT(Matrix4x4d().scale(5).convertsSafelyToSRT());
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 5).equals(Matrix4x4d().scale(5)._toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 5).equals(Matrix4x4d().scale(5).toSRT(), epsilon));
 	CPPUNIT_ASSERT(Matrix4x4d().scale(50).convertsSafelyToSRT());
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 50).equals(Matrix4x4d().scale(50)._toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 50).equals(Matrix4x4d().scale(50).toSRT(), epsilon));
 	// Uniform scaling (negative)
 	CPPUNIT_ASSERT(Matrix4x4d().scale(-10, -10, -10).convertsSafelyToSRT());
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), -10).equals(Matrix4x4d().scale(-10, -10, -10)._toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), -10).equals(Matrix4x4d().scale(-10, -10, -10).toSRT(), epsilon));
 	// Non-uniform scaling (not supported)
 	CPPUNIT_ASSERT(!Matrix4x4d().scale(10, 10, 20).convertsSafelyToSRT());
-	CPPUNIT_ASSERT_THROW(Matrix4x4d().scale(10, 10, 20)._toSRT(), std::domain_error);
+	CPPUNIT_ASSERT_THROW(Matrix4x4d().scale(10, 10, 20).toSRT(), std::domain_error);
 	CPPUNIT_ASSERT(!Matrix4x4d().scale(10, 20, 10).convertsSafelyToSRT());
-	CPPUNIT_ASSERT_THROW(Matrix4x4d().scale(10, 20, 10)._toSRT(), std::domain_error);
+	CPPUNIT_ASSERT_THROW(Matrix4x4d().scale(10, 20, 10).toSRT(), std::domain_error);
 	CPPUNIT_ASSERT(!Matrix4x4d().scale(20, 10, 10).convertsSafelyToSRT());
-	CPPUNIT_ASSERT_THROW(Matrix4x4d().scale(20, 10, 10)._toSRT(), std::domain_error);
+	CPPUNIT_ASSERT_THROW(Matrix4x4d().scale(20, 10, 10).toSRT(), std::domain_error);
 	// Mapping to a rotation, and negative scaling
 	CPPUNIT_ASSERT(Matrix4x4d().scale(10, 10, -10).convertsSafelyToSRT());
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(0, -1, 0), -10).equals(Matrix4x4d().scale(10, 10, -10)._toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(0, -1, 0), -10).equals(Matrix4x4d().scale(10, 10, -10).toSRT(), epsilon));
 	CPPUNIT_ASSERT(Matrix4x4d().scale(10, -10, 10).convertsSafelyToSRT());
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, -1), Vec3d(0, 1, 0), -10).equals(Matrix4x4d().scale(10, -10, 10)._toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, -1), Vec3d(0, 1, 0), -10).equals(Matrix4x4d().scale(10, -10, 10).toSRT(), epsilon));
 	CPPUNIT_ASSERT(Matrix4x4d().scale(-10, 10, 10).convertsSafelyToSRT());
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, -1), Vec3d(0, -1, 0), -10).equals(Matrix4x4d().scale(-10, 10, 10)._toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, -1), Vec3d(0, -1, 0), -10).equals(Matrix4x4d().scale(-10, 10, 10).toSRT(), epsilon));
 	// Mapping to a rotation
 	CPPUNIT_ASSERT(Matrix4x4d().scale(10, -10, -10).convertsSafelyToSRT());
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, -1), Vec3d(0, -1, 0), 10).equals(Matrix4x4d().scale(10, -10, -10)._toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, -1), Vec3d(0, -1, 0), 10).equals(Matrix4x4d().scale(10, -10, -10).toSRT(), epsilon));
 	CPPUNIT_ASSERT(Matrix4x4d().scale(-10, 10, -10).convertsSafelyToSRT());
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, -1), Vec3d(0, 1, 0), 10).equals(Matrix4x4d().scale(-10, 10, -10)._toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, -1), Vec3d(0, 1, 0), 10).equals(Matrix4x4d().scale(-10, 10, -10).toSRT(), epsilon));
 	CPPUNIT_ASSERT(Matrix4x4d().scale(-10, -10, 10).convertsSafelyToSRT());
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(0, -1, 0), 10).equals(Matrix4x4d().scale(-10, -10, 10)._toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(0, -1, 0), 10).equals(Matrix4x4d().scale(-10, -10, 10).toSRT(), epsilon));
 	
 	// Check rotation matrix
 	CPPUNIT_ASSERT(Matrix4x4d().rotate_rad(M_PI_2, 1, 0, 0).convertsSafelyToSRT());
@@ -221,12 +221,12 @@ void Matrix4x4Test::testConversion() {
 	CPPUNIT_ASSERT(Matrix4x4d().rotate_rad(M_PI_2, 0, -1, 0).convertsSafelyToSRT());
 	CPPUNIT_ASSERT(Matrix4x4d().rotate_rad(M_PI_2, 0, 0, 1).convertsSafelyToSRT());
 	CPPUNIT_ASSERT(Matrix4x4d().rotate_rad(M_PI_2, 0, 0, -1).convertsSafelyToSRT());
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, -1, 0), Vec3d(0, 0, 1), 1).equals(Matrix4x4d().rotate_rad(M_PI_2, 1, 0, 0)._toSRT(), epsilon));
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 1, 0), Vec3d(0, 0, -1), 1).equals(Matrix4x4d().rotate_rad(M_PI_2, -1, 0, 0)._toSRT(), epsilon));
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(1, 0, 0), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().rotate_rad(M_PI_2, 0, 1, 0)._toSRT(), epsilon));
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(-1, 0, 0), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().rotate_rad(M_PI_2, 0, -1, 0)._toSRT(), epsilon));
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(-1, 0, 0), 1).equals(Matrix4x4d().rotate_rad(M_PI_2, 0, 0, 1)._toSRT(), epsilon));
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(1, 0, 0), 1).equals(Matrix4x4d().rotate_rad(M_PI_2, 0, 0, -1)._toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, -1, 0), Vec3d(0, 0, 1), 1).equals(Matrix4x4d().rotate_rad(M_PI_2, 1, 0, 0).toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 1, 0), Vec3d(0, 0, -1), 1).equals(Matrix4x4d().rotate_rad(M_PI_2, -1, 0, 0).toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(1, 0, 0), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().rotate_rad(M_PI_2, 0, 1, 0).toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(-1, 0, 0), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().rotate_rad(M_PI_2, 0, -1, 0).toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(-1, 0, 0), 1).equals(Matrix4x4d().rotate_rad(M_PI_2, 0, 0, 1).toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, 0, 1), Vec3d(1, 0, 0), 1).equals(Matrix4x4d().rotate_rad(M_PI_2, 0, 0, -1).toSRT(), epsilon));
 	
 	// Check translation matrix
 	CPPUNIT_ASSERT(Matrix4x4d().translate(1, 2, 3).convertsSafelyToSRT());
@@ -237,14 +237,14 @@ void Matrix4x4Test::testConversion() {
 	CPPUNIT_ASSERT(Matrix4x4d().translate( 0, -1,  0).convertsSafelyToSRT());
 	CPPUNIT_ASSERT(Matrix4x4d().translate( 0,  0,  1).convertsSafelyToSRT());
 	CPPUNIT_ASSERT(Matrix4x4d().translate( 0,  0, -1).convertsSafelyToSRT());
-	CPPUNIT_ASSERT(SRTd(Vec3d(1, 2, 3), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate(1, 2, 3)._toSRT(), epsilon));
-	CPPUNIT_ASSERT(SRTd(Vec3d(3, 2, 1), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate(3, 2, 1)._toSRT(), epsilon));
-	CPPUNIT_ASSERT(SRTd(Vec3d( 1,  0,  0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate( 1,  0,  0)._toSRT(), epsilon));
-	CPPUNIT_ASSERT(SRTd(Vec3d(-1,  0,  0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate(-1,  0,  0)._toSRT(), epsilon));
-	CPPUNIT_ASSERT(SRTd(Vec3d( 0,  1,  0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate( 0,  1,  0)._toSRT(), epsilon));
-	CPPUNIT_ASSERT(SRTd(Vec3d( 0, -1,  0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate( 0, -1,  0)._toSRT(), epsilon));
-	CPPUNIT_ASSERT(SRTd(Vec3d( 0,  0,  1), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate( 0,  0,  1)._toSRT(), epsilon));
-	CPPUNIT_ASSERT(SRTd(Vec3d( 0,  0, -1), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate( 0,  0, -1)._toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(1, 2, 3), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate(1, 2, 3).toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(3, 2, 1), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate(3, 2, 1).toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d( 1,  0,  0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate( 1,  0,  0).toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d(-1,  0,  0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate(-1,  0,  0).toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d( 0,  1,  0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate( 0,  1,  0).toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d( 0, -1,  0), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate( 0, -1,  0).toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d( 0,  0,  1), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate( 0,  0,  1).toSRT(), epsilon));
+	CPPUNIT_ASSERT(SRTd(Vec3d( 0,  0, -1), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 1).equals(Matrix4x4d().translate( 0,  0, -1).toSRT(), epsilon));
 	
 	// Check combinations
 	CPPUNIT_ASSERT(Matrix4x4d().translate(1, 2, 3).scale(5).convertsSafelyToSRT());									// TS
@@ -254,13 +254,13 @@ void Matrix4x4Test::testConversion() {
 	CPPUNIT_ASSERT(Matrix4x4d().translate(1, 2, 3).rotate_rad(M_PI_2, 1, 0, 0).convertsSafelyToSRT());				// TR
 	CPPUNIT_ASSERT(Matrix4x4d().rotate_rad(M_PI_2, 1, 0, 0).translate(1, 2, 3).convertsSafelyToSRT());				// RT
 	CPPUNIT_ASSERT(Matrix4x4d().translate(1, 2, 3).rotate_rad(M_PI_2, 1, 0, 0).scale(5).convertsSafelyToSRT());;	// TRS
-	CPPUNIT_ASSERT(SRTd(Vec3d(1, 2, 3), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 5).equals(Matrix4x4d().translate(1, 2, 3).scale(5)._toSRT(), epsilon));								// TS
-	CPPUNIT_ASSERT(SRTd(Vec3d(5, 10, 15), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 5).equals(Matrix4x4d().scale(5).translate(1, 2, 3)._toSRT(), epsilon));							// ST
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, -1, 0), Vec3d(0, 0, 1), 5).equals(Matrix4x4d().scale(5).rotate_rad(M_PI_2, 1, 0, 0)._toSRT(), epsilon));					// SR
-	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, -1, 0), Vec3d(0, 0, 1), 5).equals(Matrix4x4d().rotate_rad(M_PI_2, 1, 0, 0).scale(5)._toSRT(), epsilon));					// RS
-	CPPUNIT_ASSERT(SRTd(Vec3d(1, 2, 3), Vec3d(0, -1, 0), Vec3d(0, 0, 1), 1).equals(Matrix4x4d().translate(1, 2, 3).rotate_rad(M_PI_2, 1, 0, 0)._toSRT(), epsilon));			// TR
-	CPPUNIT_ASSERT(SRTd(Vec3d(1, -3, 2), Vec3d(0, -1, 0), Vec3d(0, 0, 1), 1).equals(Matrix4x4d().rotate_rad(M_PI_2, 1, 0, 0).translate(1, 2, 3)._toSRT(), epsilon));		// RT
-	CPPUNIT_ASSERT(SRTd(Vec3d(1, 2, 3), Vec3d(0, -1, 0), Vec3d(0, 0, 1), 5).equals(Matrix4x4d().translate(1, 2, 3).rotate_rad(M_PI_2, 1, 0, 0).scale(5)._toSRT(), epsilon));// TRS
+	CPPUNIT_ASSERT(SRTd(Vec3d(1, 2, 3), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 5).equals(Matrix4x4d().translate(1, 2, 3).scale(5).toSRT(), epsilon));								// TS
+	CPPUNIT_ASSERT(SRTd(Vec3d(5, 10, 15), Vec3d(0, 0, 1), Vec3d(0, 1, 0), 5).equals(Matrix4x4d().scale(5).translate(1, 2, 3).toSRT(), epsilon));							// ST
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, -1, 0), Vec3d(0, 0, 1), 5).equals(Matrix4x4d().scale(5).rotate_rad(M_PI_2, 1, 0, 0).toSRT(), epsilon));					// SR
+	CPPUNIT_ASSERT(SRTd(Vec3d(0, 0, 0), Vec3d(0, -1, 0), Vec3d(0, 0, 1), 5).equals(Matrix4x4d().rotate_rad(M_PI_2, 1, 0, 0).scale(5).toSRT(), epsilon));					// RS
+	CPPUNIT_ASSERT(SRTd(Vec3d(1, 2, 3), Vec3d(0, -1, 0), Vec3d(0, 0, 1), 1).equals(Matrix4x4d().translate(1, 2, 3).rotate_rad(M_PI_2, 1, 0, 0).toSRT(), epsilon));			// TR
+	CPPUNIT_ASSERT(SRTd(Vec3d(1, -3, 2), Vec3d(0, -1, 0), Vec3d(0, 0, 1), 1).equals(Matrix4x4d().rotate_rad(M_PI_2, 1, 0, 0).translate(1, 2, 3).toSRT(), epsilon));		// RT
+	CPPUNIT_ASSERT(SRTd(Vec3d(1, 2, 3), Vec3d(0, -1, 0), Vec3d(0, 0, 1), 5).equals(Matrix4x4d().translate(1, 2, 3).rotate_rad(M_PI_2, 1, 0, 0).scale(5).toSRT(), epsilon));// TRS
 }
 
 void Matrix4x4Test::testSerialization() {
