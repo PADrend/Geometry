@@ -6,13 +6,8 @@
 # You should have received a copy of the MPL along with this library; see the 
 # file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 #
-cmake_minimum_required(VERSION 2.8.11)
-project(Geometry CXX)
-
-set(GEOMETRY_VERSION_MAJOR 0)
-set(GEOMETRY_VERSION_MINOR 2)
-set(GEOMETRY_VERSION_PATCH 0)
-set(GEOMETRY_VERSION_STRING ${GEOMETRY_VERSION_MAJOR}.${GEOMETRY_VERSION_MINOR}.${GEOMETRY_VERSION_PATCH})
+cmake_minimum_required(VERSION 3.0.0)
+project(Geometry VERSION 0.2.0 LANGUAGES CXX)
 
 # Set up install directories
 include(GNUInstallDirs)
@@ -73,8 +68,8 @@ else()
 endif()
 
 # Set version of library
-set_target_properties(Geometry PROPERTIES VERSION ${GEOMETRY_VERSION_STRING}
-                                          SOVERSION ${GEOMETRY_VERSION_MAJOR})
+set_target_properties(Geometry PROPERTIES VERSION ${Geometry_VERSION}
+                                          SOVERSION ${Geometry_VERSION_MAJOR})
 
 option(GEOMETRY_BUILD_TESTS "Defines if CppUnit tests for the Geometry library are built.")
 if(GEOMETRY_BUILD_TESTS)
@@ -111,7 +106,7 @@ configure_package_config_file(GeometryConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR
                               NO_SET_AND_CHECK_MACRO
                               NO_CHECK_REQUIRED_COMPONENTS_MACRO)
 write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/GeometryConfigVersion.cmake
-                                 VERSION ${GEOMETRY_VERSION_STRING}
+                                 VERSION ${Geometry_VERSION}
                                  COMPATIBILITY SameMajorVersion)
 
 # Install the configuration files
@@ -121,13 +116,13 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/GeometryConfig.cmake ${CMAKE_CURRENT_B
 # Packaging
 include(InstallRequiredSystemLibraries)
 
-set(CPACK_PACKAGE_NAME "libgeometry${GEOMETRY_VERSION_MAJOR}")
+set(CPACK_PACKAGE_NAME "libgeometry${Geometry_VERSION_MAJOR}")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Geometry library")
 set(CPACK_PACKAGE_VENDOR "Benjamin Eikel; Claudius Jaehn; Ralf Petring")
 set(CPACK_PACKAGE_CONTACT "Benjamin Eikel <benjamin@eikel.org>")
-set(CPACK_PACKAGE_VERSION_MAJOR ${GEOMETRY_VERSION_MAJOR})
-set(CPACK_PACKAGE_VERSION_MINOR ${GEOMETRY_VERSION_MINOR})
-set(CPACK_PACKAGE_VERSION_PATCH ${GEOMETRY_VERSION_PATCH})
+set(CPACK_PACKAGE_VERSION_MAJOR ${Geometry_VERSION_MAJOR})
+set(CPACK_PACKAGE_VERSION_MINOR ${Geometry_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${Geometry_VERSION_PATCH})
 set(CPACK_PACKAGE_FILE_NAME "libGeometry")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_STRIP_FILES ON)
