@@ -106,7 +106,6 @@ configure_package_config_file(GeometryConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR
                               NO_SET_AND_CHECK_MACRO
                               NO_CHECK_REQUIRED_COMPONENTS_MACRO)
 write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/GeometryConfigVersion.cmake
-                                 VERSION ${Geometry_VERSION}
                                  COMPATIBILITY SameMajorVersion)
 
 # Install the configuration files
