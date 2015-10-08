@@ -6,7 +6,7 @@
 # You should have received a copy of the MPL along with this library; see the 
 # file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 #
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.1.0)
 project(Geometry VERSION 0.2.0 LANGUAGES CXX)
 
 # Set up install directories
@@ -55,6 +55,7 @@ set_property(TARGET Geometry PROPERTY PUBLIC_HEADER
 	VecHelper.h
 	VecN.h
 )
+
 
 include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
