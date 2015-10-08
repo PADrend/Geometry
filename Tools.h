@@ -18,6 +18,15 @@
 #include <utility>
 #include <tuple>
 
+#if defined(__GNUC__)
+#define DEPRECATED __attribute__((deprecated))
+#elif defined(_MSC_VER)
+#define DEPRECATED __declspec(deprecated)
+#else
+#pragma message("WARNING: DEPRECATED not set for this compiler")
+#define DEPRECATED
+#endif
+
 namespace Geometry {
 template<typename value_t> class _Box;
 typedef _Box<float> Box;
@@ -35,7 +44,7 @@ inline bool rayPlaneIntersection(const Vec3f & planePos,const Vec3f & planeNorma
 	return Plane(planePos,planeNormal).getIntersection(Line3(rayPos,rayDir), intersectionPoint);
 }
 
-inline bool rayPlaneIntersection(const Plane & plane, const Ray3f & ray,Vec3f & intersectionPoint) __attribute__((deprecated));
+DEPRECATED inline bool rayPlaneIntersection(const Plane & plane, const Ray3f & ray,Vec3f & intersectionPoint);
 
 bool rayPlaneIntersection(const Plane & plane, const Ray3f & ray,Vec3f & intersectionPoint) {
 	return plane.getIntersection(ray,intersectionPoint);
