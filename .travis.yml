@@ -18,7 +18,7 @@ addons:
     - valgrind
     - libcppunit-dev
 before_install:
- - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew update && brew install cppunit gcc valgrind; fi
+ - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew update && brew unlink gcc && brew install cppunit gcc valgrind; fi
  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then export CMAKE_URL="https://cmake.org/files/v3.4/cmake-3.4.1-Darwin-x86_64.tar.gz"; export CMAKE_STRIP_COMPONENTS=3; else export CMAKE_URL="https://cmake.org/files/v3.4/cmake-3.4.1-Linux-x86_64.tar.gz"; export CMAKE_STRIP_COMPONENTS=1; fi
  - cd /tmp
  - wget --no-check-certificate "${CMAKE_URL}" --output-document=cmake.tar.gz
