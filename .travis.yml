@@ -13,9 +13,9 @@ addons:
     - valgrind
 before_install:
  - cd /tmp
- - wget http://www.cmake.org/files/v3.3/cmake-3.3.0-Linux-x86_64.tar.gz
- - tar xzf cmake-3.3.0-Linux-x86_64.tar.gz
- - export PATH=/tmp/cmake-3.3.0-Linux-x86_64/bin:$PATH
+ - wget https://cmake.org/files/v3.4/cmake-3.4.1.tar.gz
+ - tar xzf cmake-3.4.1.tar.gz
+ - export PATH=/tmp/cmake-3.4.1-Linux-x86_64/bin:$PATH
  - cd -
 before_script: mkdir build && cd build
 script: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGEOMETRY_BUILD_TESTS=ON -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror -pedantic" .. && make && ctest --verbose -D ExperimentalMemCheck
