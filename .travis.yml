@@ -12,8 +12,9 @@ addons:
     - libcppunit-dev
     - valgrind
 before_install:
+ - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export CMAKE_URL="https://cmake.org/files/v3.4/cmake-3.4.1-Darwin-x86_64.tar.gz"; else export CMAKE_URL="https://cmake.org/files/v3.4/cmake-3.4.1-Linux-x86_64.tar.gz"; fi
  - cd /tmp
- - wget --no-check-certificate https://cmake.org/files/v3.4/cmake-3.4.1-Linux-x86_64.tar.gz --output-document=cmake.tar.gz
+ - wget --no-check-certificate "${CMAKE_URL}" --output-document=cmake.tar.gz
  - mkdir cmake
  - tar xzf cmake.tar.gz --strip-components=1 --directory cmake
  - export PATH=/tmp/cmake/bin:$PATH
