@@ -18,7 +18,7 @@ addons:
     - valgrind
     - libcppunit-dev
 before_install:
- - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew update && brew unlink gcc && brew install cppunit gcc valgrind; fi
+ - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then brew update && brew switch gcc 5.3.0 && brew install cppunit valgrind; fi
  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then export CMAKE_URL="https://cmake.org/files/v3.4/cmake-3.4.1-Darwin-x86_64.tar.gz"; export CMAKE_STRIP_COMPONENTS=3; else export CMAKE_URL="https://cmake.org/files/v3.4/cmake-3.4.1-Linux-x86_64.tar.gz"; export CMAKE_STRIP_COMPONENTS=1; fi
  - cd /tmp
  - wget --no-check-certificate "${CMAKE_URL}" --output-document=cmake.tar.gz
@@ -26,6 +26,6 @@ before_install:
  - tar xzf cmake.tar.gz --strip-components="${CMAKE_STRIP_COMPONENTS}" --directory cmake
  - export PATH=/tmp/cmake/bin:$PATH
  - cd -
-before_script: mkdir build && cd build && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then if [ "${CXX}" = "g++" ]; then export CXX=g++-5; fi else if [ "${CXX}" = "clang++" ]; then export CXX=/usr/bin/clang++-3.6; fi && if [ "${CXX}" = "g++" ]; then export CXX=/usr/bin/g++-5; fi fi
+before_script: mkdir build && cd build && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then if [ "${CXX}" = "g++" ]; then export CXX=g++-5.3.0; fi else if [ "${CXX}" = "clang++" ]; then export CXX=/usr/bin/clang++-3.6; fi && if [ "${CXX}" = "g++" ]; then export CXX=/usr/bin/g++-5; fi fi
 script: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGEOMETRY_BUILD_TESTS=ON -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror -pedantic" .. && make && ctest --verbose -D ExperimentalMemCheck
 
