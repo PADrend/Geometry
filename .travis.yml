@@ -19,7 +19,7 @@ addons:
     - libcppunit-dev
 before_install:
  - if [ "${TRAVIS_OS_NAME}" = "osx" ] && [ "${CXX}" = "g++" ]; then brew update && brew tap homebrew/versions && brew install gcc5; fi
- - if [ "${TRAVIS_OS_NAME}" = "osx" ] && [ "${CXX}" = "g++" ]; then brew update && brew install valgrind && HOMEBREW_CC=gcc-5 HOMEBREW_CXX=g++-5 brew install --build-from-source cppunit; fi
+ - if [ "${TRAVIS_OS_NAME}" = "osx" ] && [ "${CXX}" = "g++" ]; then brew update && brew install valgrind && HOMEBREW_CC=/usr/local/Cellar/gcc5/5.2.0/bin/gcc-5 HOMEBREW_CXX=/usr/local/Cellar/gcc5/5.2.0/bin/g++-5 brew install --build-from-source cppunit; fi
  - if [ "${TRAVIS_OS_NAME}" = "osx" ] && [ "${CXX}" = "clang++" ]; then brew update && brew install valgrind cppunit; fi
  - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then export CMAKE_URL="https://cmake.org/files/v3.4/cmake-3.4.1-Darwin-x86_64.tar.gz"; export CMAKE_STRIP_COMPONENTS=3; else export CMAKE_URL="https://cmake.org/files/v3.4/cmake-3.4.1-Linux-x86_64.tar.gz"; export CMAKE_STRIP_COMPONENTS=1; fi
  - cd /tmp
