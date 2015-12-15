@@ -1,19 +1,32 @@
 language: cpp
+os:
+  - linux
+  - osx
 compiler:
   - gcc
   - clang
+osx_image: xcode7.2
 sudo: false
 addons:
   apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    - llvm-toolchain-precise-3.6
     packages:
-    - libcppunit-dev
+    - g++-5
+    - clang-3.6
     - valgrind
+    - libcppunit-dev
 before_install:
+ - if [ "${TRAVIS_OS_NAME}" = "osx" ] && [ "${CXX}" = "g++" ]; then brew update && brew install valgrind && HOMEBREW_CC=gcc-4.9 HOMEBREW_CXX=g++-4.9 brew install --build-from-source cppunit; fi
+ - if [ "${TRAVIS_OS_NAME}" = "osx" ] && [ "${CXX}" = "clang++" ]; then brew update && brew install valgrind cppunit; fi
+ - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then export CMAKE_URL="https://cmake.org/files/v3.4/cmake-3.4.1-Darwin-x86_64.tar.gz"; export CMAKE_STRIP_COMPONENTS=3; else export CMAKE_URL="https://cmake.org/files/v3.4/cmake-3.4.1-Linux-x86_64.tar.gz"; export CMAKE_STRIP_COMPONENTS=1; fi
  - cd /tmp
- - wget http://www.cmake.org/files/v3.3/cmake-3.3.0-Linux-x86_64.tar.gz
- - tar xzf cmake-3.3.0-Linux-x86_64.tar.gz
- - export PATH=/tmp/cmake-3.3.0-Linux-x86_64/bin:$PATH
+ - wget --no-check-certificate "${CMAKE_URL}" --output-document=cmake.tar.gz
+ - mkdir cmake
+ - tar xzf cmake.tar.gz --strip-components="${CMAKE_STRIP_COMPONENTS}" --directory cmake
+ - export PATH=/tmp/cmake/bin:$PATH
  - cd -
-before_script: mkdir build && cd build
+before_script: mkdir build && cd build && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then if [ "${CXX}" = "g++" ]; then export CXX=g++-4.9; fi else if [ "${CXX}" = "clang++" ]; then export CXX=/usr/bin/clang++-3.6; fi && if [ "${CXX}" = "g++" ]; then export CXX=/usr/bin/g++-5; fi fi
 script: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGEOMETRY_BUILD_TESTS=ON -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror -pedantic" .. && make && ctest --verbose -D ExperimentalMemCheck
 
