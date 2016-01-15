@@ -9,7 +9,7 @@ export DEB_CXXFLAGS_MAINT_APPEND  = -Wall -Wextra -Werror -pedantic
 
 # main packaging script based on dh7 syntax
 %:
-	dh $@ 
+	dh $@ --parallel
 
 # Add additional CMake parameters
 override_dh_auto_configure:
