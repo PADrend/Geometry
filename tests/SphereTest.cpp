@@ -8,7 +8,7 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "SphereTest.h"
-#include <Geometry/Sphere.h>
+#include "Sphere.h"
 #include <cmath>
 #include <sstream>
 

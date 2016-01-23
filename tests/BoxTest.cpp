@@ -7,12 +7,12 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "BoxTest.h"
-#include <Geometry/Box.h>
-#include <Geometry/BoxHelper.h>
-#include <Geometry/BoxIntersection.h>
-#include <Geometry/Definitions.h>
-#include <Geometry/Matrix4x4.h>
-#include <Geometry/Triangle.h>
+#include "Box.h"
+#include "BoxHelper.h"
+#include "BoxIntersection.h"
+#include "Definitions.h"
+#include "Matrix4x4.h"
+#include "Triangle.h"
 #include <sstream>
 CPPUNIT_TEST_SUITE_REGISTRATION(BoxTest);
 

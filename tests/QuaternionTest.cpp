@@ -7,7 +7,7 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "QuaternionTest.h"
-#include <Geometry/Quaternion.h>
+#include "Quaternion.h"
 CPPUNIT_TEST_SUITE_REGISTRATION(QuaternionTest);
 
 void QuaternionTest::testConstructors() {

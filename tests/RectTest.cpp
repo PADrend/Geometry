@@ -7,7 +7,7 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "RectTest.h"
-#include <Geometry/Rect.h>
+#include "Rect.h"
 #include <sstream>
 #include <stdint.h>
 CPPUNIT_TEST_SUITE_REGISTRATION(RectTest);

@@ -7,9 +7,9 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "Matrix4x4Test.h"
-#include <Geometry/Matrix4x4.h>
-#include <Geometry/SRT.h>
-#include <Geometry/Vec3.h>
+#include "Matrix4x4.h"
+#include "SRT.h"
+#include "Vec3.h"
 #include <algorithm>
 #include <cmath>
 #include <stdint.h>

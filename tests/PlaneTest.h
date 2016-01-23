@@ -11,7 +11,7 @@
 #define PLANETEST_H_
 
 #include <cppunit/extensions/HelperMacros.h>
-#include <Geometry/Plane.h>
+#include "Plane.h"
 
 class PlaneTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE(PlaneTest);

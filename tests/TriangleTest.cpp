@@ -9,10 +9,10 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "TriangleTest.h"
-#include <Geometry/Triangle.h>
-#include <Geometry/Vec2.h>
-#include <Geometry/Vec3.h>
-#include <Geometry/Matrix3x3.h>
+#include "Triangle.h"
+#include "Vec2.h"
+#include "Vec3.h"
+#include "Matrix3x3.h"
 CPPUNIT_TEST_SUITE_REGISTRATION(TriangleTest);
 
 void TriangleTest::testBarycentricCoordinates() {
