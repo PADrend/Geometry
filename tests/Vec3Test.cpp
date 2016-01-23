@@ -8,7 +8,7 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "Vec3Test.h"
-#include <Geometry/Vec3.h>
+#include "Vec3.h"
 #include <limits>
 #include <sstream>
 #include <stdint.h>

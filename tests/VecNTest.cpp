@@ -8,7 +8,7 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "VecNTest.h"
-#include <Geometry/VecN.h>
+#include "VecN.h"
 #include <cmath>
 #include <limits>
 #include <cstdlib>

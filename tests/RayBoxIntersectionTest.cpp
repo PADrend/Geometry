@@ -7,9 +7,9 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "RayBoxIntersectionTest.h"
-#include <Geometry/Box.h>
-#include <Geometry/Line.h>
-#include <Geometry/RayBoxIntersection.h>
+#include "Box.h"
+#include "Line.h"
+#include "RayBoxIntersection.h"
 #include <cstdint>
 #include <vector>
 CPPUNIT_TEST_SUITE_REGISTRATION(RayBoxIntersectionTest);

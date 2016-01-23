@@ -6,22 +6,22 @@
 	You should have received a copy of the MPL along with this library; see the 
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
-#include <Geometry/Box.h>
-#include <Geometry/Frustum.h>
-#include <Geometry/Line.h>
-#include <Geometry/Matrix3x3.h>
-#include <Geometry/Matrix4x4.h>
-#include <Geometry/Plane.h>
-#include <Geometry/Point.h>
-#include <Geometry/Quaternion.h>
-#include <Geometry/Rect.h>
-#include <Geometry/Sphere.h>
-#include <Geometry/SRT.h>
-#include <Geometry/Tetrahedron.h>
-#include <Geometry/Vec2.h>
-#include <Geometry/Vec3.h>
-#include <Geometry/Vec4.h>
-#include <Geometry/VecN.h>
+#include "Box.h"
+#include "Frustum.h"
+#include "Line.h"
+#include "Matrix3x3.h"
+#include "Matrix4x4.h"
+#include "Plane.h"
+#include "Point.h"
+#include "Quaternion.h"
+#include "Rect.h"
+#include "Sphere.h"
+#include "SRT.h"
+#include "Tetrahedron.h"
+#include "Vec2.h"
+#include "Vec3.h"
+#include "Vec4.h"
+#include "VecN.h"
 #include <type_traits>
 
 static_assert(std::is_standard_layout<Geometry::_Line<Geometry::_Vec3<float>>>::value, "Geometry::_Line is no standard-layout class");

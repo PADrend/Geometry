@@ -7,7 +7,7 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "InterpolationTest.h"
-#include <Geometry/Interpolation.h>
+#include "Interpolation.h"
 CPPUNIT_TEST_SUITE_REGISTRATION(InterpolationTest);
 
 void InterpolationTest::testClamp() {

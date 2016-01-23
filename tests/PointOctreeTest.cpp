@@ -7,8 +7,8 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "PointOctreeTest.h"
-#include <Geometry/Point.h>
-#include <Geometry/PointOctree.h>
+#include "Point.h"
+#include "PointOctree.h"
 #include <cstdint>
 #include <deque>
 #include <random>

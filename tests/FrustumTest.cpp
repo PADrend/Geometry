@@ -7,8 +7,8 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "FrustumTest.h"
-#include <Geometry/Box.h>
-#include <Geometry/Frustum.h>
+#include "Box.h"
+#include "Frustum.h"
 CPPUNIT_TEST_SUITE_REGISTRATION(FrustumTest);
 
 void FrustumTest::testFrustumTest() {

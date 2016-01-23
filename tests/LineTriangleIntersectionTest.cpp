@@ -7,9 +7,9 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "LineTriangleIntersectionTest.h"
-#include <Geometry/Line.h>
-#include <Geometry/LineTriangleIntersection.h>
-#include <Geometry/Triangle.h>
+#include "Line.h"
+#include "LineTriangleIntersection.h"
+#include "Triangle.h"
 #include <limits>
 CPPUNIT_TEST_SUITE_REGISTRATION(LineTriangleIntersectionTest);
 

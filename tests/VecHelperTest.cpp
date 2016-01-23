@@ -7,10 +7,10 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "VecHelperTest.h"
-#include <Geometry/Sphere.h>
-#include <Geometry/Vec2.h>
-#include <Geometry/Vec3.h>
-#include <Geometry/VecHelper.h>
+#include "Sphere.h"
+#include "Vec2.h"
+#include "Vec3.h"
+#include "VecHelper.h"
 #include <cmath>
 #include <limits>
 CPPUNIT_TEST_SUITE_REGISTRATION(VecHelperTest);

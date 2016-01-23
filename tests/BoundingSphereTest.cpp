@@ -7,10 +7,10 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "BoundingSphereTest.h"
-#include <Geometry/BoundingSphere.h>
-#include <Geometry/Box.h>
-#include <Geometry/Sphere.h>
-#include <Geometry/Vec3.h>
+#include "BoundingSphere.h"
+#include "Box.h"
+#include "Sphere.h"
+#include "Vec3.h"
 #include <random>
 
 CPPUNIT_TEST_SUITE_REGISTRATION(BoundingSphereTest);

@@ -8,8 +8,8 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "LineTest.h"
-#include <Geometry/Line.h>
-#include <Geometry/Tools.h>
+#include "Line.h"
+#include "Tools.h"
 CPPUNIT_TEST_SUITE_REGISTRATION(LineTest);
 
 void LineTest::testGetters() {

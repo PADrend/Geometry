@@ -8,10 +8,10 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "TetrahedronTest.h"
-#include <Geometry/Tetrahedron.h>
-#include <Geometry/Matrix3x3.h>
-#include <Geometry/Vec3.h>
-#include <Geometry/Vec4.h>
+#include "Tetrahedron.h"
+#include "Matrix3x3.h"
+#include "Vec3.h"
+#include "Vec4.h"
 #include <iostream>
 #include <random>
 

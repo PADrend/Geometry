@@ -8,8 +8,8 @@
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "PlaneTest.h"
-#include <Geometry/Line.h>
-#include <Geometry/Plane.h>
+#include "Line.h"
+#include "Plane.h"
 #include <sstream>
 #include <cmath>
 CPPUNIT_TEST_SUITE_REGISTRATION(PlaneTest);
