@@ -12,7 +12,9 @@ Package: libgeometry-dev
 Section: libdevel
 Architecture: any
 Depends: libgeometry0 (= ${binary:Version}), ${misc:Depends}
-Description: Library containing geometric objects, data structures, and calculations.
+Description: Geometric objects, data structures, and calculations - development files
+ Library containing geometric objects, data structures, and calculations.
+ .
  The Geometry library has been developed and used mainly in the context 
  of PADrend.
  .
@@ -21,7 +23,9 @@ Description: Library containing geometric objects, data structures, and calculat
 Package: libgeometry0
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Library containing geometric objects, data structures, and calculations.
+Description: Geometric objects, data structures, and calculations - shared library
+ Library containing geometric objects, data structures, and calculations.
+ .
  The Geometry library has been developed and used mainly in the context 
  of PADrend.
  .
