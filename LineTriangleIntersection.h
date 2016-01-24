@@ -1,9 +1,9 @@
 /*
 	This file is part of the Geometry library.
 	Copyright (C) 2013 Benjamin Eikel <benjamin@eikel.org>
-	
+
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
-	You should have received a copy of the MPL along with this library; see the 
+	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #ifndef GEOMETRY_LINETRIANGLEINTERSECTION_H
@@ -21,7 +21,7 @@ namespace Intersection {
  * Based on the article:
  * Tomas Möller, Ben Trumbore: Fast, Minimum Storage Ray-Triangle Intersection.
  * Journal of Graphics Tools 2, 1, pp. 21-28, 1997.
- * 
+ *
  * @tparam value_t Either @c float or @c double
  * @tparam line_t Line type (e.g. _Line, _Ray, _Segment)
  * @param line Line to test
@@ -37,10 +37,8 @@ namespace Intersection {
  * @author Benjamin Eikel
  * @date 2013-02-26
  */
-template<typename value_t, typename line_t>
-bool getLineTriangleIntersection(const line_t & line,
-								 const Triangle<_Vec3<value_t>> & triangle,
-								 value_t & tLine,
+template <typename value_t, typename line_t>
+bool getLineTriangleIntersection(const line_t & line, const Triangle<_Vec3<value_t>> & triangle, value_t & tLine,
 								 value_t & uTri, value_t & vTri) {
 	const auto epsilon = std::numeric_limits<value_t>::epsilon();
 
@@ -56,7 +54,7 @@ bool getLineTriangleIntersection(const line_t & line,
 
 	// If determinant is near zero, line lies in plane of triangle
 	const value_t det = edgeAB.dot(pVec);
-	if(det > -epsilon && det < epsilon) {
+	if (det > -epsilon && det < epsilon) {
 		return false;
 	}
 	const auto invDet = 1.0 / det;
@@ -66,7 +64,7 @@ bool getLineTriangleIntersection(const line_t & line,
 
 	// Calculate u parameter and test bounds
 	const auto u = tVec.dot(pVec) * invDet;
-	if(u < 0.0 || u > 1.0) {
+	if (u < 0.0 || u > 1.0) {
 		return false;
 	}
 
@@ -75,7 +73,7 @@ bool getLineTriangleIntersection(const line_t & line,
 
 	// Calculate v parameter and test bounds
 	const auto v = dir.dot(qVec) * invDet;
-	if(v < 0.0 || u + v > 1.0) {
+	if (v < 0.0 || u + v > 1.0) {
 		return false;
 	}
 
@@ -86,7 +84,6 @@ bool getLineTriangleIntersection(const line_t & line,
 
 	return true;
 }
-
 }
 }
 
