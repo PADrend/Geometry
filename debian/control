@@ -1,0 +1,32 @@
+Source: libgeometry
+Priority: optional
+Maintainer: Benjamin Eikel <debian@eikel.org>
+Build-Depends: debhelper (>= 9), cmake, libcppunit-dev
+Standards-Version: 3.9.6
+Section: libs
+Homepage: https://github.com/PADrend/Geometry
+#Vcs-Git: git://anonscm.debian.org/collab-maint/libgeometry.git
+#Vcs-Browser: https://anonscm.debian.org/gitweb/?p=collab-maint/libgeometry.git;a=summary
+
+Package: libgeometry-dev
+Section: libdevel
+Architecture: any
+Depends: libgeometry0 (= ${binary:Version}), ${misc:Depends}
+Description: Geometric objects, data structures, and calculations - development files
+ Library containing geometric objects, data structures, and calculations.
+ .
+ The Geometry library has been developed and used mainly in the context 
+ of PADrend.
+ .
+ This package contains development files.
+
+Package: libgeometry0
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Geometric objects, data structures, and calculations - shared library
+ Library containing geometric objects, data structures, and calculations.
+ .
+ The Geometry library has been developed and used mainly in the context 
+ of PADrend.
+ .
+ This package contains the Geometry runtime library.

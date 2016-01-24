@@ -3,9 +3,9 @@
 	Copyright (C) 2007-2012 Benjamin Eikel <benjamin@eikel.org>
 	Copyright (C) 2007-2012 Claudius Jähn <claudius@uni-paderborn.de>
 	Copyright (C) 2007-2012 Ralf Petring <ralf@petring.net>
-	
+
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
-	You should have received a copy of the MPL along with this library; see the 
+	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #ifndef GEOMETRY_DEFINITIONS_H
@@ -34,14 +34,7 @@ namespace Geometry {
  @endverbatim
  * @note The mapping to integers must not be changed because some functions depend on it for iteration.
  */
-enum side_t {
-	SIDE_X_NEG = 0,
-	SIDE_Y_NEG = 1,
-	SIDE_Z_NEG = 2,
-	SIDE_X_POS = 3,
-	SIDE_Y_POS = 4,
-	SIDE_Z_POS = 5
-};
+enum side_t { SIDE_X_NEG = 0, SIDE_Y_NEG = 1, SIDE_Z_NEG = 2, SIDE_X_POS = 3, SIDE_Y_POS = 4, SIDE_Z_POS = 5 };
 
 /**
  * Corners of a three-dimensional box.
@@ -85,11 +78,7 @@ enum corner_t {
 };
 
 //! Enumeration for at most three dimensions.
-enum dimension_t {
-	X_DIMENSION = 0,
-	Y_DIMENSION = 1,
-	Z_DIMENSION = 2
-};
+enum dimension_t { X_DIMENSION = 0, Y_DIMENSION = 1, Z_DIMENSION = 2 };
 
 /**
  * Corners of a two-dimensional rect.
@@ -115,13 +104,7 @@ enum dimension_t {
  * 		small letters denote corners in negative side of the rect,
  * 		great letters denote corners in positive side of the rect
  */
-enum rectCorner_t {
-	CORNER_xy = 0,
-	CORNER_Xy = 1,
-	CORNER_xY = 2,
-	CORNER_XY = 3
-};
-
+enum rectCorner_t { CORNER_xy = 0, CORNER_Xy = 1, CORNER_xY = 2, CORNER_XY = 3 };
 }
 
 #endif /* GEOMETRY_DEFINITIONS_H */
