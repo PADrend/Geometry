@@ -1,9 +1,9 @@
 /*
 	This file is part of the Geometry library.
 	Copyright (C) 2013 Benjamin Eikel <benjamin@eikel.org>
-	
+
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
-	You should have received a copy of the MPL along with this library; see the 
+	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "ConvertTest.h"
@@ -12,7 +12,7 @@
 #include <string>
 CPPUNIT_TEST_SUITE_REGISTRATION(ConvertTest);
 
-template<typename signed_t, typename unsigned_t, typename float_t>
+template <typename signed_t, typename unsigned_t, typename float_t>
 static void testNormalConversionForTypes() {
 	using Geometry::Convert;
 
@@ -57,11 +57,11 @@ static void testNormalConversionForTypes() {
 	CPPUNIT_ASSERT_EQUAL(uMax, Convert::toUnsigned<unsigned_t>(one));
 
 	// signed ---> floating ---> signed
-	for(signed_t n = sMax; n > sMin; --n) {
+	for (signed_t n = sMax; n > sMin; --n) {
 		CPPUNIT_ASSERT_EQUAL(n, Convert::toSigned<signed_t>(Convert::fromSignedTo<float_t>(n)));
 	}
 	// unsigned ---> floating ---> unsigned
-	for(unsigned_t n = uMin; n < uMax; ++n) {
+	for (unsigned_t n = uMin; n < uMax; ++n) {
 		CPPUNIT_ASSERT_EQUAL(n, Convert::toUnsigned<unsigned_t>(Convert::fromUnsignedTo<float_t>(n)));
 	}
 }
