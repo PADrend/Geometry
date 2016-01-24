@@ -1,9 +1,9 @@
 /*
 	This file is part of the Geometry library.
 	Copyright (C) 2012-2013 Benjamin Eikel <benjamin@eikel.org>
-	
+
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
-	You should have received a copy of the MPL along with this library; see the 
+	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "BoundingSphereTest.h"
@@ -27,59 +27,59 @@ void BoundingSphereTest::testRandomPoints() {
 	std::vector<Vec3f> points;
 	points.reserve(count);
 
-	for(unsigned int seed = 0; seed < 10; ++seed) {
+	for (unsigned int seed = 0; seed < 10; ++seed) {
 		std::default_random_engine engine(seed);
 
 		points.clear();
-		for(unsigned int i = 0; i < count; ++i) {
+		for (unsigned int i = 0; i < count; ++i) {
 			points.emplace_back(coordinateDist(engine), coordinateDist(engine), coordinateDist(engine));
 		}
 
 		{
 			Box boundingBox;
 			boundingBox.invalidate();
-			for(const auto & point : points) {
+			for (const auto & point : points) {
 				boundingBox.include(point);
 			}
 
 			const Sphere_f boundingSphere(boundingBox.getCenter(), boundingBox.getBoundingSphereRadius());
 			CPPUNIT_ASSERT(boundingSphere.getRadius() < maxRadius);
-			for(const auto & point : points) {
+			for (const auto & point : points) {
 				CPPUNIT_ASSERT(boundingSphere.distance(point) < epsilon);
 			}
 		}
 		{
 			const Sphere_f boundingSphere = BoundingSphere::computeMiniball(points);
 			CPPUNIT_ASSERT(boundingSphere.getRadius() < maxRadius);
-			for(const auto & point : points) {
+			for (const auto & point : points) {
 				CPPUNIT_ASSERT(boundingSphere.distance(point) < epsilon);
 			}
 		}
 		{
 			const Sphere_f boundingSphere = BoundingSphere::computeEPOS6(points);
 			CPPUNIT_ASSERT(boundingSphere.getRadius() < 1.2f * maxRadius);
-			for(const auto & point : points) {
+			for (const auto & point : points) {
 				CPPUNIT_ASSERT(boundingSphere.distance(point) < epsilon);
 			}
 		}
 		{
 			const Sphere_f boundingSphere = BoundingSphere::computeEPOS14(points);
 			CPPUNIT_ASSERT(boundingSphere.getRadius() < maxRadius);
-			for(const auto & point : points) {
+			for (const auto & point : points) {
 				CPPUNIT_ASSERT(boundingSphere.distance(point) < epsilon);
 			}
 		}
 		{
 			const Sphere_f boundingSphere = BoundingSphere::computeEPOS26(points);
 			CPPUNIT_ASSERT(boundingSphere.getRadius() < maxRadius);
-			for(const auto & point : points) {
+			for (const auto & point : points) {
 				CPPUNIT_ASSERT(boundingSphere.distance(point) < epsilon);
 			}
 		}
 		{
 			const Sphere_f boundingSphere = BoundingSphere::computeEPOS98(points);
 			CPPUNIT_ASSERT(boundingSphere.getRadius() < maxRadius);
-			for(const auto & point : points) {
+			for (const auto & point : points) {
 				CPPUNIT_ASSERT(boundingSphere.distance(point) < epsilon);
 			}
 		}
@@ -102,13 +102,14 @@ void BoundingSphereTest::testRandomSpheres() {
 	std::vector<Vec3f> points;
 	points.reserve(count);
 
-	for(unsigned int seed = 0; seed < 10000; ++seed) {
+	for (unsigned int seed = 0; seed < 10000; ++seed) {
 		std::default_random_engine engine(seed);
 
-		const Sphere_f randomSphere(Vec3f(coordinateDist(engine), coordinateDist(engine), coordinateDist(engine)), radiusDist(engine));
+		const Sphere_f randomSphere(Vec3f(coordinateDist(engine), coordinateDist(engine), coordinateDist(engine)),
+									radiusDist(engine));
 
 		points.clear();
-		for(unsigned int i = 0; i < count; ++i) {
+		for (unsigned int i = 0; i < count; ++i) {
 			// Generate points on the sphere surface
 			points.emplace_back(randomSphere.calcCartesianCoordinate(inclinationDist(engine), azimuthDist(engine)));
 		}

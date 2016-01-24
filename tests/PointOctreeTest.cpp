@@ -1,9 +1,9 @@
 /*
 	This file is part of the Geometry library.
 	Copyright (C) 2011-2012 Benjamin Eikel <benjamin@eikel.org>
-	
+
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
-	You should have received a copy of the MPL along with this library; see the 
+	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "PointOctreeTest.h"
@@ -16,9 +16,8 @@ CPPUNIT_TEST_SUITE_REGISTRATION(PointOctreeTest);
 
 struct CharPoint : public Geometry::Point<Geometry::Vec3f> {
 	char data;
-	
-	CharPoint(const Geometry::Vec3f & pos, char character) :
-			Geometry::Point<Geometry::Vec3f>(pos), data(character) {
+
+	CharPoint(const Geometry::Vec3f & pos, char character) : Geometry::Point<Geometry::Vec3f>(pos), data(character) {
 	}
 };
 
@@ -62,12 +61,14 @@ void PointOctreeTest::test() {
 			const float distance = std::sqrt(0.03f);
 			{
 				std::deque<CharPoint> points;
-				octree.collectPointsWithinSphere(Sphere_f(Vec3f(-0.5f, -0.5f, -0.5f), distance - std::numeric_limits<float>::epsilon()), points);
+				octree.collectPointsWithinSphere(
+						Sphere_f(Vec3f(-0.5f, -0.5f, -0.5f), distance - std::numeric_limits<float>::epsilon()), points);
 				CPPUNIT_ASSERT(points.empty());
 			}
 			{
 				std::deque<CharPoint> points;
-				octree.collectPointsWithinSphere(Sphere_f(Vec3f(-0.5f, -0.5f, -0.5f), distance + std::numeric_limits<float>::epsilon()), points);
+				octree.collectPointsWithinSphere(
+						Sphere_f(Vec3f(-0.5f, -0.5f, -0.5f), distance + std::numeric_limits<float>::epsilon()), points);
 				CPPUNIT_ASSERT_EQUAL(static_cast<std::size_t>(8), points.size());
 			}
 		}
