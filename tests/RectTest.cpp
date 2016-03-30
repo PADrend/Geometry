@@ -12,7 +12,7 @@
 #include <stdint.h>
 CPPUNIT_TEST_SUITE_REGISTRATION(RectTest);
 
-typedef Geometry::_Rect<int32_t> IntRect;
+using IntRect = Geometry::_Rect<int32_t>;
 
 void RectTest::testConstructors() {
 	CPPUNIT_ASSERT(IntRect() == IntRect(0, 0, 0, 0));
