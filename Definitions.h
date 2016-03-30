@@ -34,7 +34,7 @@ namespace Geometry {
  @endverbatim
  * @note The mapping to integers must not be changed because some functions depend on it for iteration.
  */
-enum side_t { SIDE_X_NEG = 0, SIDE_Y_NEG = 1, SIDE_Z_NEG = 2, SIDE_X_POS = 3, SIDE_Y_POS = 4, SIDE_Z_POS = 5 };
+enum class side_t { X_NEG = 0, Y_NEG = 1, Z_NEG = 2, X_POS = 3, Y_POS = 4, Z_POS = 5 };
 
 /**
  * Corners of a three-dimensional box.

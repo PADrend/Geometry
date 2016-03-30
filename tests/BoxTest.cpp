@@ -177,12 +177,12 @@ void BoxTest::testMisc() {
 	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::CORNER_xYZ) == Geometry::CORNER_Xyz);
 	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::CORNER_XYZ) == Geometry::CORNER_xyz);
 
-	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::SIDE_X_NEG) == Geometry::Vec3(-1.0f, 0.0f, 0.0f));
-	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::SIDE_X_POS) == Geometry::Vec3(1.0f, 0.0f, 0.0f));
-	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::SIDE_Y_NEG) == Geometry::Vec3(0.0f, -1.0f, 0.0f));
-	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::SIDE_Y_POS) == Geometry::Vec3(0.0f, 1.0f, 0.0f));
-	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::SIDE_Z_NEG) == Geometry::Vec3(0.0f, 0.0f, -1.0f));
-	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::SIDE_Z_POS) == Geometry::Vec3(0.0f, 0.0f, 1.0f));
+	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::side_t::X_NEG) == Geometry::Vec3(-1.0f, 0.0f, 0.0f));
+	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::side_t::X_POS) == Geometry::Vec3(1.0f, 0.0f, 0.0f));
+	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::side_t::Y_NEG) == Geometry::Vec3(0.0f, -1.0f, 0.0f));
+	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::side_t::Y_POS) == Geometry::Vec3(0.0f, 1.0f, 0.0f));
+	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::side_t::Z_NEG) == Geometry::Vec3(0.0f, 0.0f, -1.0f));
+	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::side_t::Z_POS) == Geometry::Vec3(0.0f, 0.0f, 1.0f));
 
 	for (uint_fast8_t s = 0; s < 6; ++s) {
 		const Geometry::side_t side = static_cast<const Geometry::side_t>(s);

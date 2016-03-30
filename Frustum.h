@@ -85,9 +85,7 @@ public:
 	bool operator==(const Frustum & other) const;
 
 	const Plane & getPlane(side_t side) const {
-		if (side > 5)
-			throw std::out_of_range("Frustum:getPlane(...)");
-		return planes[side];
+		return planes[static_cast<std::size_t>(side)];
 	}
 	//@}
 

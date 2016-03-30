@@ -60,7 +60,7 @@ const corner_t * getCornerIndices(const side_t side) {
 			{CORNER_XYz, CORNER_xYz, CORNER_xYZ, CORNER_XYZ}, // top
 			{CORNER_xyZ, CORNER_XyZ, CORNER_XYZ, CORNER_xYZ} // front
 	};
-	return corners[side];
+	return corners[static_cast<std::size_t>(side)];
 }
 
 const Vec3f & getNormal(const side_t side) {
@@ -72,7 +72,7 @@ const Vec3f & getNormal(const side_t side) {
 			Vec3f(0, 1, 0), // top
 			Vec3f(0, 0, 1) // front
 	};
-	return normals[side];
+	return normals[static_cast<std::size_t>(side)];
 }
 
 std::vector<Box_f> splitUpBox(const Box_f & box, unsigned int partsX, unsigned int partsY, unsigned int partsZ) {
