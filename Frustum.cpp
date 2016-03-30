@@ -142,7 +142,7 @@ Frustum::intersection_t Frustum::isBoxInFrustum(const Box & b) const {
 	for (uint_fast8_t plane = 0; plane < 6; ++plane) {
 		const Vec3 nVec = b.getCorner(negCorner[plane]);
 		if (planes[plane].planeTest(nVec) > 0) {
-			return Frustum::OUTSIDE;
+			return intersection_t::OUTSIDE;
 		}
 
 		const Vec3 pVec = b.getCorner(posCorner[plane]);
@@ -151,9 +151,9 @@ Frustum::intersection_t Frustum::isBoxInFrustum(const Box & b) const {
 		}
 	}
 	if (intersect) {
-		return Frustum::INTERSECT;
+		return intersection_t::INTERSECT;
 	} else {
-		return Frustum::INSIDE;
+		return intersection_t::INSIDE;
 	}
 }
 

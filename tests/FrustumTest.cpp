@@ -25,44 +25,44 @@ void FrustumTest::testFrustumTest() {
 	//       (-1, *, 1)   (1, *, 1)
 
 	// Box tests from left to right.
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::OUTSIDE,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::OUTSIDE ==
 						 frustum.isBoxInFrustum(Geometry::Box(-9.5f, -7.5f, -1.0f, 1.0f, 5.0f, 7.0f)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::INTERSECT,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::INTERSECT ==
 						 frustum.isBoxInFrustum(Geometry::Box(-7.0f, -5.0f, -1.0f, 1.0f, 5.0f, 7.0f)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::INSIDE,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::INSIDE ==
 						 frustum.isBoxInFrustum(Geometry::Box(-4.5f, -2.5f, -1.0f, 1.0f, 5.0f, 7.0f)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::INSIDE,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::INSIDE ==
 						 frustum.isBoxInFrustum(Geometry::Box(2.5f, 4.5f, -1.0f, 1.0f, 5.0f, 7.0f)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::INTERSECT,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::INTERSECT ==
 						 frustum.isBoxInFrustum(Geometry::Box(5.0f, 7.0f, -1.0f, 1.0f, 5.0f, 7.0f)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::OUTSIDE,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::OUTSIDE ==
 						 frustum.isBoxInFrustum(Geometry::Box(7.5f, 9.5f, -1.0f, 1.0f, 5.0f, 7.0f)));
 
 	// Box tests from bottom to top.
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::OUTSIDE,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::OUTSIDE ==
 						 frustum.isBoxInFrustum(Geometry::Box(-1.0f, 1.0f, -9.5f, -7.5f, 5.0f, 7.0f)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::INTERSECT,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::INTERSECT ==
 						 frustum.isBoxInFrustum(Geometry::Box(-1.0f, 1.0f, -7.0f, -5.0f, 5.0f, 7.0f)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::INSIDE,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::INSIDE ==
 						 frustum.isBoxInFrustum(Geometry::Box(-1.0f, 1.0f, -4.5f, -2.5f, 5.0f, 7.0f)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::INSIDE,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::INSIDE ==
 						 frustum.isBoxInFrustum(Geometry::Box(-1.0f, 1.0f, 2.5f, 4.5f, 5.0f, 7.0f)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::INTERSECT,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::INTERSECT ==
 						 frustum.isBoxInFrustum(Geometry::Box(-1.0f, 1.0f, 5.0f, 7.0f, 5.0f, 7.0f)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::OUTSIDE,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::OUTSIDE ==
 						 frustum.isBoxInFrustum(Geometry::Box(-1.0f, 1.0f, 7.5f, 9.5f, 5.0f, 7.0f)));
 
 	// Box test from front to back.
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::OUTSIDE,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::OUTSIDE ==
 						 frustum.isBoxInFrustum(Geometry::Box(-1.0f, 1.0f, -1.0f, 1.0f, -0.5f, 0.5f)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::INTERSECT,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::INTERSECT ==
 						 frustum.isBoxInFrustum(Geometry::Box(-1.0f, 1.0f, -1.0f, 1.0f, 0.5f, 1.5f)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::INSIDE,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::INSIDE ==
 						 frustum.isBoxInFrustum(Geometry::Box(-1.0f, 1.0f, -1.0f, 1.0f, 1.5f, 2.5f)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::INSIDE,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::INSIDE ==
 						 frustum.isBoxInFrustum(Geometry::Box(-1.0f, 1.0f, -1.0f, 1.0f, 8.5f, 9.5f)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::INTERSECT,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::INTERSECT ==
 						 frustum.isBoxInFrustum(Geometry::Box(-1.0f, 1.0f, -1.0f, 1.0f, 9.5f, 10.5f)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Frustum::OUTSIDE,
+	CPPUNIT_ASSERT(Geometry::Frustum::intersection_t::OUTSIDE ==
 						 frustum.isBoxInFrustum(Geometry::Box(-1.0f, 1.0f, -1.0f, 1.0f, 10.5f, 11.5f)));
 }

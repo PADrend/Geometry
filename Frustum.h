@@ -42,7 +42,7 @@ public:
 	 * @name Information
 	 */
 	//@{
-	enum intersection_t { INSIDE = 0, INTERSECT = 1, OUTSIDE = 2 };
+	enum class intersection_t { INSIDE = 0, INTERSECT = 1, OUTSIDE = 2 };
 
 	const Vec3 & getPos() const {
 		return orientation.getTranslation();
