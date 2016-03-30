@@ -78,7 +78,7 @@ enum class corner_t {
 };
 
 //! Enumeration for at most three dimensions.
-enum dimension_t { X_DIMENSION = 0, Y_DIMENSION = 1, Z_DIMENSION = 2 };
+enum class dimension_t { X = 0, Y = 1, Z = 2 };
 
 /**
  * Corners of a two-dimensional rect.

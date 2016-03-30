@@ -40,28 +40,28 @@ void BoxTest::testGetters() {
 	const Geometry::Box b2;
 
 	CPPUNIT_ASSERT(b1.getMaxX() == 1.0f);
-	CPPUNIT_ASSERT(b1.getMax(Geometry::X_DIMENSION) == 1.0f);
+	CPPUNIT_ASSERT(b1.getMax(Geometry::dimension_t::X) == 1.0f);
 	CPPUNIT_ASSERT(b1.getMaxY() == 2.0f);
-	CPPUNIT_ASSERT(b1.getMax(Geometry::Y_DIMENSION) == 2.0f);
+	CPPUNIT_ASSERT(b1.getMax(Geometry::dimension_t::Y) == 2.0f);
 	CPPUNIT_ASSERT(b1.getMaxZ() == 3.0f);
-	CPPUNIT_ASSERT(b1.getMax(Geometry::Z_DIMENSION) == 3.0f);
+	CPPUNIT_ASSERT(b1.getMax(Geometry::dimension_t::Z) == 3.0f);
 
 	CPPUNIT_ASSERT(b1.getMinX() == -1.0f);
-	CPPUNIT_ASSERT(b1.getMin(Geometry::X_DIMENSION) == -1.0f);
+	CPPUNIT_ASSERT(b1.getMin(Geometry::dimension_t::X) == -1.0f);
 	CPPUNIT_ASSERT(b1.getMinY() == -2.0f);
-	CPPUNIT_ASSERT(b1.getMin(Geometry::Y_DIMENSION) == -2.0f);
+	CPPUNIT_ASSERT(b1.getMin(Geometry::dimension_t::Y) == -2.0f);
 	CPPUNIT_ASSERT(b1.getMinZ() == -3.0f);
-	CPPUNIT_ASSERT(b1.getMin(Geometry::Z_DIMENSION) == -3.0f);
+	CPPUNIT_ASSERT(b1.getMin(Geometry::dimension_t::Z) == -3.0f);
 
 	CPPUNIT_ASSERT(b1.getExtentMax() == 6.0f);
 	CPPUNIT_ASSERT(b1.getExtentMin() == 2.0f);
 
 	CPPUNIT_ASSERT(b1.getExtentX() == 2.0f);
-	CPPUNIT_ASSERT(b1.getExtent(Geometry::X_DIMENSION) == 2.0f);
+	CPPUNIT_ASSERT(b1.getExtent(Geometry::dimension_t::X) == 2.0f);
 	CPPUNIT_ASSERT(b1.getExtentY() == 4.0f);
-	CPPUNIT_ASSERT(b1.getExtent(Geometry::Y_DIMENSION) == 4.0f);
+	CPPUNIT_ASSERT(b1.getExtent(Geometry::dimension_t::Y) == 4.0f);
 	CPPUNIT_ASSERT(b1.getExtentZ() == 6.0f);
-	CPPUNIT_ASSERT(b1.getExtent(Geometry::Z_DIMENSION) == 6.0f);
+	CPPUNIT_ASSERT(b1.getExtent(Geometry::dimension_t::Z) == 6.0f);
 
 	CPPUNIT_ASSERT(b1.getVolume() == 48.0f);
 	CPPUNIT_ASSERT(b1.getSurfaceArea() == 88.0f);
@@ -82,12 +82,12 @@ void BoxTest::testSetters() {
 	b2.setMaxZ(3.0f);
 	CPPUNIT_ASSERT(b2 == b1);
 
-	b2.setMin(Geometry::X_DIMENSION, -1.0f);
-	b2.setMax(Geometry::X_DIMENSION, 1.0f);
-	b2.setMin(Geometry::Y_DIMENSION, -2.0f);
-	b2.setMax(Geometry::Y_DIMENSION, 2.0f);
-	b2.setMin(Geometry::Z_DIMENSION, -3.0f);
-	b2.setMax(Geometry::Z_DIMENSION, 3.0f);
+	b2.setMin(Geometry::dimension_t::X, -1.0f);
+	b2.setMax(Geometry::dimension_t::X, 1.0f);
+	b2.setMin(Geometry::dimension_t::Y, -2.0f);
+	b2.setMax(Geometry::dimension_t::Y, 2.0f);
+	b2.setMin(Geometry::dimension_t::Z, -3.0f);
+	b2.setMax(Geometry::dimension_t::Z, 3.0f);
 	CPPUNIT_ASSERT(b2 == b1);
 
 	b2.set(-1.0f, 1.0f, -2.0f, 2.0f, -3.0f, 3.0f);

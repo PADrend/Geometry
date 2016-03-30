@@ -249,8 +249,8 @@ typedef _Box<float> Box;
 // ---- Information
 template <typename value_t>
 inline void _Box<value_t>::assertCorrectDimension(dimension_t dim) const {
-	if (static_cast<unsigned int>(dim) > 2) {
-		throw std::invalid_argument("Parameter \"dim\" has to be DIMENSION_X/Y/Z");
+	if ((dimension_t::X != dim) && (dimension_t::Y != dim) && (dimension_t::Z != dim)) {
+		throw std::invalid_argument("Parameter \"dim\" has to be dimension_t::X/Y/Z");
 	}
 }
 
@@ -269,11 +269,11 @@ inline value_t _Box<value_t>::getMin(dimension_t dim) const {
 template <typename value_t>
 inline value_t _Box<value_t>::getExtent(dimension_t dim) const {
 	switch (dim) {
-		case X_DIMENSION:
+		case dimension_t::X:
 			return getExtentX();
-		case Y_DIMENSION:
+		case dimension_t::Y:
 			return getExtentY();
-		case Z_DIMENSION:
+		case dimension_t::Z:
 			return getExtentZ();
 		default:
 			assertCorrectDimension(dim);
