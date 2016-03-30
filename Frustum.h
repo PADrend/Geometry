@@ -138,7 +138,7 @@ inline bool Frustum::pointInFrustum(const Vec3 & p) const {
 			&& planes[3].planeTest(p) >= 0 && planes[4].planeTest(p) >= 0 && planes[5].planeTest(p) >= 0;
 }
 inline Vec3 Frustum::operator[](corner_t nr) const {
-	return corners[nr];
+	return corners[static_cast<std::size_t>(nr)];
 }
 }
 

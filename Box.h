@@ -119,7 +119,7 @@ public:
 	inline value_t getVolume() const;
 	inline value_t getSurfaceArea() const;
 
-	inline vec3_t getCorner(const corner_t nr) const;
+	inline vec3_t getCorner(const corner_t corner) const;
 	/**
 	 * Retrieve the corner index which does not share any side with the given corner index.
 	 *
@@ -127,7 +127,7 @@ public:
 	 * @return Index of the corner that is on the other end of the box's diagonal starting at the given corner.
 	 */
 	static corner_t getOppositeCorner(const corner_t corner) {
-		return static_cast<corner_t>(corner ^ 7);
+		return static_cast<corner_t>(static_cast<std::size_t>(corner) ^ 7);
 	}
 	/*
 	 * calculates the corner of this box which is in the same octant as the given vector
@@ -312,7 +312,8 @@ inline value_t _Box<value_t>::getSurfaceArea() const {
 }
 
 template <typename value_t>
-inline _Vec3<value_t> _Box<value_t>::getCorner(corner_t nr) const {
+inline _Vec3<value_t> _Box<value_t>::getCorner(const corner_t corner) const {
+	const std::size_t nr = static_cast<std::size_t>(corner);
 	return vec3_t((nr & 1) ? max.getX() : min.getX(), (nr & 2) ? max.getY() : min.getY(),
 				  (nr & 4) ? max.getZ() : min.getZ());
 }

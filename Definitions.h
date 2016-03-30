@@ -66,15 +66,15 @@ enum class side_t { X_NEG = 0, Y_NEG = 1, Z_NEG = 2, X_POS = 3, Y_POS = 4, Z_POS
  * 		small letters denote corners in negative side of the cube,
  * 		great letters denote corners in positive side of the cube
  */
-enum corner_t {
-	CORNER_xyz = 0,
-	CORNER_Xyz = 1,
-	CORNER_xYz = 2,
-	CORNER_XYz = 3,
-	CORNER_xyZ = 4,
-	CORNER_XyZ = 5,
-	CORNER_xYZ = 6,
-	CORNER_XYZ = 7
+enum class corner_t {
+	xyz = 0,
+	Xyz = 1,
+	xYz = 2,
+	XYz = 3,
+	xyZ = 4,
+	XyZ = 5,
+	xYZ = 6,
+	XYZ = 7
 };
 
 //! Enumeration for at most three dimensions.
