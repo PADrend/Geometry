@@ -12,6 +12,7 @@
 #include "Box.h"
 #include "Line.h"
 #include "Vec3.h"
+#include <cstdint>
 
 namespace Geometry {
 namespace Intersection {
@@ -48,7 +49,7 @@ private:
 	* Classification of the sign of the direction components (M = minus,
 	* P = plus, O = zero).
 	*/
-	enum SlopeClassification {
+	enum class SlopeClassification : std::uint8_t {
 		MMM,
 		MMP,
 		MPM,

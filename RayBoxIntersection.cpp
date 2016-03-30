@@ -38,77 +38,77 @@ Slope<value_t>::Slope(const ray_t & p_ray)
 	if (dir.getX() < 0) {
 		if (dir.getY() < 0) {
 			if (dir.getZ() < 0) {
-				classification = MMM;
+				classification = SlopeClassification::MMM;
 			} else if (dir.getZ() > 0) {
-				classification = MMP;
+				classification = SlopeClassification::MMP;
 			} else { //(dir.getZ() == 0)
-				classification = MMO;
+				classification = SlopeClassification::MMO;
 			}
 		} else { //(dir.getY() >= 0)
 			if (dir.getZ() < 0) {
-				classification = MPM;
+				classification = SlopeClassification::MPM;
 				if (dir.getY() == 0) {
-					classification = MOM;
+					classification = SlopeClassification::MOM;
 				}
 			} else { //(dir.getZ() >= 0)
 				if ((dir.getY() == 0) && (dir.getZ() == 0)) {
-					classification = MOO;
+					classification = SlopeClassification::MOO;
 				} else if (dir.getZ() == 0) {
-					classification = MPO;
+					classification = SlopeClassification::MPO;
 				} else if (dir.getY() == 0) {
-					classification = MOP;
+					classification = SlopeClassification::MOP;
 				} else {
-					classification = MPP;
+					classification = SlopeClassification::MPP;
 				}
 			}
 		}
 	} else { //(dir.getX() >= 0)
 		if (dir.getY() < 0) {
 			if (dir.getZ() < 0) {
-				classification = PMM;
+				classification = SlopeClassification::PMM;
 				if (dir.getX() == 0) {
-					classification = OMM;
+					classification = SlopeClassification::OMM;
 				}
 			} else { //(dir.getZ() >= 0)
 				if ((dir.getX() == 0) && (dir.getZ() == 0)) {
-					classification = OMO;
+					classification = SlopeClassification::OMO;
 				} else if (dir.getZ() == 0) {
-					classification = PMO;
+					classification = SlopeClassification::PMO;
 				} else if (dir.getX() == 0) {
-					classification = OMP;
+					classification = SlopeClassification::OMP;
 				} else {
-					classification = PMP;
+					classification = SlopeClassification::PMP;
 				}
 			}
 		} else { //(dir.getY() >= 0)
 			if (dir.getZ() < 0) {
 				if ((dir.getX() == 0) && (dir.getY() == 0)) {
-					classification = OOM;
+					classification = SlopeClassification::OOM;
 				} else if (dir.getX() == 0) {
-					classification = OPM;
+					classification = SlopeClassification::OPM;
 				} else if (dir.getY() == 0) {
-					classification = POM;
+					classification = SlopeClassification::POM;
 				} else {
-					classification = PPM;
+					classification = SlopeClassification::PPM;
 				}
 			} else { //(dir.getZ() > 0)
 				if (dir.getX() == 0) {
 					if (dir.getY() == 0) {
-						classification = OOP;
+						classification = SlopeClassification::OOP;
 					} else if (dir.getZ() == 0) {
-						classification = OPO;
+						classification = SlopeClassification::OPO;
 					} else {
-						classification = OPP;
+						classification = SlopeClassification::OPP;
 					}
 				} else {
 					if ((dir.getY() == 0) && (dir.getZ() == 0)) {
-						classification = POO;
+						classification = SlopeClassification::POO;
 					} else if (dir.getY() == 0) {
-						classification = POP;
+						classification = SlopeClassification::POP;
 					} else if (dir.getZ() == 0) {
-						classification = PPO;
+						classification = SlopeClassification::PPO;
 					} else {
-						classification = PPP;
+						classification = SlopeClassification::PPP;
 					}
 				}
 			}
@@ -120,7 +120,7 @@ template <typename value_t>
 bool Slope<value_t>::isRayIntersectingBox(const box_t & box) const {
 	const auto & ori = ray.getOrigin();
 	switch (classification) {
-		case MMM:
+		case SlopeClassification::MMM:
 			return !((ori.getX() < box.getMinX()) || (ori.getY() < box.getMinY()) || (ori.getZ() < box.getMinZ())
 					 || (yByX * box.getMinX() - box.getMaxY() + c_xy > 0)
 					 || (xByY * box.getMinY() - box.getMaxX() + c_yx > 0)
@@ -128,7 +128,7 @@ bool Slope<value_t>::isRayIntersectingBox(const box_t & box) const {
 					 || (zByY * box.getMinY() - box.getMaxZ() + c_yz > 0)
 					 || (zByX * box.getMinX() - box.getMaxZ() + c_xz > 0)
 					 || (xByZ * box.getMinZ() - box.getMaxX() + c_zx > 0));
-		case MMP:
+		case SlopeClassification::MMP:
 			return !((ori.getX() < box.getMinX()) || (ori.getY() < box.getMinY()) || (ori.getZ() > box.getMaxZ())
 					 || (yByX * box.getMinX() - box.getMaxY() + c_xy > 0)
 					 || (xByY * box.getMinY() - box.getMaxX() + c_yx > 0)
@@ -136,7 +136,7 @@ bool Slope<value_t>::isRayIntersectingBox(const box_t & box) const {
 					 || (zByY * box.getMinY() - box.getMinZ() + c_yz < 0)
 					 || (zByX * box.getMinX() - box.getMinZ() + c_xz < 0)
 					 || (xByZ * box.getMaxZ() - box.getMaxX() + c_zx > 0));
-		case MPM:
+		case SlopeClassification::MPM:
 			return !((ori.getX() < box.getMinX()) || (ori.getY() > box.getMaxY()) || (ori.getZ() < box.getMinZ())
 					 || (yByX * box.getMinX() - box.getMinY() + c_xy < 0)
 					 || (xByY * box.getMaxY() - box.getMaxX() + c_yx > 0)
@@ -144,7 +144,7 @@ bool Slope<value_t>::isRayIntersectingBox(const box_t & box) const {
 					 || (zByY * box.getMaxY() - box.getMaxZ() + c_yz > 0)
 					 || (zByX * box.getMinX() - box.getMaxZ() + c_xz > 0)
 					 || (xByZ * box.getMinZ() - box.getMaxX() + c_zx > 0));
-		case MPP:
+		case SlopeClassification::MPP:
 			return !((ori.getX() < box.getMinX()) || (ori.getY() > box.getMaxY()) || (ori.getZ() > box.getMaxZ())
 					 || (yByX * box.getMinX() - box.getMinY() + c_xy < 0)
 					 || (xByY * box.getMaxY() - box.getMaxX() + c_yx > 0)
@@ -152,7 +152,7 @@ bool Slope<value_t>::isRayIntersectingBox(const box_t & box) const {
 					 || (zByY * box.getMaxY() - box.getMinZ() + c_yz < 0)
 					 || (zByX * box.getMinX() - box.getMinZ() + c_xz < 0)
 					 || (xByZ * box.getMaxZ() - box.getMaxX() + c_zx > 0));
-		case PMM:
+		case SlopeClassification::PMM:
 			return !((ori.getX() > box.getMaxX()) || (ori.getY() < box.getMinY()) || (ori.getZ() < box.getMinZ())
 					 || (yByX * box.getMaxX() - box.getMaxY() + c_xy > 0)
 					 || (xByY * box.getMinY() - box.getMinX() + c_yx < 0)
@@ -160,7 +160,7 @@ bool Slope<value_t>::isRayIntersectingBox(const box_t & box) const {
 					 || (zByY * box.getMinY() - box.getMaxZ() + c_yz > 0)
 					 || (zByX * box.getMaxX() - box.getMaxZ() + c_xz > 0)
 					 || (xByZ * box.getMinZ() - box.getMinX() + c_zx < 0));
-		case PMP:
+		case SlopeClassification::PMP:
 			return !((ori.getX() > box.getMaxX()) || (ori.getY() < box.getMinY()) || (ori.getZ() > box.getMaxZ())
 					 || (yByX * box.getMaxX() - box.getMaxY() + c_xy > 0)
 					 || (xByY * box.getMinY() - box.getMinX() + c_yx < 0)
@@ -168,7 +168,7 @@ bool Slope<value_t>::isRayIntersectingBox(const box_t & box) const {
 					 || (zByY * box.getMinY() - box.getMinZ() + c_yz < 0)
 					 || (zByX * box.getMaxX() - box.getMinZ() + c_xz < 0)
 					 || (xByZ * box.getMaxZ() - box.getMinX() + c_zx < 0));
-		case PPM:
+		case SlopeClassification::PPM:
 			return !((ori.getX() > box.getMaxX()) || (ori.getY() > box.getMaxY()) || (ori.getZ() < box.getMinZ())
 					 || (yByX * box.getMaxX() - box.getMinY() + c_xy < 0)
 					 || (xByY * box.getMaxY() - box.getMinX() + c_yx < 0)
@@ -176,7 +176,7 @@ bool Slope<value_t>::isRayIntersectingBox(const box_t & box) const {
 					 || (zByY * box.getMaxY() - box.getMaxZ() + c_yz > 0)
 					 || (zByX * box.getMaxX() - box.getMaxZ() + c_xz > 0)
 					 || (xByZ * box.getMinZ() - box.getMinX() + c_zx < 0));
-		case PPP:
+		case SlopeClassification::PPP:
 			return !((ori.getX() > box.getMaxX()) || (ori.getY() > box.getMaxY()) || (ori.getZ() > box.getMaxZ())
 					 || (yByX * box.getMaxX() - box.getMinY() + c_xy < 0)
 					 || (xByY * box.getMaxY() - box.getMinX() + c_yx < 0)
@@ -184,72 +184,72 @@ bool Slope<value_t>::isRayIntersectingBox(const box_t & box) const {
 					 || (zByY * box.getMaxY() - box.getMinZ() + c_yz < 0)
 					 || (zByX * box.getMaxX() - box.getMinZ() + c_xz < 0)
 					 || (xByZ * box.getMaxZ() - box.getMinX() + c_zx < 0));
-		case OMM:
+		case SlopeClassification::OMM:
 			return !((ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX()) || (ori.getY() < box.getMinY())
 					 || (ori.getZ() < box.getMinZ()) || (yByZ * box.getMinZ() - box.getMaxY() + c_zy > 0)
 					 || (zByY * box.getMinY() - box.getMaxZ() + c_yz > 0));
-		case OMP:
+		case SlopeClassification::OMP:
 			return !((ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX()) || (ori.getY() < box.getMinY())
 					 || (ori.getZ() > box.getMaxZ()) || (yByZ * box.getMaxZ() - box.getMaxY() + c_zy > 0)
 					 || (zByY * box.getMinY() - box.getMinZ() + c_yz < 0));
-		case OPM:
+		case SlopeClassification::OPM:
 			return !((ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX()) || (ori.getY() > box.getMaxY())
 					 || (ori.getZ() < box.getMinZ()) || (yByZ * box.getMinZ() - box.getMinY() + c_zy < 0)
 					 || (zByY * box.getMaxY() - box.getMaxZ() + c_yz > 0));
-		case OPP:
+		case SlopeClassification::OPP:
 			return !((ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX()) || (ori.getY() > box.getMaxY())
 					 || (ori.getZ() > box.getMaxZ()) || (yByZ * box.getMaxZ() - box.getMinY() + c_zy < 0)
 					 || (zByY * box.getMaxY() - box.getMinZ() + c_yz < 0));
-		case MOM:
+		case SlopeClassification::MOM:
 			return !((ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY()) || (ori.getX() < box.getMinX())
 					 || (ori.getZ() < box.getMinZ()) || (zByX * box.getMinX() - box.getMaxZ() + c_xz > 0)
 					 || (xByZ * box.getMinZ() - box.getMaxX() + c_zx > 0));
-		case MOP:
+		case SlopeClassification::MOP:
 			return !((ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY()) || (ori.getX() < box.getMinX())
 					 || (ori.getZ() > box.getMaxZ()) || (zByX * box.getMinX() - box.getMinZ() + c_xz < 0)
 					 || (xByZ * box.getMaxZ() - box.getMaxX() + c_zx > 0));
-		case POM:
+		case SlopeClassification::POM:
 			return !((ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY()) || (ori.getX() > box.getMaxX())
 					 || (ori.getZ() < box.getMinZ()) || (zByX * box.getMaxX() - box.getMaxZ() + c_xz > 0)
 					 || (xByZ * box.getMinZ() - box.getMinX() + c_zx < 0));
-		case POP:
+		case SlopeClassification::POP:
 			return !((ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY()) || (ori.getX() > box.getMaxX())
 					 || (ori.getZ() > box.getMaxZ()) || (zByX * box.getMaxX() - box.getMinZ() + c_xz < 0)
 					 || (xByZ * box.getMaxZ() - box.getMinX() + c_zx < 0));
-		case MMO:
+		case SlopeClassification::MMO:
 			return !((ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ()) || (ori.getX() < box.getMinX())
 					 || (ori.getY() < box.getMinY()) || (yByX * box.getMinX() - box.getMaxY() + c_xy > 0)
 					 || (xByY * box.getMinY() - box.getMaxX() + c_yx > 0));
-		case MPO:
+		case SlopeClassification::MPO:
 			return !((ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ()) || (ori.getX() < box.getMinX())
 					 || (ori.getY() > box.getMaxY()) || (yByX * box.getMinX() - box.getMinY() + c_xy < 0)
 					 || (xByY * box.getMaxY() - box.getMaxX() + c_yx > 0));
-		case PMO:
+		case SlopeClassification::PMO:
 			return !((ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ()) || (ori.getX() > box.getMaxX())
 					 || (ori.getY() < box.getMinY()) || (yByX * box.getMaxX() - box.getMaxY() + c_xy > 0)
 					 || (xByY * box.getMinY() - box.getMinX() + c_yx < 0));
-		case PPO:
+		case SlopeClassification::PPO:
 			return !((ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ()) || (ori.getX() > box.getMaxX())
 					 || (ori.getY() > box.getMaxY()) || (yByX * box.getMaxX() - box.getMinY() + c_xy < 0)
 					 || (xByY * box.getMaxY() - box.getMinX() + c_yx < 0));
 
-		case MOO:
+		case SlopeClassification::MOO:
 			return !((ori.getX() < box.getMinX()) || (ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY())
 					 || (ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ()));
 
-		case POO:
+		case SlopeClassification::POO:
 			return !((ori.getX() > box.getMaxX()) || (ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY())
 					 || (ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ()));
-		case OMO:
+		case SlopeClassification::OMO:
 			return !((ori.getY() < box.getMinY()) || (ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX())
 					 || (ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ()));
-		case OPO:
+		case SlopeClassification::OPO:
 			return !((ori.getY() > box.getMaxY()) || (ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX())
 					 || (ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ()));
-		case OOM:
+		case SlopeClassification::OOM:
 			return !((ori.getZ() < box.getMinZ()) || (ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX())
 					 || (ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY()));
-		case OOP:
+		case SlopeClassification::OOP:
 			return !((ori.getZ() > box.getMaxZ()) || (ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX())
 					 || (ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY()));
 		default:
@@ -262,7 +262,7 @@ template <typename value_t>
 bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersection) const {
 	const auto & ori = ray.getOrigin();
 	switch (classification) {
-		case MMM: {
+		case SlopeClassification::MMM: {
 			if ((ori.getX() < box.getMinX()) || (ori.getY() < box.getMinY()) || (ori.getZ() < box.getMinZ())
 				|| (yByX * box.getMinX() - box.getMaxY() + c_xy > 0)
 				|| (xByY * box.getMinY() - box.getMaxX() + c_yx > 0)
@@ -283,7 +283,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case MMP: {
+		case SlopeClassification::MMP: {
 			if ((ori.getX() < box.getMinX()) || (ori.getY() < box.getMinY()) || (ori.getZ() > box.getMaxZ())
 				|| (yByX * box.getMinX() - box.getMaxY() + c_xy > 0)
 				|| (xByY * box.getMinY() - box.getMaxX() + c_yx > 0)
@@ -304,7 +304,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case MPM: {
+		case SlopeClassification::MPM: {
 			if ((ori.getX() < box.getMinX()) || (ori.getY() > box.getMaxY()) || (ori.getZ() < box.getMinZ())
 				|| (yByX * box.getMinX() - box.getMinY() + c_xy < 0)
 				|| (xByY * box.getMaxY() - box.getMaxX() + c_yx > 0)
@@ -325,7 +325,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case MPP: {
+		case SlopeClassification::MPP: {
 			if ((ori.getX() < box.getMinX()) || (ori.getY() > box.getMaxY()) || (ori.getZ() > box.getMaxZ())
 				|| (yByX * box.getMinX() - box.getMinY() + c_xy < 0)
 				|| (xByY * box.getMaxY() - box.getMaxX() + c_yx > 0)
@@ -346,7 +346,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case PMM: {
+		case SlopeClassification::PMM: {
 			if ((ori.getX() > box.getMaxX()) || (ori.getY() < box.getMinY()) || (ori.getZ() < box.getMinZ())
 				|| (yByX * box.getMaxX() - box.getMaxY() + c_xy > 0)
 				|| (xByY * box.getMinY() - box.getMinX() + c_yx < 0)
@@ -367,7 +367,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case PMP: {
+		case SlopeClassification::PMP: {
 			if ((ori.getX() > box.getMaxX()) || (ori.getY() < box.getMinY()) || (ori.getZ() > box.getMaxZ())
 				|| (yByX * box.getMaxX() - box.getMaxY() + c_xy > 0)
 				|| (xByY * box.getMinY() - box.getMinX() + c_yx < 0)
@@ -388,7 +388,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case PPM: {
+		case SlopeClassification::PPM: {
 			if ((ori.getX() > box.getMaxX()) || (ori.getY() > box.getMaxY()) || (ori.getZ() < box.getMinZ())
 				|| (yByX * box.getMaxX() - box.getMinY() + c_xy < 0)
 				|| (xByY * box.getMaxY() - box.getMinX() + c_yx < 0)
@@ -409,7 +409,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case PPP: {
+		case SlopeClassification::PPP: {
 			if ((ori.getX() > box.getMaxX()) || (ori.getY() > box.getMaxY()) || (ori.getZ() > box.getMaxZ())
 				|| (yByX * box.getMaxX() - box.getMinY() + c_xy < 0)
 				|| (xByY * box.getMaxY() - box.getMinX() + c_yx < 0)
@@ -430,7 +430,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case OMM: {
+		case SlopeClassification::OMM: {
 			if ((ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX()) || (ori.getY() < box.getMinY())
 				|| (ori.getZ() < box.getMinZ()) || (yByZ * box.getMinZ() - box.getMaxY() + c_zy > 0)
 				|| (zByY * box.getMinY() - box.getMaxZ() + c_yz > 0)) {
@@ -443,7 +443,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case OMP: {
+		case SlopeClassification::OMP: {
 			if ((ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX()) || (ori.getY() < box.getMinY())
 				|| (ori.getZ() > box.getMaxZ()) || (yByZ * box.getMaxZ() - box.getMaxY() + c_zy > 0)
 				|| (zByY * box.getMinY() - box.getMinZ() + c_yz < 0)) {
@@ -456,7 +456,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case OPM: {
+		case SlopeClassification::OPM: {
 			if ((ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX()) || (ori.getY() > box.getMaxY())
 				|| (ori.getZ() < box.getMinZ()) || (yByZ * box.getMinZ() - box.getMinY() + c_zy < 0)
 				|| (zByY * box.getMaxY() - box.getMaxZ() + c_yz > 0)) {
@@ -469,7 +469,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case OPP: {
+		case SlopeClassification::OPP: {
 			if ((ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX()) || (ori.getY() > box.getMaxY())
 				|| (ori.getZ() > box.getMaxZ()) || (yByZ * box.getMaxZ() - box.getMinY() + c_zy < 0)
 				|| (zByY * box.getMaxY() - box.getMinZ() + c_yz < 0)) {
@@ -482,7 +482,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case MOM: {
+		case SlopeClassification::MOM: {
 			if ((ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY()) || (ori.getX() < box.getMinX())
 				|| (ori.getZ() < box.getMinZ()) || (zByX * box.getMinX() - box.getMaxZ() + c_xz > 0)
 				|| (xByZ * box.getMinZ() - box.getMaxX() + c_zx > 0)) {
@@ -495,7 +495,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case MOP: {
+		case SlopeClassification::MOP: {
 			if ((ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY()) || (ori.getX() < box.getMinX())
 				|| (ori.getZ() > box.getMaxZ()) || (zByX * box.getMinX() - box.getMinZ() + c_xz < 0)
 				|| (xByZ * box.getMaxZ() - box.getMaxX() + c_zx > 0)) {
@@ -508,7 +508,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case POM: {
+		case SlopeClassification::POM: {
 			if ((ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY()) || (ori.getX() > box.getMaxX())
 				|| (ori.getZ() < box.getMinZ()) || (zByX * box.getMaxX() - box.getMaxZ() + c_xz > 0)
 				|| (xByZ * box.getMinZ() - box.getMinX() + c_zx < 0)) {
@@ -521,7 +521,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case POP: {
+		case SlopeClassification::POP: {
 			if ((ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY()) || (ori.getX() > box.getMaxX())
 				|| (ori.getZ() > box.getMaxZ()) || (zByX * box.getMaxX() - box.getMinZ() + c_xz < 0)
 				|| (xByZ * box.getMaxZ() - box.getMinX() + c_zx < 0)) {
@@ -534,7 +534,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case MMO: {
+		case SlopeClassification::MMO: {
 			if ((ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ()) || (ori.getX() < box.getMinX())
 				|| (ori.getY() < box.getMinY()) || (yByX * box.getMinX() - box.getMaxY() + c_xy > 0)
 				|| (xByY * box.getMinY() - box.getMaxX() + c_yx > 0)) {
@@ -547,7 +547,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case MPO: {
+		case SlopeClassification::MPO: {
 			if ((ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ()) || (ori.getX() < box.getMinX())
 				|| (ori.getY() > box.getMaxY()) || (yByX * box.getMinX() - box.getMinY() + c_xy < 0)
 				|| (xByY * box.getMaxY() - box.getMaxX() + c_yx > 0)) {
@@ -560,7 +560,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case PMO: {
+		case SlopeClassification::PMO: {
 			if ((ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ()) || (ori.getX() > box.getMaxX())
 				|| (ori.getY() < box.getMinY()) || (yByX * box.getMaxX() - box.getMaxY() + c_xy > 0)
 				|| (xByY * box.getMinY() - box.getMinX() + c_yx < 0)) {
@@ -573,7 +573,7 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case PPO: {
+		case SlopeClassification::PPO: {
 			if ((ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ()) || (ori.getX() > box.getMaxX())
 				|| (ori.getY() > box.getMaxY()) || (yByX * box.getMaxX() - box.getMinY() + c_xy < 0)
 				|| (xByY * box.getMaxY() - box.getMinX() + c_yx < 0)) {
@@ -586,42 +586,42 @@ bool Slope<value_t>::getRayBoxIntersection(const box_t & box, value_t & intersec
 			}
 			return true;
 		}
-		case MOO:
+		case SlopeClassification::MOO:
 			if ((ori.getX() < box.getMinX()) || (ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY())
 				|| (ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ())) {
 				return false;
 			}
 			intersection = (box.getMaxX() - ori.getX()) * inverseDirection.getX();
 			return true;
-		case POO:
+		case SlopeClassification::POO:
 			if ((ori.getX() > box.getMaxX()) || (ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY())
 				|| (ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ())) {
 				return false;
 			}
 			intersection = (box.getMinX() - ori.getX()) * inverseDirection.getX();
 			return true;
-		case OMO:
+		case SlopeClassification::OMO:
 			if ((ori.getY() < box.getMinY()) || (ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX())
 				|| (ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ())) {
 				return false;
 			}
 			intersection = (box.getMaxY() - ori.getY()) * inverseDirection.getY();
 			return true;
-		case OPO:
+		case SlopeClassification::OPO:
 			if ((ori.getY() > box.getMaxY()) || (ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX())
 				|| (ori.getZ() < box.getMinZ()) || (ori.getZ() > box.getMaxZ())) {
 				return false;
 			}
 			intersection = (box.getMinY() - ori.getY()) * inverseDirection.getY();
 			return true;
-		case OOM:
+		case SlopeClassification::OOM:
 			if ((ori.getZ() < box.getMinZ()) || (ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX())
 				|| (ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY())) {
 				return false;
 			}
 			intersection = (box.getMaxZ() - ori.getZ()) * inverseDirection.getZ();
 			return true;
-		case OOP:
+		case SlopeClassification::OOP:
 			if ((ori.getZ() > box.getMaxZ()) || (ori.getX() < box.getMinX()) || (ori.getX() > box.getMaxX())
 				|| (ori.getY() < box.getMinY()) || (ori.getY() > box.getMaxY())) {
 				return false;
