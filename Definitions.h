@@ -104,7 +104,7 @@ enum class dimension_t { X = 0, Y = 1, Z = 2 };
  * 		small letters denote corners in negative side of the rect,
  * 		great letters denote corners in positive side of the rect
  */
-enum rectCorner_t { CORNER_xy = 0, CORNER_Xy = 1, CORNER_xY = 2, CORNER_XY = 3 };
+enum class rectCorner_t { xy = 0, Xy = 1, xY = 2, XY = 3 };
 }
 
 #endif /* GEOMETRY_DEFINITIONS_H */
