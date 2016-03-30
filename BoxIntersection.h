@@ -15,12 +15,12 @@ namespace Geometry {
 
 template <typename value_t>
 class _Box;
-typedef _Box<float> Box_f;
+using Box_f = _Box<float>;
 template <typename T_>
 class _Vec3;
 template <typename T_>
 class Triangle;
-typedef Triangle<_Vec3<float>> Triangle_f;
+using Triangle_f = Triangle<_Vec3<float>>;
 
 namespace Intersection {
 

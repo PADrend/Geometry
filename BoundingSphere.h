@@ -17,10 +17,10 @@ namespace Geometry {
 // Forward declarations
 template <typename _T>
 class _Vec3;
-typedef _Vec3<float> Vec3f;
+using Vec3f = _Vec3<float>;
 template <typename _T>
 class _Sphere;
-typedef _Sphere<float> Sphere_f;
+using Sphere_f = _Sphere<float>;
 
 /**
  * @brief Bounding sphere computations
