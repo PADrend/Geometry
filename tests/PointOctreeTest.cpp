@@ -46,11 +46,11 @@ void PointOctreeTest::test() {
 			octree.collectPointsWithinSphere(Sphere_f(Vec3f(0.0f, 0.5f, 0.5f), 0.125f), points);
 			uint_fast32_t foundB = 0;
 			uint_fast32_t foundC = 0;
-			for (std::deque<CharPoint>::iterator it = points.begin(); it != points.end(); ++it) {
-				if (it->data == 'b') {
+			for (auto point : points) {
+				if (point.data == 'b') {
 					++foundB;
 				}
-				if (it->data == 'c') {
+				if (point.data == 'c') {
 					++foundC;
 				}
 			}
@@ -101,8 +101,8 @@ void PointOctreeTest::test() {
 
 		std::deque<CharPoint> points;
 		octree.collectPointsWithinSphere(sphere, points);
-		for (std::deque<CharPoint>::iterator it = points.begin(); it != points.end(); ++it) {
-			CPPUNIT_ASSERT_EQUAL('i', it->data);
+		for (auto point : points) {
+			CPPUNIT_ASSERT_EQUAL('i', point.data);
 		}
 	}
 }

@@ -69,7 +69,7 @@ static std::pair<_T, InputIterator> calcMaxExcess(const _Vec3<_T> & center, _T r
  * @param point %Point that is to be moved to the front
  */
 template <typename Container>
-static void moveToFront(Container & points, typename Container::iterator point) {
+static void moveToFront(Container & points, typename Container::const_iterator point) {
 	points.emplace_front(*point);
 	points.erase(point);
 }
@@ -98,7 +98,7 @@ struct AlgorithmData {
 	std::vector<PrimitiveOperationData<_T>> stack;
 
 	//! End of the support set (see Page 327)
-	typename Container::iterator s;
+	typename Container::const_iterator s;
 
 	//! Cache for the lastest valid center of the sphere
 	_Vec3<_T> center;
@@ -178,12 +178,12 @@ template <typename Container, typename _T>
 static void mtf_mb(Container & points, typename Container::const_iterator endPoint,
 				   AlgorithmData<Container, _T> & data) {
 	// Support set is empty
-	data.s = points.begin();
+	data.s = points.cbegin();
 
 	if (data.stack.size() == 4) {
 		return;
 	}
-	for (auto it = points.begin(); it != endPoint;) {
+	for (auto it = points.cbegin(); it != endPoint;) {
 		auto i = it++;
 		// Check if *i is outside of the sphere
 		if (calcExcess(data.center, data.radiusSquared, *i) > 0) {
@@ -215,13 +215,13 @@ static _Sphere<_T> pivot_mb(Container & points) {
 	data.radiusSquared = std::numeric_limits<_T>::lowest();
 
 	// t := 1
-	auto t = std::next(points.begin());
+	auto t = std::next(points.cbegin());
 	mtf_mb(points, t, data);
 	_T maxExcess;
 	_T oldRadiusSquared = std::numeric_limits<_T>::lowest();
 	do {
 		// Use t as beginning of range, to make sure k > t
-		auto pair = calcMaxExcess(data.center, data.radiusSquared, t, points.end());
+		auto pair = calcMaxExcess(data.center, data.radiusSquared, t, points.cend());
 		maxExcess = pair.first;
 		const auto & k = pair.second;
 		if (maxExcess > 0) {
