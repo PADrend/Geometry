@@ -284,7 +284,7 @@ public:
 		return *this;
 	}
 
-	/*! substracts another Vec4 from this
+	/*! subtracts another Vec4 from this
 		@param the Vec4 to be substracted
 		@return this
 		@note this will be modified	*/
@@ -355,7 +355,7 @@ public:
 		return _Vec4(vec[0] + p.vec[0], vec[1] + p.vec[1], vec[2] + p.vec[2], vec[3] + p.vec[3]);
 	}
 
-	/*! substracts another Vec4 from this
+	/*! subtracts another Vec4 from this
 		@param the Vec4 to be substracted
 		@return a new Vec4
 		@note this remains unchanged	*/
