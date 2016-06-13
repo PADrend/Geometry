@@ -11,7 +11,9 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-4.9
-      env: COMPILER=g++-4.9
+            - valgrind
+            - libcppunit-dev
+      env: CXX=g++-4.9
       before_install:
         - cd /tmp
         - wget --no-check-certificate https://cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.tar.gz --output-document=cmake.tar.gz
@@ -29,7 +31,9 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-5
-      env: COMPILER=g++-5
+            - valgrind
+            - libcppunit-dev
+      env: CXX=g++-5
       before_install:
         - cd /tmp
         - wget --no-check-certificate https://cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.tar.gz --output-document=cmake.tar.gz
@@ -48,7 +52,9 @@ matrix:
             - llvm-toolchain-precise-3.6
           packages:
             - clang-3.6
-      env: COMPILER=clang++-3.6
+            - valgrind
+            - libcppunit-dev
+      env: CXX=clang++-3.6
       before_install:
         - cd /tmp
         - wget --no-check-certificate https://cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.tar.gz --output-document=cmake.tar.gz
@@ -67,7 +73,9 @@ matrix:
             - llvm-toolchain-precise-3.7
           packages:
             - clang-3.7
-      env: COMPILER=clang++-3.7
+            - valgrind
+            - libcppunit-dev
+      env: CXX=clang++-3.7
       before_install:
         - cd /tmp
         - wget --no-check-certificate https://cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.tar.gz --output-document=cmake.tar.gz
@@ -78,7 +86,7 @@ matrix:
     - os: osx
       osx_image: xcode7.3
       compiler: gcc
-      env: COMPILER=g++-4.9
+      env: CXX=g++-4.9
       before_install:
         - brew update
         - brew install valgrind
@@ -89,9 +97,5 @@ matrix:
       before_install:
         - brew update
         - brew install valgrind cppunit
-addons:
-  apt:
-    - valgrind
-    - libcppunit-dev
 before_script: mkdir build && cd build
 script: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGEOMETRY_BUILD_TESTS=ON -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror -pedantic" .. && make && ctest --verbose -D ExperimentalMemCheck
