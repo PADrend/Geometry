@@ -12,10 +12,8 @@ addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
-    - llvm-toolchain-precise-3.6
     packages:
     - g++-5
-    - clang-3.6
     - valgrind
     - libcppunit-dev
 before_install:
@@ -28,6 +26,6 @@ before_install:
  - tar xzf cmake.tar.gz --strip-components="${CMAKE_STRIP_COMPONENTS}" --directory cmake
  - export PATH=/tmp/cmake/bin:$PATH
  - cd -
-before_script: mkdir build && cd build && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then if [ "${CXX}" = "g++" ]; then export CXX=g++-4.9; fi else if [ "${CXX}" = "clang++" ]; then export CXX=/usr/bin/clang++-3.6; fi && if [ "${CXX}" = "g++" ]; then export CXX=/usr/bin/g++-5; fi fi
+before_script: mkdir build && cd build && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then if [ "${CXX}" = "g++" ]; then export CXX=g++-4.9; fi else if [ "${CXX}" = "clang++" ]; then export CXX=/usr/bin/clang++-3.5; fi && if [ "${CXX}" = "g++" ]; then export CXX=/usr/bin/g++-5; fi fi
 script: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGEOMETRY_BUILD_TESTS=ON -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror -pedantic" .. && make && ctest --verbose -D ExperimentalMemCheck
 
