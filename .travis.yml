@@ -84,7 +84,7 @@ before_install:
           wget http://llvm.org/releases/${LLVM_VERSION}/clang+llvm-${LLVM_VERSION}-x86_64-linux-gnu-ubuntu-14.04.tar.xz --output-document=llvm.tar.xz;
           mkdir -p llvm-${LLVM_VERSION};
           tar xJf llvm.tar.xz --strip-components=1 --directory llvm-${LLVM_VERSION};
-        fi
+        fi;
         export PATH=llvm-${LLVM_VERSION}/bin/clang++:$PATH;
       fi;
     elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
