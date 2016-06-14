@@ -77,7 +77,7 @@ before_install:
         export CMAKE_URL="https://cmake.org/files/v3.5/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz";
         export CMAKE_STRIP_COMPONENTS=1;
         wget --no-check-certificate "${CMAKE_URL}" --output-document=cmake.tar.gz;
-        mkdir cmake-${CMAKE_VERSION};
+        mkdir -p cmake-${CMAKE_VERSION};
         tar xzf cmake.tar.gz --strip-components="${CMAKE_STRIP_COMPONENTS}" --directory cmake-${CMAKE_VERSION};
       fi;
       export PATH=cmake-${CMAKE_VERSION}/bin:$PATH;
