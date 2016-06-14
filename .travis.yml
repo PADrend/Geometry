@@ -100,4 +100,5 @@ before_script: mkdir build && cd build
 script:
   - export CXX=${COMPILER}
   - cmake --version
+  - printenv
   - cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGEOMETRY_BUILD_TESTS=ON -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror -pedantic" .. && make && ctest --verbose -D ExperimentalMemCheck
