@@ -78,14 +78,14 @@ before_install:
         mkdir -p cmake-${CMAKE_VERSION};
         tar xzf cmake.tar.gz --strip-components="${CMAKE_STRIP_COMPONENTS}" --directory cmake-${CMAKE_VERSION};
       fi;
-      export PATH=cmake-${CMAKE_VERSION}/bin:$PATH;
+      export PATH=${HOME}/cmake-${CMAKE_VERSION}/bin:$PATH;
       if [ -n "${LLVM_VERSION}" ]; then
         if [ -z "$(ls -A llvm-${LLVM_VERSION})" ]; then
           wget http://llvm.org/releases/${LLVM_VERSION}/clang+llvm-${LLVM_VERSION}-x86_64-linux-gnu-ubuntu-14.04.tar.xz --output-document=llvm.tar.xz;
           mkdir -p llvm-${LLVM_VERSION};
           tar xJf llvm.tar.xz --strip-components=1 --directory llvm-${LLVM_VERSION};
         fi;
-        export PATH=llvm-${LLVM_VERSION}/bin/clang++:$PATH;
+        export PATH=${HOME}/llvm-${LLVM_VERSION}/bin:$PATH;
       fi;
     elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
       brew update;
