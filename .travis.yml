@@ -52,6 +52,18 @@ matrix:
             - valgrind
             - libcppunit-dev
       env: LLVM_VERSION=3.7.1 COMPILER=clang++
+    - os: linux
+      dist: trusty
+      sudo: required
+      compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - valgrind
+            - libcppunit-dev
+      env: LLVM_VERSION=3.8.0 COMPILER=clang++
     - os: osx
       osx_image: xcode7.3
       compiler: gcc
@@ -66,6 +78,7 @@ cache:
     - cmake-3.5.2
     - llvm-3.6.2
     - llvm-3.7.1
+    - llvm-3.8.0
 
 before_install:
   -
