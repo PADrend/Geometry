@@ -1,32 +1,129 @@
 language: cpp
-os:
-  - linux
-  - osx
-compiler:
-  - gcc
-  - clang
-osx_image: xcode7.2
-sudo: false
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    - llvm-toolchain-precise-3.6
-    packages:
-    - g++-5
-    - clang-3.6
-    - valgrind
-    - libcppunit-dev
-before_install:
- - if [ "${TRAVIS_OS_NAME}" = "osx" ] && [ "${CXX}" = "g++" ]; then brew update && brew install valgrind && HOMEBREW_CC=gcc-4.9 HOMEBREW_CXX=g++-4.9 brew install --build-from-source cppunit; fi
- - if [ "${TRAVIS_OS_NAME}" = "osx" ] && [ "${CXX}" = "clang++" ]; then brew update && brew install valgrind cppunit; fi
- - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then export CMAKE_URL="https://cmake.org/files/v3.4/cmake-3.4.1-Darwin-x86_64.tar.gz"; export CMAKE_STRIP_COMPONENTS=3; else export CMAKE_URL="https://cmake.org/files/v3.4/cmake-3.4.1-Linux-x86_64.tar.gz"; export CMAKE_STRIP_COMPONENTS=1; fi
- - cd /tmp
- - wget --no-check-certificate "${CMAKE_URL}" --output-document=cmake.tar.gz
- - mkdir cmake
- - tar xzf cmake.tar.gz --strip-components="${CMAKE_STRIP_COMPONENTS}" --directory cmake
- - export PATH=/tmp/cmake/bin:$PATH
- - cd -
-before_script: mkdir build && cd build && if [ "${TRAVIS_OS_NAME}" = "osx" ]; then if [ "${CXX}" = "g++" ]; then export CXX=g++-4.9; fi else if [ "${CXX}" = "clang++" ]; then export CXX=/usr/bin/clang++-3.6; fi && if [ "${CXX}" = "g++" ]; then export CXX=/usr/bin/g++-5; fi fi
-script: cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGEOMETRY_BUILD_TESTS=ON -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror -pedantic" .. && make && ctest --verbose -D ExperimentalMemCheck
 
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-4.9
+            - valgrind
+            - libcppunit-dev
+      env: COMPILER=g++-4.9
+    - os: linux
+      dist: trusty
+      sudo: required
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-5
+            - valgrind
+            - libcppunit-dev
+      env: COMPILER=g++-5
+    - os: linux
+      dist: trusty
+      sudo: required
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-6
+            - valgrind
+            - libcppunit-dev
+      env: COMPILER=g++-6
+    - os: linux
+      dist: trusty
+      sudo: required
+      compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - valgrind
+            - libcppunit-dev
+      env: LLVM_VERSION=3.6.2 COMPILER=clang++
+    - os: linux
+      dist: trusty
+      sudo: required
+      compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - valgrind
+            - libcppunit-dev
+      env: LLVM_VERSION=3.7.1 COMPILER=clang++
+    - os: linux
+      dist: trusty
+      sudo: required
+      compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - valgrind
+            - libcppunit-dev
+      env: LLVM_VERSION=3.8.0 COMPILER=clang++
+    - os: osx
+      osx_image: xcode7.3
+      compiler: gcc
+      env: COMPILER=g++-4.9
+    - os: osx
+      osx_image: xcode7.3
+      compiler: clang
+      env: COMPILER=clang++
+
+cache:
+  directories:
+    - cmake-3.5.2
+    - llvm-3.6.2
+    - llvm-3.7.1
+    - llvm-3.8.0
+
+before_install:
+  -
+    if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
+      export CMAKE_VERSION=3.5.2;
+      if [ -z "$(ls -A cmake-${CMAKE_VERSION})" ]; then
+        export CMAKE_URL="https://cmake.org/files/v3.5/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz";
+        export CMAKE_STRIP_COMPONENTS=1;
+        wget --no-check-certificate "${CMAKE_URL}" --output-document=cmake.tar.gz;
+        mkdir -p cmake-${CMAKE_VERSION};
+        tar xzf cmake.tar.gz --strip-components="${CMAKE_STRIP_COMPONENTS}" --directory cmake-${CMAKE_VERSION};
+      fi;
+      export PATH=$(readlink -f cmake-${CMAKE_VERSION}/bin):$PATH;
+      if [ -n "${LLVM_VERSION}" ]; then
+        if [ -z "$(ls -A llvm-${LLVM_VERSION})" ]; then
+          wget http://llvm.org/releases/${LLVM_VERSION}/clang+llvm-${LLVM_VERSION}-x86_64-linux-gnu-ubuntu-14.04.tar.xz --output-document=llvm.tar.xz;
+          mkdir -p llvm-${LLVM_VERSION};
+          tar xJf llvm.tar.xz --strip-components=1 --directory llvm-${LLVM_VERSION};
+        fi;
+        export PATH=$(readlink -f llvm-${LLVM_VERSION}/bin):$PATH;
+      fi;
+    elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
+      brew update;
+      if [ "${COMPILER}" = "g++-4.9" ]; then
+        brew install valgrind;
+        HOMEBREW_CC=gcc-4.9 HOMEBREW_CXX=g++-4.9 brew install --build-from-source cppunit;
+      elif [ "${COMPILER}" = "clang++" ]; then
+        brew install valgrind cppunit;
+      fi;
+    fi;
+before_script: mkdir build && cd build
+script:
+  - export CXX=${COMPILER}
+  - cmake --version
+  - cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGEOMETRY_BUILD_TESTS=ON -DCMAKE_CXX_FLAGS="-Wall -Wextra -Werror -pedantic" .. && make && ctest --verbose -D ExperimentalMemCheck
