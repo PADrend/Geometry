@@ -299,7 +299,7 @@ public:
 		return *this;
 	}
 
-	/*! substracts another Vec3 from this
+	/*! subtracts another Vec3 from this
 		@param the Vec3 to be substracted
 		@return this
 		@note this will be modified	*/
@@ -374,7 +374,7 @@ public:
 		return vec3_t(vec[0] + p.vec[0], vec[1] + p.vec[1], vec[2] + p.vec[2]);
 	}
 
-	/*! substracts another Vec3 from this
+	/*! subtracts another Vec3 from this
 		@param the Vec3 to be substracted
 		@return a new Vec3
 		@note this remains unchanged	*/
