@@ -49,10 +49,12 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.6
           packages:
+            - clang-3.6
             - valgrind
             - libcppunit-dev
-      env: LLVM_VERSION=3.6.2 COMPILER=clang++
+      env: COMPILER=clang++-3.6
     - os: linux
       dist: trusty
       sudo: required
@@ -61,10 +63,12 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.7
           packages:
+            - clang-3.7
             - valgrind
             - libcppunit-dev
-      env: LLVM_VERSION=3.7.1 COMPILER=clang++
+      env: COMPILER=clang++-3.7
     - os: linux
       dist: trusty
       sudo: required
@@ -73,10 +77,12 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
+            - llvm-toolchain-precise-3.8
           packages:
+            - clang-3.8
             - valgrind
             - libcppunit-dev
-      env: LLVM_VERSION=3.8.0 COMPILER=clang++
+      env: COMPILER=clang++-3.8
     - os: osx
       osx_image: xcode7.3
       compiler: gcc
@@ -89,9 +95,6 @@ matrix:
 cache:
   directories:
     - cmake-3.5.2
-    - llvm-3.6.2
-    - llvm-3.7.1
-    - llvm-3.8.0
 
 before_install:
   -
@@ -105,14 +108,6 @@ before_install:
         tar xzf cmake.tar.gz --strip-components="${CMAKE_STRIP_COMPONENTS}" --directory cmake-${CMAKE_VERSION};
       fi;
       export PATH=$(readlink -f cmake-${CMAKE_VERSION}/bin):$PATH;
-      if [ -n "${LLVM_VERSION}" ]; then
-        if [ -z "$(ls -A llvm-${LLVM_VERSION})" ]; then
-          wget http://llvm.org/releases/${LLVM_VERSION}/clang+llvm-${LLVM_VERSION}-x86_64-linux-gnu-ubuntu-14.04.tar.xz --output-document=llvm.tar.xz;
-          mkdir -p llvm-${LLVM_VERSION};
-          tar xJf llvm.tar.xz --strip-components=1 --directory llvm-${LLVM_VERSION};
-        fi;
-        export PATH=$(readlink -f llvm-${LLVM_VERSION}/bin):$PATH;
-      fi;
     elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
       brew update;
       if [ "${COMPILER}" = "g++-4.9" ]; then
