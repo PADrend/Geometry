@@ -273,7 +273,7 @@ public:
 	//! \see _Line::getClosestValues(Ray)
 	std::pair<value_t, value_t> getClosestValues(const _Line<vec_t> & line) const {
 		std::pair<value_t, value_t> result = line.getClosestValues(*this);
-		return std::make_pair(result.second(), result.first());
+		return std::make_pair(result.second, result.first);
 	}
 	void normalize() {
 		base_t::_normalize();
