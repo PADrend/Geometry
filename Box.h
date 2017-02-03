@@ -152,7 +152,9 @@ public:
 	 * same as getDistance, but faster because of missing sqrt() call
 	 */
 	inline value_t getDistanceSquared(const vec3_t & p) const;
-
+	
+	inline vec3_t getClosestPoint(const vec3_t & p) const;
+	
 	inline bool isValid() const;
 	bool isInvalid() const {
 		return !isValid();
@@ -381,6 +383,27 @@ inline value_t _Box<value_t>::getDistanceSquared(const vec3_t & p) const {
 		z = max.getZ() - p.z();
 	}
 	return x * x + y * y + z * z;
+}
+
+template <typename value_t>
+inline _Vec3<value_t> _Box<value_t>::getClosestPoint(const vec3_t & p) const {
+	vec3_t closest(p);
+	if (p.x() < min.getX()) {
+		closest.setX(min.getX());
+	} else if (p.x() > max.getX()) {
+		closest.setX(max.getX());
+	}
+	if (p.y() < min.getY()) {
+		closest.setY(min.getY());
+	} else if (p.y() > max.getY()) {
+		closest.setY(max.getY());
+	}
+	if (p.z() < min.getZ()) {
+		closest.setZ(min.getZ());
+	} else if (p.z() > max.getZ()) {
+		closest.setZ(max.getZ());
+	}
+	return closest;
 }
 
 // -----------------------------------
