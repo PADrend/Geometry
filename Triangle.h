@@ -198,6 +198,24 @@ public:
 	}
 
 	/**
+	 * Calculate the circumcenter of the triangle, 
+	 * i.e., the center of the sphere that is defined by the three triangle vertices.
+	 *
+	 * @see http://mathworld.wolfram.com/BarycentricCoordinates.html
+	 * @return Circumcenter of the triangle
+	 */
+	vec_t calcCircumcenter() const {
+		const value_t bc2 = getEdgeBC().lengthSquared();
+		const value_t ca2 = getEdgeCA().lengthSquared();
+		const value_t ab2 = getEdgeAB().lengthSquared();
+		
+		const vec_t bc(bc2*(ca2+ab2-bc2), ca2*(ab2+bc2-ca2), ab2*(bc2+ca2-ab2));
+		const value_t sum = bc.x() + bc.y() + bc.z();				
+		
+		return a * bc.x()/sum + b * bc.y()/sum + c * bc.z()/sum;
+	}
+
+	/**
 	 * Return the point of this triangle that has minimum distance to a point @a p.
 	 *
 	 * Implementation taken from
