@@ -235,7 +235,7 @@ public:
 	 * read-only access to underlying data
 	 */
 	vecN_t::const_iterator begin() const {
-		return vec.begin();
+		return vec.cbegin();
 	}
 
 	/*!
@@ -249,7 +249,7 @@ public:
 	 * read-only access to underlying data
 	 */
 	vecN_t::const_iterator end() const {
-		return vec.end();
+		return vec.cend();
 	}
 
 	/*!
@@ -274,7 +274,7 @@ public:
 	 */
 	_VecN & operator+=(const _VecN & _other) {
 		checkSize(_other);
-		std::transform(vec.begin(), vec.end(), _other.vec.begin(), vec.begin(), std::plus<value_t>());
+		std::transform(vec.cbegin(), vec.cend(), _other.vec.cbegin(), vec.begin(), std::plus<value_t>());
 		return *this;
 	}
 
@@ -282,7 +282,7 @@ public:
 	 * vector += constant, component wise
 	 */
 	_VecN & operator+=(const value_t & constant) {
-		std::transform(vec.begin(), vec.end(), vec.begin(),
+		std::transform(vec.cbegin(), vec.cend(), vec.begin(),
 					   std::bind(std::plus<value_t>(), std::placeholders::_1, constant));
 		return *this;
 	}
@@ -293,7 +293,7 @@ public:
 	 */
 	_VecN & operator-=(const _VecN & _other) {
 		checkSize(_other);
-		std::transform(vec.begin(), vec.end(), _other.vec.begin(), vec.begin(), std::minus<value_t>());
+		std::transform(vec.cbegin(), vec.cend(), _other.vec.cbegin(), vec.begin(), std::minus<value_t>());
 		return *this;
 	}
 
@@ -301,7 +301,7 @@ public:
 	 * vector -= constant, component wise
 	 */
 	_VecN & operator-=(const value_t & constant) {
-		std::transform(vec.begin(), vec.end(), vec.begin(),
+		std::transform(vec.cbegin(), vec.cend(), vec.begin(),
 					   std::bind(std::minus<value_t>(), std::placeholders::_1, constant));
 		return *this;
 	}
@@ -312,7 +312,7 @@ public:
 	 */
 	_VecN & operator*=(const _VecN & _other) {
 		checkSize(_other);
-		std::transform(vec.begin(), vec.end(), _other.vec.begin(), vec.begin(), std::multiplies<value_t>());
+		std::transform(vec.cbegin(), vec.cend(), _other.vec.cbegin(), vec.begin(), std::multiplies<value_t>());
 		return *this;
 	}
 
@@ -320,7 +320,7 @@ public:
 	 * vector *= constant, component wise
 	 */
 	_VecN & operator*=(const float_t & constant) {
-		std::transform(vec.begin(), vec.end(), vec.begin(),
+		std::transform(vec.cbegin(), vec.cend(), vec.begin(),
 					   std::bind(std::multiplies<value_t>(), std::placeholders::_1, constant));
 		return *this;
 	}
@@ -330,7 +330,7 @@ public:
 	 */
 	_VecN & operator/=(const _VecN & _other) {
 		checkSize(_other);
-		std::transform(vec.begin(), vec.end(), _other.vec.begin(), vec.begin(), std::divides<value_t>());
+		std::transform(vec.cbegin(), vec.cend(), _other.vec.cbegin(), vec.begin(), std::divides<value_t>());
 		return *this;
 	}
 
@@ -338,7 +338,7 @@ public:
 	 * vector /= constant, component wise
 	 */
 	_VecN & operator/=(const float_t & constant) {
-		std::transform(vec.begin(), vec.end(), vec.begin(),
+		std::transform(vec.cbegin(), vec.cend(), vec.begin(),
 					   std::bind(std::divides<value_t>(), std::placeholders::_1, constant));
 		return *this;
 	}
@@ -425,7 +425,7 @@ public:
 	 */
 	const _VecN operator-() const {
 		_VecN ret(size());
-		std::transform(vec.begin(), vec.end(), ret.vec.begin(), std::negate<value_t>());
+		std::transform(vec.cbegin(), vec.cend(), ret.vec.begin(), std::negate<value_t>());
 		return ret;
 	}
 
@@ -441,7 +441,7 @@ public:
 	 * @return this
 	 */
 	_VecN & abs() {
-		std::transform(vec.begin(), vec.end(), vec.begin(), GetAbs<value_t>());
+		std::transform(vec.cbegin(), vec.cend(), vec.begin(), GetAbs<value_t>());
 		return *this;
 	}
 
@@ -450,14 +450,14 @@ public:
 	 * @note this is not the maximum norm
 	 */
 	value_t max() const {
-		return *std::max_element(vec.begin(), vec.end());
+		return *std::max_element(vec.cbegin(), vec.cend());
 	}
 
 	/*!
 	 * @return the minimum over the components of this vector
 	 */
 	value_t min() const {
-		return *std::min_element(vec.begin(), vec.end());
+		return *std::min_element(vec.cbegin(), vec.cend());
 	}
 
 	/*!
@@ -465,7 +465,7 @@ public:
 	 */
 	float_t avg() const {
 		value_t sum = 0;
-		std::for_each(vec.begin(), vec.end(), Sum<value_t>(sum));
+		std::for_each(vec.cbegin(), vec.cend(), Sum<value_t>(sum));
 		return static_cast<float_t>(sum) / static_cast<float_t>(size());
 	}
 
@@ -518,7 +518,7 @@ public:
 	static _VecN pairwiseMax(const _VecN & vecA, const _VecN & vecB) {
 		vecA.checkSize(vecB);
 		_VecN ret(vecA.size());
-		std::transform(vecA.vec.begin(), vecA.vec.end(), vecB.vec.begin(), ret.vec.begin(), GetMax<value_t>());
+		std::transform(vecA.vec.cbegin(), vecA.vec.cend(), vecB.vec.cbegin(), ret.vec.begin(), GetMax<value_t>());
 		return ret;
 	}
 
@@ -528,7 +528,7 @@ public:
 	static _VecN pairwiseMin(const _VecN & vecA, const _VecN & vecB) {
 		vecA.checkSize(vecB);
 		_VecN ret(vecA.size());
-		std::transform(vecA.vec.begin(), vecA.vec.end(), vecB.vec.begin(), ret.vec.begin(), GetMin<value_t>());
+		std::transform(vecA.vec.cbegin(), vecA.vec.cend(), vecB.vec.cbegin(), ret.vec.begin(), GetMin<value_t>());
 		return ret;
 	}
 
@@ -538,7 +538,7 @@ public:
 	static _VecN pairwiseAvg(const _VecN & vecA, const _VecN & vecB) {
 		vecA.checkSize(vecB);
 		_VecN ret(vecA.size());
-		std::transform(vecA.vec.begin(), vecA.vec.end(), vecB.vec.begin(), ret.vec.begin(), GetAvg<value_t>());
+		std::transform(vecA.vec.cbegin(), vecA.vec.cend(), vecB.vec.cbegin(), ret.vec.begin(), GetAvg<value_t>());
 		return ret;
 	}
 
