@@ -30,7 +30,7 @@ namespace Geometry {
 template <typename value_t>
 class _Box {
 public:
-	typedef _Vec3<value_t> vec3_t;
+	using vec3_t = _Vec3<value_t>;
 
 private:
 	vec3_t min;
@@ -242,7 +242,7 @@ public:
 	}
 	//@}
 };
-typedef _Box<float> Box;
+using Box = _Box<float>;
 
 // --------------------------------------------------------------------------------------------------------------------------
 // -----------------------------------

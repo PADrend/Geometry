@@ -18,13 +18,13 @@ namespace Geometry {
 
 template <typename value_t>
 class _Box;
-typedef _Box<float> Box_f;
+using Box_f = _Box<float>;
 template <typename value_t>
 class _Matrix4x4;
-typedef _Matrix4x4<float> Matrix4x4f;
+using Matrix4x4f = _Matrix4x4<float>;
 template <typename value_t>
 class _Vec3;
-typedef _Vec3<float> Vec3f;
+using Vec3f = _Vec3<float>;
 
 namespace Helper {
 

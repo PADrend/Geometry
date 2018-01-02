@@ -21,7 +21,7 @@ namespace Geometry {
 template <typename T_>
 class _Angle {
 public:
-	typedef T_ value_t;
+	using value_t = T_;
 
 private:
 	value_t value;
@@ -102,7 +102,7 @@ public:
 	}
 };
 
-typedef _Angle<float> Angle;
+using Angle = _Angle<float>;
 }
 
 #endif /* GEOMETRY_ANGLE_H */

@@ -21,7 +21,7 @@
 namespace Geometry {
 template <typename value_t>
 class _Box;
-typedef _Box<float> Box;
+using Box = _Box<float>;
 
 /**
  * Three-dimensional frustum.

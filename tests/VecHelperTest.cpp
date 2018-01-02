@@ -22,7 +22,7 @@ static const double oneDegree = M_PI / 180.0;
 static const double epsilon = 16.0 * std::numeric_limits<double>::epsilon();
 
 void VecHelperTest::testVecHelper2D() {
-	typedef Geometry::_Vec2<double> vec2_t;
+	using vec2_t = Geometry::_Vec2<double>;
 
 	for (double angle = 0.0; angle < 2.0 * M_PI; angle += oneDegree) {
 		const vec2_t vector(std::cos(angle), std::sin(angle));
@@ -40,7 +40,7 @@ void VecHelperTest::testVecHelper2D() {
 }
 
 void VecHelperTest::testVecHelper3D() {
-	typedef Geometry::_Sphere<double> sphere_t;
+	using sphere_t = Geometry::_Sphere<double>;
 
 	for (double inclination = 0.0; inclination <= M_PI; inclination += oneDegree) {
 		for (double azimuth = 0.0; azimuth < 2.0 * M_PI; azimuth += oneDegree) {
