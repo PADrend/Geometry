@@ -19,12 +19,18 @@ CPPUNIT_TEST_SUITE_REGISTRATION(Matrix4x4Test);
 #define M_PI_2 1.57079632679489661923
 #endif
 
-typedef Geometry::_Matrix4x4<int> Matrix4x4i;
-typedef Geometry::_Matrix4x4<double> Matrix4x4d;
-typedef Geometry::_SRT<int> SRTi;
-typedef Geometry::_SRT<double> SRTd;
-typedef Geometry::_Vec3<int> Vec3i;
-typedef Geometry::_Vec3<double> Vec3d;
+template<typename T>
+using Matrix4x4 = Geometry::_Matrix4x4<T>;
+using Matrix4x4i = Matrix4x4<int>;
+using Matrix4x4d = Matrix4x4<double>;
+template<typename T>
+using SRT = Geometry::_SRT<T>;
+using SRTi = SRT<int>;
+using SRTd = SRT<double>;
+template<typename T>
+using Vec3 = Geometry::_Vec3<T>;
+using Vec3i = Vec3<int>;
+using Vec3d = Vec3<double>;
 
 void Matrix4x4Test::testConstructors() {
 	const int data[16] = {1, 2, 3, 4, 5, 6, 7, 8, -1, -2, -3, -4, -5, -6, -7, -8};

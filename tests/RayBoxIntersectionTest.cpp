@@ -16,12 +16,12 @@ CPPUNIT_TEST_SUITE_REGISTRATION(RayBoxIntersectionTest);
 
 static const int32_t halfSideLength = 16;
 
-typedef Geometry::_Box<double> box_t;
-typedef std::vector<box_t> dim1_t;
-typedef std::vector<dim1_t> dim2_t;
-typedef std::vector<dim2_t> dim3_t;
-typedef Geometry::_Vec3<double> vec3_t;
-typedef Geometry::_Ray<vec3_t> ray_t;
+using box_t = Geometry::_Box<double>;
+using dim1_t = std::vector<box_t>;
+using dim2_t = std::vector<dim1_t>;
+using dim3_t = std::vector<dim2_t>;
+using vec3_t = Geometry::_Vec3<double>;
+using ray_t = Geometry::_Ray<vec3_t>;
 
 struct BoolVerifyer {
 	bool operator()(int32_t x, int32_t y, int32_t z, const ray_t & ray) const {

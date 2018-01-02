@@ -33,8 +33,8 @@ template <typename T_>
  */
 class _DualQuaternion {
 public:
-	typedef T_ value_t;
-	typedef _Vec3<value_t> vec3_t;
+	using value_t = T_;
+	using vec3_t = _Vec3<value_t>;
 
 	/*
 	 * [ Constructor ]
@@ -343,9 +343,9 @@ private:
 	value_t trans[4]; // non dual part for position displacement
 };
 
-typedef _DualQuaternion<float> DualQuaternion;
-typedef _DualQuaternion<float> DualQuaternionf;
-typedef _DualQuaternion<double> DualQuaterniond;
+using DualQuaternion = _DualQuaternion<float>;
+using DualQuaternionf = _DualQuaternion<float>;
+using DualQuaterniond = _DualQuaternion<double>;
 }
 
 #endif /* GEOMETRY_DUALQUATERNION_H */

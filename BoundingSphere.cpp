@@ -311,7 +311,7 @@ inline static void projectToNormal(iterator_t first, const iterator_t & last, st
 
 template <size_t numNormals>
 std::list<Vec3d> findExtremalPoints(const std::vector<Vec3f> & points) {
-	typedef std::vector<Vec3f>::const_iterator it_t;
+	using it_t = std::vector<Vec3f>::const_iterator;
 
 	std::vector<it_t> extremalIndices;
 	extremalIndices.reserve(2 * numNormals);

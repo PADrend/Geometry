@@ -14,9 +14,9 @@
 CPPUNIT_TEST_SUITE_REGISTRATION(LineTriangleIntersectionTest);
 
 void LineTriangleIntersectionTest::testLineTriangleIntersection() {
-	typedef Geometry::_Vec3<double> vec_t;
-	typedef Geometry::_Line<vec_t> line_t;
-	typedef Geometry::Triangle<vec_t> triangle_t;
+	using vec_t = Geometry::_Vec3<double>;
+	using line_t = Geometry::_Line<vec_t>;
+	using triangle_t = Geometry::Triangle<vec_t>;
 
 	const triangle_t triangle(vec_t(0.0, 0.0, 0.0), vec_t(0.0, 1.0, 0.0), vec_t(0.0, 0.0, 1.0));
 

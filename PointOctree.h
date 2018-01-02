@@ -40,9 +40,9 @@ private:
 	uint32_t maxNumPoints; //!< Upper bound for number of points inside a leaf cell.
 
 	Box box; //!< Bounding box of octree cell.
-	typedef std::vector<PointOctree<Point_t>> children_t;
-	typedef typename children_t::iterator children_iterator_t;
-	typedef typename children_t::const_iterator children_const_iterator_t;
+	using children_t = std::vector<PointOctree<Point_t>>;
+	using children_iterator_t = typename children_t::iterator;
+	using children_const_iterator_t = typename children_t::const_iterator;
 	children_t children; //!< vector of child nodes.
 	std::deque<Point_t> points; //!< Points that are stored directly inside this node.
 
@@ -56,7 +56,7 @@ private:
 	inline static bool sphereBoxIntersection(const Sphere_f & sphere, const Box & box);
 
 public:
-	typedef Point_t point_t;
+	using point_t = Point_t;
 
 	/**
 	 * Create a new octree for points within the given bounds.

@@ -60,7 +60,7 @@ void Vec3Test::testSerialization() {
 	{
 		std::stringstream stream;
 
-		typedef Geometry::_Vec3<int32_t> IntVec3;
+		using IntVec3 = Geometry::_Vec3<int32_t>;
 		for (int32_t x = -10; x <= 10; ++x) {
 			for (int32_t y = -10; y <= 10; ++y) {
 				for (int32_t z = -10; z <= 10; ++z) {
@@ -84,7 +84,7 @@ void Vec3Test::testSerialization() {
 	{
 		std::stringstream stream;
 
-		typedef Geometry::_Vec3<float> FloatVec3;
+		using FloatVec3 = Geometry::_Vec3<float>;
 		for (float x = -1.0f; x <= 1.0f; x += 0.1f) {
 			for (float y = -1.0f; y <= 1.0f; y += 0.1f) {
 				for (float z = -1.0f; z <= 1.0f; z += 0.1f) {

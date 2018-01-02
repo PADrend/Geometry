@@ -35,8 +35,8 @@ namespace Geometry {
 template <typename T_>
 class Triangle {
 public:
-	typedef T_ vec_t;
-	typedef typename vec_t::value_t value_t;
+	using vec_t = T_;
+	using value_t = typename vec_t::value_t;
 
 private:
 	//! First vertex
