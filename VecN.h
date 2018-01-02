@@ -282,8 +282,8 @@ public:
 	 * vector += constant, component wise
 	 */
 	_VecN & operator+=(const value_t & constant) {
-		std::transform(vec.cbegin(), vec.cend(), vec.begin(),
-					   std::bind(std::plus<value_t>(), std::placeholders::_1, constant));
+		std::transform(vec.begin(), vec.end(), vec.begin(),
+					   [constant](const value_t & value) { return value + constant; });
 		return *this;
 	}
 
@@ -301,8 +301,8 @@ public:
 	 * vector -= constant, component wise
 	 */
 	_VecN & operator-=(const value_t & constant) {
-		std::transform(vec.cbegin(), vec.cend(), vec.begin(),
-					   std::bind(std::minus<value_t>(), std::placeholders::_1, constant));
+		std::transform(vec.begin(), vec.end(), vec.begin(),
+					   [constant](const value_t & value) { return value - constant; });
 		return *this;
 	}
 
@@ -320,8 +320,8 @@ public:
 	 * vector *= constant, component wise
 	 */
 	_VecN & operator*=(const float_t & constant) {
-		std::transform(vec.cbegin(), vec.cend(), vec.begin(),
-					   std::bind(std::multiplies<value_t>(), std::placeholders::_1, constant));
+		std::transform(vec.begin(), vec.end(), vec.begin(),
+					   [constant](const value_t & value) { return value * constant; });
 		return *this;
 	}
 
@@ -338,8 +338,8 @@ public:
 	 * vector /= constant, component wise
 	 */
 	_VecN & operator/=(const float_t & constant) {
-		std::transform(vec.cbegin(), vec.cend(), vec.begin(),
-					   std::bind(std::divides<value_t>(), std::placeholders::_1, constant));
+		std::transform(vec.begin(), vec.end(), vec.begin(),
+					   [constant](const value_t & value) { return value / constant; });
 		return *this;
 	}
 
