@@ -43,24 +43,24 @@ namespace Helper {
 //        |/        |/
 //        4---------5
 //
-//	CORNER_xyz = 0,
-//	CORNER_Xyz = 1,
-//	CORNER_xYz = 2,
-//	CORNER_XYz = 3,
-//	CORNER_xyZ = 4,
-//	CORNER_XyZ = 5,
-//	CORNER_xYZ = 6,
-//	CORNER_XYZ = 7
+//	corner_t::xyz = 0,
+//	corner_t::Xyz = 1,
+//	corner_t::xYz = 2,
+//	corner_t::XYz = 3,
+//	corner_t::xyZ = 4,
+//	corner_t::XyZ = 5,
+//	corner_t::xYZ = 6,
+//	corner_t::XYZ = 7
 const corner_t * getCornerIndices(const side_t side) {
 	static const corner_t corners[6][4] = {
-			{CORNER_xyz, CORNER_xyZ, CORNER_xYZ, CORNER_xYz}, // left
-			{CORNER_XyZ, CORNER_xyZ, CORNER_xyz, CORNER_Xyz}, // bottom
-			{CORNER_Xyz, CORNER_xyz, CORNER_xYz, CORNER_XYz}, // back
-			{CORNER_XyZ, CORNER_Xyz, CORNER_XYz, CORNER_XYZ}, // right
-			{CORNER_XYz, CORNER_xYz, CORNER_xYZ, CORNER_XYZ}, // top
-			{CORNER_xyZ, CORNER_XyZ, CORNER_XYZ, CORNER_xYZ} // front
+			{corner_t::xyz, corner_t::xyZ, corner_t::xYZ, corner_t::xYz}, // left
+			{corner_t::XyZ, corner_t::xyZ, corner_t::xyz, corner_t::Xyz}, // bottom
+			{corner_t::Xyz, corner_t::xyz, corner_t::xYz, corner_t::XYz}, // back
+			{corner_t::XyZ, corner_t::Xyz, corner_t::XYz, corner_t::XYZ}, // right
+			{corner_t::XYz, corner_t::xYz, corner_t::xYZ, corner_t::XYZ}, // top
+			{corner_t::xyZ, corner_t::XyZ, corner_t::XYZ, corner_t::xYZ} // front
 	};
-	return corners[side];
+	return corners[static_cast<std::size_t>(side)];
 }
 
 const Vec3f & getNormal(const side_t side) {
@@ -72,7 +72,7 @@ const Vec3f & getNormal(const side_t side) {
 			Vec3f(0, 1, 0), // top
 			Vec3f(0, 0, 1) // front
 	};
-	return normals[side];
+	return normals[static_cast<std::size_t>(side)];
 }
 
 std::vector<Box_f> splitUpBox(const Box_f & box, unsigned int partsX, unsigned int partsY, unsigned int partsZ) {
@@ -189,14 +189,14 @@ std::vector<Box_f> splitBoxCubeLike(const Box_f & box) {
 Box_f getTransformedBox(const Box_f & box, const Matrix4x4f & matrix) {
 	Box_f result;
 	result.invalidate();
-	result.include(matrix.transformPosition(box.getCorner(CORNER_xyz)));
-	result.include(matrix.transformPosition(box.getCorner(CORNER_Xyz)));
-	result.include(matrix.transformPosition(box.getCorner(CORNER_xYz)));
-	result.include(matrix.transformPosition(box.getCorner(CORNER_XYz)));
-	result.include(matrix.transformPosition(box.getCorner(CORNER_xyZ)));
-	result.include(matrix.transformPosition(box.getCorner(CORNER_XyZ)));
-	result.include(matrix.transformPosition(box.getCorner(CORNER_xYZ)));
-	result.include(matrix.transformPosition(box.getCorner(CORNER_XYZ)));
+	result.include(matrix.transformPosition(box.getCorner(corner_t::xyz)));
+	result.include(matrix.transformPosition(box.getCorner(corner_t::Xyz)));
+	result.include(matrix.transformPosition(box.getCorner(corner_t::xYz)));
+	result.include(matrix.transformPosition(box.getCorner(corner_t::XYz)));
+	result.include(matrix.transformPosition(box.getCorner(corner_t::xyZ)));
+	result.include(matrix.transformPosition(box.getCorner(corner_t::XyZ)));
+	result.include(matrix.transformPosition(box.getCorner(corner_t::xYZ)));
+	result.include(matrix.transformPosition(box.getCorner(corner_t::XYZ)));
 	return result;
 }
 }

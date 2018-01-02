@@ -42,7 +42,7 @@ public:
 	 * @name Information
 	 */
 	//@{
-	enum intersection_t { INSIDE = 0, INTERSECT = 1, OUTSIDE = 2 };
+	enum class intersection_t { INSIDE = 0, INTERSECT = 1, OUTSIDE = 2 };
 
 	const Vec3 & getPos() const {
 		return orientation.getTranslation();
@@ -85,9 +85,7 @@ public:
 	bool operator==(const Frustum & other) const;
 
 	const Plane & getPlane(side_t side) const {
-		if (side > 5)
-			throw std::out_of_range("Frustum:getPlane(...)");
-		return planes[side];
+		return planes[static_cast<std::size_t>(side)];
 	}
 	//@}
 
@@ -140,7 +138,7 @@ inline bool Frustum::pointInFrustum(const Vec3 & p) const {
 			&& planes[3].planeTest(p) >= 0 && planes[4].planeTest(p) >= 0 && planes[5].planeTest(p) >= 0;
 }
 inline Vec3 Frustum::operator[](corner_t nr) const {
-	return corners[nr];
+	return corners[static_cast<std::size_t>(nr)];
 }
 }
 

@@ -128,7 +128,8 @@ public:
 		return isValid() && rect.isValid() && rect.getMaxX() >= getMinX() && rect.getMinX() <= getMaxX()
 				&& rect.getMaxY() >= getMinY() && rect.getMinY() <= getMaxY();
 	}
-	vec2_t getCorner(const rectCorner_t nr) const {
+	vec2_t getCorner(const rectCorner_t corner) const {
+		auto nr = static_cast<std::size_t>(corner);
 		return vec2_t((nr & 1) ? getMaxX() : getMinX(), (nr & 2) ? getMaxY() : getMinY());
 	}
 

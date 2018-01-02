@@ -119,7 +119,7 @@ public:
 	inline value_t getVolume() const;
 	inline value_t getSurfaceArea() const;
 
-	inline vec3_t getCorner(const corner_t nr) const;
+	inline vec3_t getCorner(const corner_t corner) const;
 	/**
 	 * Retrieve the corner index which does not share any side with the given corner index.
 	 *
@@ -127,7 +127,7 @@ public:
 	 * @return Index of the corner that is on the other end of the box's diagonal starting at the given corner.
 	 */
 	static corner_t getOppositeCorner(const corner_t corner) {
-		return static_cast<corner_t>(corner ^ 7);
+		return static_cast<corner_t>(static_cast<std::size_t>(corner) ^ 7);
 	}
 	/*
 	 * calculates the corner of this box which is in the same octant as the given vector
@@ -249,8 +249,8 @@ typedef _Box<float> Box;
 // ---- Information
 template <typename value_t>
 inline void _Box<value_t>::assertCorrectDimension(dimension_t dim) const {
-	if (static_cast<unsigned int>(dim) > 2) {
-		throw std::invalid_argument("Parameter \"dim\" has to be DIMENSION_X/Y/Z");
+	if ((dimension_t::X != dim) && (dimension_t::Y != dim) && (dimension_t::Z != dim)) {
+		throw std::invalid_argument("Parameter \"dim\" has to be dimension_t::X/Y/Z");
 	}
 }
 
@@ -269,11 +269,11 @@ inline value_t _Box<value_t>::getMin(dimension_t dim) const {
 template <typename value_t>
 inline value_t _Box<value_t>::getExtent(dimension_t dim) const {
 	switch (dim) {
-		case X_DIMENSION:
+		case dimension_t::X:
 			return getExtentX();
-		case Y_DIMENSION:
+		case dimension_t::Y:
 			return getExtentY();
-		case Z_DIMENSION:
+		case dimension_t::Z:
 			return getExtentZ();
 		default:
 			assertCorrectDimension(dim);
@@ -312,7 +312,8 @@ inline value_t _Box<value_t>::getSurfaceArea() const {
 }
 
 template <typename value_t>
-inline _Vec3<value_t> _Box<value_t>::getCorner(corner_t nr) const {
+inline _Vec3<value_t> _Box<value_t>::getCorner(const corner_t corner) const {
+	const std::size_t nr = static_cast<std::size_t>(corner);
 	return vec3_t((nr & 1) ? max.getX() : min.getX(), (nr & 2) ? max.getY() : min.getY(),
 				  (nr & 4) ? max.getZ() : min.getZ());
 }

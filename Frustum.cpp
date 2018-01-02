@@ -93,21 +93,21 @@ void Frustum::recalculateCornersAndPlanes() {
 
 	// Careful: Z values are inverted by matrix. Therefore the front and back side are swapped (see sign of Z values
 	// below).
-	corners[CORNER_xyz] = m.transformPosition(-1, -1, 1);
-	corners[CORNER_Xyz] = m.transformPosition(1, -1, 1);
-	corners[CORNER_xYz] = m.transformPosition(-1, 1, 1);
-	corners[CORNER_XYz] = m.transformPosition(1, 1, 1);
-	corners[CORNER_xyZ] = m.transformPosition(-1, -1, -1);
-	corners[CORNER_XyZ] = m.transformPosition(1, -1, -1);
-	corners[CORNER_xYZ] = m.transformPosition(-1, 1, -1);
-	corners[CORNER_XYZ] = m.transformPosition(1, 1, -1);
+	corners[static_cast<std::size_t>(corner_t::xyz)] = m.transformPosition(-1, -1, 1);
+	corners[static_cast<std::size_t>(corner_t::Xyz)] = m.transformPosition(1, -1, 1);
+	corners[static_cast<std::size_t>(corner_t::xYz)] = m.transformPosition(-1, 1, 1);
+	corners[static_cast<std::size_t>(corner_t::XYz)] = m.transformPosition(1, 1, 1);
+	corners[static_cast<std::size_t>(corner_t::xyZ)] = m.transformPosition(-1, -1, -1);
+	corners[static_cast<std::size_t>(corner_t::XyZ)] = m.transformPosition(1, -1, -1);
+	corners[static_cast<std::size_t>(corner_t::xYZ)] = m.transformPosition(-1, 1, -1);
+	corners[static_cast<std::size_t>(corner_t::XYZ)] = m.transformPosition(1, 1, -1);
 
 	for (uint_fast8_t side = 0; side < 6; ++side) {
 		// Side corners
 		const corner_t * sC = Helper::getCornerIndices(static_cast<side_t>(side));
 		// Calculate plane
-		const Vec3 normal(((corners[sC[2]] - corners[sC[1]]).cross(corners[sC[0]] - corners[sC[1]])).normalize());
-		planes[side] = Plane(normal, normal.dot(corners[sC[1]]));
+		const Vec3 normal(((corners[static_cast<std::size_t>(sC[2])] - corners[static_cast<std::size_t>(sC[1])]).cross(corners[static_cast<std::size_t>(sC[0])] - corners[static_cast<std::size_t>(sC[1])])).normalize());
+		planes[side] = Plane(normal, normal.dot(corners[static_cast<std::size_t>(sC[1])]));
 	}
 
 	// Calculate bit-fields for bounding box corners.
@@ -142,7 +142,7 @@ Frustum::intersection_t Frustum::isBoxInFrustum(const Box & b) const {
 	for (uint_fast8_t plane = 0; plane < 6; ++plane) {
 		const Vec3 nVec = b.getCorner(negCorner[plane]);
 		if (planes[plane].planeTest(nVec) > 0) {
-			return Frustum::OUTSIDE;
+			return intersection_t::OUTSIDE;
 		}
 
 		const Vec3 pVec = b.getCorner(posCorner[plane]);
@@ -151,9 +151,9 @@ Frustum::intersection_t Frustum::isBoxInFrustum(const Box & b) const {
 		}
 	}
 	if (intersect) {
-		return Frustum::INTERSECT;
+		return intersection_t::INTERSECT;
 	} else {
-		return Frustum::INSIDE;
+		return intersection_t::INSIDE;
 	}
 }
 
