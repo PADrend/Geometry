@@ -11,6 +11,7 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
+            - cmake
             - g++-4.9
             - valgrind
             - libcppunit-dev
@@ -24,6 +25,7 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
+            - cmake
             - g++-5
             - valgrind
             - libcppunit-dev
@@ -37,6 +39,7 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
+            - cmake
             - g++-6
             - valgrind
             - libcppunit-dev
@@ -51,6 +54,7 @@ matrix:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-precise-3.6
           packages:
+            - cmake
             - clang-3.6
             - valgrind
             - libcppunit-dev
@@ -65,6 +69,7 @@ matrix:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-precise-3.7
           packages:
+            - cmake
             - clang-3.7
             - valgrind
             - libcppunit-dev
@@ -79,6 +84,7 @@ matrix:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-precise-3.8
           packages:
+            - cmake
             - clang-3.8
             - valgrind
             - libcppunit-dev
@@ -118,17 +124,7 @@ cache:
 
 before_install:
   -
-    if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
-      export CMAKE_VERSION=3.5.2;
-      if [ -z "$(ls -A cmake-${CMAKE_VERSION})" ]; then
-        export CMAKE_URL="https://cmake.org/files/v3.5/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz";
-        export CMAKE_STRIP_COMPONENTS=1;
-        wget --no-check-certificate "${CMAKE_URL}" --output-document=cmake.tar.gz;
-        mkdir -p cmake-${CMAKE_VERSION};
-        tar xzf cmake.tar.gz --strip-components="${CMAKE_STRIP_COMPONENTS}" --directory cmake-${CMAKE_VERSION};
-      fi;
-      export PATH=$(readlink -f cmake-${CMAKE_VERSION}/bin):$PATH;
-    elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
+    if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
       brew update;
       if [ "${COMPILER}" = "g++-4.9" ]; then
         brew install valgrind;
