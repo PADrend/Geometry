@@ -95,6 +95,22 @@ matrix:
       osx_image: xcode8
       compiler: clang
       env: COMPILER=clang++
+    - os: osx
+      osx_image: xcode8.3
+      compiler: clang
+      env: COMPILER=clang++
+    - os: osx
+      osx_image: xcode9
+      compiler: clang
+      env: COMPILER=clang++
+    - os: osx
+      osx_image: xcode9.1
+      compiler: clang
+      env: COMPILER=clang++
+    - os: osx
+      osx_image: xcode9.2
+      compiler: clang
+      env: COMPILER=clang++
 
 cache:
   directories:
