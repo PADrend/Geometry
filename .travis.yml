@@ -89,6 +89,48 @@ matrix:
             - valgrind
             - libcppunit-dev
       env: COMPILER=clang++-3.8
+    - os: linux
+      dist: trusty
+      sudo: required
+      compiler: clang
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-trusty-3.9
+          packages:
+            - cmake
+            - clang-3.9
+            - valgrind
+            - libcppunit-dev
+      env: COMPILER=clang++-3.9
+    - os: linux
+      dist: trusty
+      sudo: required
+      compiler: clang
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-trusty-4.0
+          packages:
+            - cmake
+            - clang-4.0
+            - valgrind
+            - libcppunit-dev
+      env: COMPILER=clang++-4.0
+    - os: linux
+      dist: trusty
+      sudo: required
+      compiler: clang
+      addons:
+        apt:
+          sources:
+            - llvm-toolchain-trusty-5.0
+          packages:
+            - cmake
+            - clang-5.0
+            - valgrind
+            - libcppunit-dev
+      env: COMPILER=clang++-5.0
     - os: osx
       osx_image: xcode7.3
       compiler: gcc
