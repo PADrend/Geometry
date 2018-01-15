@@ -174,10 +174,6 @@ matrix:
       compiler: clang
       env: COMPILER=clang++
 
-cache:
-  directories:
-    - cmake-3.5.2
-
 before_install:
   -
     if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
