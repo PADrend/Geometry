@@ -61,20 +61,6 @@ matrix:
     - os: linux
       dist: trusty
       sudo: required
-      compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - cmake
-            - g++-8
-            - valgrind
-            - libcppunit-dev
-      env: COMPILER=g++-8
-    - os: linux
-      dist: trusty
-      sudo: required
       compiler: clang
       addons:
         apt:
