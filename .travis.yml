@@ -44,6 +44,19 @@ matrix:
     - os: linux
       dist: trusty
       sudo: required
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+            - valgrind
+            - libcppunit-dev
+      env: COMPILER=g++-7
+    - os: linux
+      dist: trusty
+      sudo: required
       compiler: clang
       addons:
         apt:
@@ -52,6 +65,7 @@ matrix:
             - llvm-toolchain-precise-3.6
           packages:
             - clang-3.6
+            - libstdc++-7-dev
             - valgrind
             - libcppunit-dev
       env: COMPILER=clang++-3.6
@@ -66,6 +80,7 @@ matrix:
             - llvm-toolchain-precise-3.7
           packages:
             - clang-3.7
+            - libstdc++-7-dev
             - valgrind
             - libcppunit-dev
       env: COMPILER=clang++-3.7
@@ -80,9 +95,55 @@ matrix:
             - llvm-toolchain-precise-3.8
           packages:
             - clang-3.8
+            - libstdc++-7-dev
             - valgrind
             - libcppunit-dev
       env: COMPILER=clang++-3.8
+    - os: linux
+      dist: trusty
+      sudo: required
+      compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-3.9
+          packages:
+            - clang-3.9
+            - libstdc++-7-dev
+            - valgrind
+            - libcppunit-dev
+      env: COMPILER=clang++-3.9
+    - os: linux
+      dist: trusty
+      sudo: required
+      compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-4.0
+          packages:
+            - clang-4.0
+            - libstdc++-7-dev
+            - valgrind
+            - libcppunit-dev
+      env: COMPILER=clang++-4.0
+    - os: linux
+      dist: trusty
+      sudo: required
+      compiler: clang
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-5.0
+          packages:
+            - clang-5.0
+            - libstdc++-7-dev
+            - valgrind
+            - libcppunit-dev
+      env: COMPILER=clang++-5.0
     - os: osx
       osx_image: xcode7.3
       compiler: gcc
@@ -95,24 +156,26 @@ matrix:
       osx_image: xcode8
       compiler: clang
       env: COMPILER=clang++
-
-cache:
-  directories:
-    - cmake-3.5.2
+    - os: osx
+      osx_image: xcode8.3
+      compiler: clang
+      env: COMPILER=clang++
+    - os: osx
+      osx_image: xcode9
+      compiler: clang
+      env: COMPILER=clang++
+    - os: osx
+      osx_image: xcode9.1
+      compiler: clang
+      env: COMPILER=clang++
+    - os: osx
+      osx_image: xcode9.2
+      compiler: clang
+      env: COMPILER=clang++
 
 before_install:
   -
-    if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
-      export CMAKE_VERSION=3.5.2;
-      if [ -z "$(ls -A cmake-${CMAKE_VERSION})" ]; then
-        export CMAKE_URL="https://cmake.org/files/v3.5/cmake-${CMAKE_VERSION}-Linux-x86_64.tar.gz";
-        export CMAKE_STRIP_COMPONENTS=1;
-        wget --no-check-certificate "${CMAKE_URL}" --output-document=cmake.tar.gz;
-        mkdir -p cmake-${CMAKE_VERSION};
-        tar xzf cmake.tar.gz --strip-components="${CMAKE_STRIP_COMPONENTS}" --directory cmake-${CMAKE_VERSION};
-      fi;
-      export PATH=$(readlink -f cmake-${CMAKE_VERSION}/bin):$PATH;
-    elif [ "${TRAVIS_OS_NAME}" = "osx" ]; then
+    if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
       brew update;
       if [ "${COMPILER}" = "g++-4.9" ]; then
         brew install valgrind;
