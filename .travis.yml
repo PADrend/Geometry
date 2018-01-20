@@ -5,7 +5,7 @@ language: cpp
 os: linux
 dist: trusty
 sudo: required
-compiler: gcc
+compiler: clang
 before_script: mkdir build && cd build
 script: /bin/true
 addons:
@@ -13,14 +13,13 @@ addons:
     sources:
       - ubuntu-toolchain-r-test
     packages:
-      - g++-7
-      - valgrind
+      - libstdc++-7-dev
       - libcppunit-dev
   coverity_scan:
     project:
       name: "PADrend/Geometry"
       description: "Build submitted via Travis CI"
     notification_email: benjamin@eikel.org
-    build_command_prepend: "CXX=g++-7 cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGEOMETRY_BUILD_TESTS=ON .."
-    build_command:   "make"
+    build_command_prepend: "cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGEOMETRY_BUILD_TESTS=ON .."
+    build_command:   "cmake --build ."
     branch_pattern: coverity_scan
