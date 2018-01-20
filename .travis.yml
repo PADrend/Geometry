@@ -7,7 +7,7 @@ dist: trusty
 sudo: required
 compiler: gcc
 before_script: mkdir build && cd build
-script: export CXX=g++-7
+script: /bin/true
 addons:
   apt:
     sources:
@@ -21,6 +21,6 @@ addons:
       name: "PADrend/Geometry"
       description: "Build submitted via Travis CI"
     notification_email: benjamin@eikel.org
-    build_command_prepend: "cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGEOMETRY_BUILD_TESTS=ON .."
+    build_command_prepend: "CXX=g++-7 cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -DGEOMETRY_BUILD_TESTS=ON .."
     build_command:   "make"
     branch_pattern: coverity_scan
