@@ -2,14 +2,20 @@ env:
   global:
    - secure: "j2ixQgkICLw5x+s66tSXTtxN7VXINtdut1ixtVQvO3yW32OQXYAoZLPGGC/hPKWCbfBW8CNgJDn3Yz/b7DSszHtwAPKCJKRuG62rJUQCowpuRYSf1wPAeWAHpML4iKkuVgO1mmsqwbZklYzCE/CLqNSyPK6EiW8Bnq91WwIpYyI="
 language: cpp
-cache: apt
-before_install:
- - sudo add-apt-repository --yes ppa:kalakris/cmake
- - sudo apt-get update -qq
- - sudo apt-get install -qq libcppunit-dev cmake valgrind
+os: linux
+dist: trusty
+sudo: required
+compiler: gcc
 before_script: mkdir build && cd build
-script: /bin/true
+script: export CXX=g++-7
 addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-7
+      - valgrind
+      - libcppunit-dev
   coverity_scan:
     project:
       name: "PADrend/Geometry"
