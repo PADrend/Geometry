@@ -1,14 +1,14 @@
 /*
 	This file is part of the Geometry library.
 	Copyright (C) 2011-2012 Benjamin Eikel <benjamin@eikel.org>
-	
+
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
-	You should have received a copy of the MPL along with this library; see the 
+	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "PointOctreeTest.h"
-#include <Geometry/Point.h>
-#include <Geometry/PointOctree.h>
+#include "Point.h"
+#include "PointOctree.h"
 #include <cstdint>
 #include <deque>
 #include <random>
@@ -16,9 +16,8 @@ CPPUNIT_TEST_SUITE_REGISTRATION(PointOctreeTest);
 
 struct CharPoint : public Geometry::Point<Geometry::Vec3f> {
 	char data;
-	
-	CharPoint(const Geometry::Vec3f & pos, char character) :
-			Geometry::Point<Geometry::Vec3f>(pos), data(character) {
+
+	CharPoint(const Geometry::Vec3f & pos, char character) : Geometry::Point<Geometry::Vec3f>(pos), data(character) {
 	}
 };
 
@@ -47,11 +46,11 @@ void PointOctreeTest::test() {
 			octree.collectPointsWithinSphere(Sphere_f(Vec3f(0.0f, 0.5f, 0.5f), 0.125f), points);
 			uint_fast32_t foundB = 0;
 			uint_fast32_t foundC = 0;
-			for (std::deque<CharPoint>::iterator it = points.begin(); it != points.end(); ++it) {
-				if (it->data == 'b') {
+			for (auto point : points) {
+				if (point.data == 'b') {
 					++foundB;
 				}
-				if (it->data == 'c') {
+				if (point.data == 'c') {
 					++foundC;
 				}
 			}
@@ -62,12 +61,14 @@ void PointOctreeTest::test() {
 			const float distance = std::sqrt(0.03f);
 			{
 				std::deque<CharPoint> points;
-				octree.collectPointsWithinSphere(Sphere_f(Vec3f(-0.5f, -0.5f, -0.5f), distance - std::numeric_limits<float>::epsilon()), points);
+				octree.collectPointsWithinSphere(
+						Sphere_f(Vec3f(-0.5f, -0.5f, -0.5f), distance - std::numeric_limits<float>::epsilon()), points);
 				CPPUNIT_ASSERT(points.empty());
 			}
 			{
 				std::deque<CharPoint> points;
-				octree.collectPointsWithinSphere(Sphere_f(Vec3f(-0.5f, -0.5f, -0.5f), distance + std::numeric_limits<float>::epsilon()), points);
+				octree.collectPointsWithinSphere(
+						Sphere_f(Vec3f(-0.5f, -0.5f, -0.5f), distance + std::numeric_limits<float>::epsilon()), points);
 				CPPUNIT_ASSERT_EQUAL(static_cast<std::size_t>(8), points.size());
 			}
 		}
@@ -100,8 +101,8 @@ void PointOctreeTest::test() {
 
 		std::deque<CharPoint> points;
 		octree.collectPointsWithinSphere(sphere, points);
-		for (std::deque<CharPoint>::iterator it = points.begin(); it != points.end(); ++it) {
-			CPPUNIT_ASSERT_EQUAL('i', it->data);
+		for (auto point : points) {
+			CPPUNIT_ASSERT_EQUAL('i', point.data);
 		}
 	}
 }

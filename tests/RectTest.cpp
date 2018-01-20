@@ -1,18 +1,18 @@
 /*
 	This file is part of the Geometry library.
 	Copyright (C) 2011 Benjamin Eikel <benjamin@eikel.org>
-	
+
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
-	You should have received a copy of the MPL along with this library; see the 
+	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "RectTest.h"
-#include <Geometry/Rect.h>
+#include "Rect.h"
 #include <sstream>
 #include <stdint.h>
 CPPUNIT_TEST_SUITE_REGISTRATION(RectTest);
 
-typedef Geometry::_Rect<int32_t> IntRect;
+using IntRect = Geometry::_Rect<int32_t>;
 
 void RectTest::testConstructors() {
 	CPPUNIT_ASSERT(IntRect() == IntRect(0, 0, 0, 0));
@@ -32,7 +32,7 @@ void RectTest::testOperators() {
 	CPPUNIT_ASSERT(!(IntRect(0, 0, 0, 0) == IntRect(0, 1, 0, 0)));
 	CPPUNIT_ASSERT(!(IntRect(0, 0, 0, 0) == IntRect(0, 0, 1, 0)));
 	CPPUNIT_ASSERT(!(IntRect(0, 0, 0, 0) == IntRect(0, 0, 0, 1)));
-	
+
 	CPPUNIT_ASSERT(!(IntRect() != IntRect()));
 	CPPUNIT_ASSERT(IntRect(1, 0, 0, 0) != IntRect(0, 0, 0, 0));
 	CPPUNIT_ASSERT(IntRect(0, 1, 0, 0) != IntRect(0, 0, 0, 0));
@@ -42,12 +42,12 @@ void RectTest::testOperators() {
 	CPPUNIT_ASSERT(IntRect(0, 0, 0, 0) != IntRect(0, 1, 0, 0));
 	CPPUNIT_ASSERT(IntRect(0, 0, 0, 0) != IntRect(0, 0, 1, 0));
 	CPPUNIT_ASSERT(IntRect(0, 0, 0, 0) != IntRect(0, 0, 0, 1));
-	
+
 	CPPUNIT_ASSERT(IntRect(0, 0, 0, 0) + Geometry::_Vec2<int32_t>(5, 5) == IntRect(5, 5, 0, 0));
 	CPPUNIT_ASSERT(IntRect(0, 0, 0, 0) + Geometry::_Vec2<int32_t>(-5, 5) == IntRect(-5, 5, 0, 0));
 	CPPUNIT_ASSERT(IntRect(0, 0, 0, 0) + Geometry::_Vec2<int32_t>(5, -5) == IntRect(5, -5, 0, 0));
 	CPPUNIT_ASSERT(IntRect(0, 0, 0, 0) + Geometry::_Vec2<int32_t>(-5, -5) == IntRect(-5, -5, 0, 0));
-	
+
 	CPPUNIT_ASSERT(IntRect(0, 0, 0, 0) - Geometry::_Vec2<int32_t>(5, 5) == IntRect(-5, -5, 0, 0));
 	CPPUNIT_ASSERT(IntRect(0, 0, 0, 0) - Geometry::_Vec2<int32_t>(-5, 5) == IntRect(5, -5, 0, 0));
 	CPPUNIT_ASSERT(IntRect(0, 0, 0, 0) - Geometry::_Vec2<int32_t>(5, -5) == IntRect(-5, 5, 0, 0));
@@ -58,7 +58,7 @@ void RectTest::testGetters() {
 	const IntRect rectA(5, 6, 10, 20);
 	const IntRect rectB(2, -3, 7, 2);
 	const IntRect rectC(-20, -10, 2, 5);
-	
+
 	CPPUNIT_ASSERT_EQUAL(rectA.getX(), 5);
 	CPPUNIT_ASSERT_EQUAL(rectB.getX(), 2);
 	CPPUNIT_ASSERT_EQUAL(rectC.getX(), -20);
@@ -89,7 +89,7 @@ void RectTest::testGetters() {
 	CPPUNIT_ASSERT_EQUAL(rectA.getCenter(), Geometry::_Vec2<int32_t>(10, 16));
 	CPPUNIT_ASSERT_EQUAL(rectB.getCenter(), Geometry::_Vec2<int32_t>(5, -2));
 	CPPUNIT_ASSERT_EQUAL(rectC.getCenter(), Geometry::_Vec2<int32_t>(-19, -7));
-	
+
 	CPPUNIT_ASSERT(rectA.contains(rectA.getMinX(), rectA.getMinY()));
 	CPPUNIT_ASSERT(rectA.contains(rectA.getMaxX(), rectA.getMinY()));
 	CPPUNIT_ASSERT(rectA.contains(rectA.getMinX(), rectA.getMaxY()));
@@ -102,7 +102,7 @@ void RectTest::testGetters() {
 	CPPUNIT_ASSERT(rectC.contains(rectC.getMaxX(), rectC.getMinY()));
 	CPPUNIT_ASSERT(rectC.contains(rectC.getMinX(), rectC.getMaxY()));
 	CPPUNIT_ASSERT(rectC.contains(rectC.getMaxX(), rectC.getMaxY()));
-	
+
 	CPPUNIT_ASSERT(!rectA.contains(rectA.getMinX() - 1, rectA.getMinY()));
 	CPPUNIT_ASSERT(!rectA.contains(rectA.getMinX(), rectA.getMinY() - 1));
 	CPPUNIT_ASSERT(!rectA.contains(rectA.getMaxX() + 1, rectA.getMinY()));
@@ -111,46 +111,46 @@ void RectTest::testGetters() {
 	CPPUNIT_ASSERT(!rectA.contains(rectA.getMinX(), rectA.getMaxY() + 1));
 	CPPUNIT_ASSERT(!rectA.contains(rectA.getMaxX() + 1, rectA.getMaxY()));
 	CPPUNIT_ASSERT(!rectA.contains(rectA.getMaxX(), rectA.getMaxY() + 1));
-	
+
 	CPPUNIT_ASSERT(rectA.contains(rectA));
 	CPPUNIT_ASSERT(rectB.contains(rectB));
 	CPPUNIT_ASSERT(rectC.contains(rectC));
-	
+
 	CPPUNIT_ASSERT(rectA.contains(IntRect(10, 16, 1, 1)));
 	CPPUNIT_ASSERT(rectB.contains(IntRect(5, -2, 1, 1)));
 	CPPUNIT_ASSERT(rectC.contains(IntRect(-19, -7, 1, 1)));
-	
+
 	CPPUNIT_ASSERT(!rectA.contains(IntRect(rectA.getMinX() - 1, rectA.getMinY(), rectA.getWidth(), rectA.getHeight())));
 	CPPUNIT_ASSERT(!rectA.contains(IntRect(rectA.getMinX(), rectA.getMinY() - 1, rectA.getWidth(), rectA.getHeight())));
 	CPPUNIT_ASSERT(!rectA.contains(IntRect(rectA.getMinX(), rectA.getMinY(), rectA.getWidth() + 1, rectA.getHeight())));
 	CPPUNIT_ASSERT(!rectA.contains(IntRect(rectA.getMinX(), rectA.getMinY(), rectA.getWidth(), rectA.getHeight() + 1)));
-	
+
 	CPPUNIT_ASSERT(rectA.contains(rectA.getPosition()));
 	CPPUNIT_ASSERT(rectB.contains(rectB.getPosition()));
 	CPPUNIT_ASSERT(rectC.contains(rectC.getPosition()));
-	
+
 	CPPUNIT_ASSERT(rectA.contains(rectA.getCenter()));
 	CPPUNIT_ASSERT(rectB.contains(rectB.getCenter()));
 	CPPUNIT_ASSERT(rectC.contains(rectC.getCenter()));
-	
+
 	CPPUNIT_ASSERT(!rectA.isInvalid());
 	CPPUNIT_ASSERT(!rectB.isInvalid());
 	CPPUNIT_ASSERT(!rectC.isInvalid());
-	
+
 	CPPUNIT_ASSERT(!IntRect(0, 0, 0, 0).isInvalid());
 	CPPUNIT_ASSERT(IntRect(0, 0, 0, -1).isInvalid());
 	CPPUNIT_ASSERT(IntRect(0, 0, -1, 0).isInvalid());
 	CPPUNIT_ASSERT(IntRect(0, 0, -1, -1).isInvalid());
-	
+
 	CPPUNIT_ASSERT(rectA.isValid());
 	CPPUNIT_ASSERT(rectB.isValid());
 	CPPUNIT_ASSERT(rectC.isValid());
-	
+
 	CPPUNIT_ASSERT(IntRect(0, 0, 0, 0).isValid());
 	CPPUNIT_ASSERT(!IntRect(0, 0, 0, -1).isValid());
 	CPPUNIT_ASSERT(!IntRect(0, 0, -1, 0).isValid());
 	CPPUNIT_ASSERT(!IntRect(0, 0, -1, -1).isValid());
-	
+
 	CPPUNIT_ASSERT(IntRect().intersects(IntRect()));
 	CPPUNIT_ASSERT(IntRect(0, 0, 10, 10).intersects(IntRect(5, 5, 1, 1)));
 	CPPUNIT_ASSERT(IntRect(0, 0, 10, 10).intersects(IntRect(10, 10, 1, 1)));
@@ -182,38 +182,38 @@ void RectTest::testSetters() {
 	CPPUNIT_ASSERT(rect == IntRect(9, 10, 1, 4));
 	rect.setHeight(2);
 	CPPUNIT_ASSERT(rect == IntRect(9, 10, 1, 2));
-	
+
 	CPPUNIT_ASSERT(rect.isValid());
 	rect.invalidate();
 	CPPUNIT_ASSERT(rect.isInvalid());
-	
+
 	rect.setSize(11, 12);
 	CPPUNIT_ASSERT(rect == IntRect(9, 10, 11, 12));
-	
+
 	rect.moveRel(-1, -3);
 	CPPUNIT_ASSERT(rect == IntRect(8, 7, 11, 12));
-	
+
 	rect.moveRel(Geometry::_Vec2<int32_t>(-1, -3));
 	CPPUNIT_ASSERT(rect == IntRect(7, 4, 11, 12));
-	
+
 	rect += Geometry::_Vec2<int32_t>(1, 3);
 	CPPUNIT_ASSERT(rect == IntRect(8, 7, 11, 12));
-	
+
 	rect -= Geometry::_Vec2<int32_t>(1, 3);
 	CPPUNIT_ASSERT(rect == IntRect(7, 4, 11, 12));
-	
+
 	rect.changeSize(5, 6);
 	CPPUNIT_ASSERT(rect == IntRect(7, 4, 16, 18));
-	
+
 	rect.changeSize(Geometry::_Vec2<int32_t>(-5, -3));
 	CPPUNIT_ASSERT(rect == IntRect(7, 4, 11, 15));
-	
+
 	rect.changeSizeCentered(2, 4);
 	CPPUNIT_ASSERT(rect == IntRect(6, 2, 13, 19));
-       
-    rect.changeSizeCentered(Geometry::_Vec2<int32_t>(6, 8));
+
+	rect.changeSizeCentered(Geometry::_Vec2<int32_t>(6, 8));
 	CPPUNIT_ASSERT(rect == IntRect(3, -2, 19, 27));
-	
+
 	CPPUNIT_ASSERT(IntRect(17, 25, -5, 0).include(2, 3) == IntRect(2, 3, 0, 0));
 	CPPUNIT_ASSERT(IntRect(17, 25, 3, 4).include(17, 25) == IntRect(17, 25, 3, 4));
 	CPPUNIT_ASSERT(IntRect(17, 25, 3, 4).include(16, 25) == IntRect(16, 25, 4, 4));
@@ -221,7 +221,7 @@ void RectTest::testSetters() {
 	CPPUNIT_ASSERT(IntRect(17, 25, 3, 4).include(17, 24) == IntRect(17, 24, 3, 5));
 	CPPUNIT_ASSERT(IntRect(17, 25, 3, 4).include(17, 30) == IntRect(17, 25, 3, 5));
 	CPPUNIT_ASSERT(IntRect(17, 25, 3, 4).include(Geometry::_Vec2<int32_t>(-1, -1)) == IntRect(-1, -1, 21, 30));
-	
+
 	CPPUNIT_ASSERT(IntRect(17, 25, -5, 0).include(IntRect(17, 25, 3, 4)) == IntRect(17, 25, 3, 4));
 	CPPUNIT_ASSERT(IntRect(17, 25, 3, 4).include(IntRect(17, 25, -5, 0)) == IntRect(17, 25, 3, 4));
 	CPPUNIT_ASSERT(IntRect(17, 25, 3, 4).include(IntRect(16, 24, 4, 5)) == IntRect(16, 24, 4, 5));
@@ -235,19 +235,19 @@ void RectTest::testSetters() {
 
 void RectTest::testSerialization() {
 	std::stringstream stream;
-	for(int_fast32_t x = -10; x <= 10; ++x) {
-		for(int_fast32_t y = -10; y <= 10; ++y) {
-			for(int_fast32_t width = 0; width <= 10; ++width) {
-				for(int_fast32_t height = 0; height <= 10; ++height) {
+	for (int_fast32_t x = -10; x <= 10; ++x) {
+		for (int_fast32_t y = -10; y <= 10; ++y) {
+			for (int_fast32_t width = 0; width <= 10; ++width) {
+				for (int_fast32_t height = 0; height <= 10; ++height) {
 					stream << IntRect(x, y, width, height) << ' ';
 				}
 			}
 		}
 	}
-	for(int_fast32_t x = -10; x <= 10; ++x) {
-		for(int_fast32_t y = -10; y <= 10; ++y) {
-			for(int_fast32_t width = 0; width <= 10; ++width) {
-				for(int_fast32_t height = 0; height <= 10; ++height) {
+	for (int_fast32_t x = -10; x <= 10; ++x) {
+		for (int_fast32_t y = -10; y <= 10; ++y) {
+			for (int_fast32_t width = 0; width <= 10; ++width) {
+				for (int_fast32_t height = 0; height <= 10; ++height) {
 					IntRect rect;
 					stream >> rect;
 					CPPUNIT_ASSERT(rect == IntRect(x, y, width, height));

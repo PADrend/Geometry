@@ -1,18 +1,18 @@
 /*
 	This file is part of the Geometry library.
 	Copyright (C) 2010-2013 Benjamin Eikel <benjamin@eikel.org>
-	
+
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
-	You should have received a copy of the MPL along with this library; see the 
+	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "BoxTest.h"
-#include <Geometry/Box.h>
-#include <Geometry/BoxHelper.h>
-#include <Geometry/BoxIntersection.h>
-#include <Geometry/Definitions.h>
-#include <Geometry/Matrix4x4.h>
-#include <Geometry/Triangle.h>
+#include "Box.h"
+#include "BoxHelper.h"
+#include "BoxIntersection.h"
+#include "Definitions.h"
+#include "Matrix4x4.h"
+#include "Triangle.h"
 #include <sstream>
 CPPUNIT_TEST_SUITE_REGISTRATION(BoxTest);
 
@@ -29,7 +29,8 @@ void BoxTest::testOperators() {
 	CPPUNIT_ASSERT(Geometry::Box() == Geometry::Box());
 	CPPUNIT_ASSERT(Geometry::Box(b1) == Geometry::Box(b1));
 	CPPUNIT_ASSERT(Geometry::Box() == Geometry::Box(-0.0f, 0.0f, -0.0f, 0.0f, -0.0f, 0.0f));
-	CPPUNIT_ASSERT(Geometry::Box(Geometry::Vec3(0.5f, 0.5f, 0.5f), 1.0f) == Geometry::Box(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f));
+	CPPUNIT_ASSERT(Geometry::Box(Geometry::Vec3(0.5f, 0.5f, 0.5f), 1.0f)
+				   == Geometry::Box(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f));
 	CPPUNIT_ASSERT(Geometry::Box(Geometry::Vec3(0.0f, 0.0f, 0.0f), 2.0f, 4.0f, 6.0f) == b1);
 	CPPUNIT_ASSERT(Geometry::Box(Geometry::Vec3(-1.0f, -2.0f, -3.0f), Geometry::Vec3(1.0f, 2.0f, 3.0f)) == b1);
 }
@@ -39,28 +40,28 @@ void BoxTest::testGetters() {
 	const Geometry::Box b2;
 
 	CPPUNIT_ASSERT(b1.getMaxX() == 1.0f);
-	CPPUNIT_ASSERT(b1.getMax(Geometry::X_DIMENSION) == 1.0f);
+	CPPUNIT_ASSERT(b1.getMax(Geometry::dimension_t::X) == 1.0f);
 	CPPUNIT_ASSERT(b1.getMaxY() == 2.0f);
-	CPPUNIT_ASSERT(b1.getMax(Geometry::Y_DIMENSION) == 2.0f);
+	CPPUNIT_ASSERT(b1.getMax(Geometry::dimension_t::Y) == 2.0f);
 	CPPUNIT_ASSERT(b1.getMaxZ() == 3.0f);
-	CPPUNIT_ASSERT(b1.getMax(Geometry::Z_DIMENSION) == 3.0f);
+	CPPUNIT_ASSERT(b1.getMax(Geometry::dimension_t::Z) == 3.0f);
 
 	CPPUNIT_ASSERT(b1.getMinX() == -1.0f);
-	CPPUNIT_ASSERT(b1.getMin(Geometry::X_DIMENSION) == -1.0f);
+	CPPUNIT_ASSERT(b1.getMin(Geometry::dimension_t::X) == -1.0f);
 	CPPUNIT_ASSERT(b1.getMinY() == -2.0f);
-	CPPUNIT_ASSERT(b1.getMin(Geometry::Y_DIMENSION) == -2.0f);
+	CPPUNIT_ASSERT(b1.getMin(Geometry::dimension_t::Y) == -2.0f);
 	CPPUNIT_ASSERT(b1.getMinZ() == -3.0f);
-	CPPUNIT_ASSERT(b1.getMin(Geometry::Z_DIMENSION) == -3.0f);
+	CPPUNIT_ASSERT(b1.getMin(Geometry::dimension_t::Z) == -3.0f);
 
 	CPPUNIT_ASSERT(b1.getExtentMax() == 6.0f);
 	CPPUNIT_ASSERT(b1.getExtentMin() == 2.0f);
 
 	CPPUNIT_ASSERT(b1.getExtentX() == 2.0f);
-	CPPUNIT_ASSERT(b1.getExtent(Geometry::X_DIMENSION) == 2.0f);
+	CPPUNIT_ASSERT(b1.getExtent(Geometry::dimension_t::X) == 2.0f);
 	CPPUNIT_ASSERT(b1.getExtentY() == 4.0f);
-	CPPUNIT_ASSERT(b1.getExtent(Geometry::Y_DIMENSION) == 4.0f);
+	CPPUNIT_ASSERT(b1.getExtent(Geometry::dimension_t::Y) == 4.0f);
 	CPPUNIT_ASSERT(b1.getExtentZ() == 6.0f);
-	CPPUNIT_ASSERT(b1.getExtent(Geometry::Z_DIMENSION) == 6.0f);
+	CPPUNIT_ASSERT(b1.getExtent(Geometry::dimension_t::Z) == 6.0f);
 
 	CPPUNIT_ASSERT(b1.getVolume() == 48.0f);
 	CPPUNIT_ASSERT(b1.getSurfaceArea() == 88.0f);
@@ -81,12 +82,12 @@ void BoxTest::testSetters() {
 	b2.setMaxZ(3.0f);
 	CPPUNIT_ASSERT(b2 == b1);
 
-	b2.setMin(Geometry::X_DIMENSION, -1.0f);
-	b2.setMax(Geometry::X_DIMENSION, 1.0f);
-	b2.setMin(Geometry::Y_DIMENSION, -2.0f);
-	b2.setMax(Geometry::Y_DIMENSION, 2.0f);
-	b2.setMin(Geometry::Z_DIMENSION, -3.0f);
-	b2.setMax(Geometry::Z_DIMENSION, 3.0f);
+	b2.setMin(Geometry::dimension_t::X, -1.0f);
+	b2.setMax(Geometry::dimension_t::X, 1.0f);
+	b2.setMin(Geometry::dimension_t::Y, -2.0f);
+	b2.setMax(Geometry::dimension_t::Y, 2.0f);
+	b2.setMin(Geometry::dimension_t::Z, -3.0f);
+	b2.setMax(Geometry::dimension_t::Z, 3.0f);
 	CPPUNIT_ASSERT(b2 == b1);
 
 	b2.set(-1.0f, 1.0f, -2.0f, 2.0f, -3.0f, 3.0f);
@@ -158,35 +159,35 @@ void BoxTest::testMisc() {
 	b2.invalidate();
 	CPPUNIT_ASSERT(b2.isInvalid());
 
-	CPPUNIT_ASSERT(b1.getCorner(Geometry::CORNER_xyz) == Geometry::Vec3(b1.getMinX(), b1.getMinY(), b1.getMinZ()));
-	CPPUNIT_ASSERT(b1.getCorner(Geometry::CORNER_Xyz) == Geometry::Vec3(b1.getMaxX(), b1.getMinY(), b1.getMinZ()));
-	CPPUNIT_ASSERT(b1.getCorner(Geometry::CORNER_xYz) == Geometry::Vec3(b1.getMinX(), b1.getMaxY(), b1.getMinZ()));
-	CPPUNIT_ASSERT(b1.getCorner(Geometry::CORNER_XYz) == Geometry::Vec3(b1.getMaxX(), b1.getMaxY(), b1.getMinZ()));
-	CPPUNIT_ASSERT(b1.getCorner(Geometry::CORNER_xyZ) == Geometry::Vec3(b1.getMinX(), b1.getMinY(), b1.getMaxZ()));
-	CPPUNIT_ASSERT(b1.getCorner(Geometry::CORNER_XyZ) == Geometry::Vec3(b1.getMaxX(), b1.getMinY(), b1.getMaxZ()));
-	CPPUNIT_ASSERT(b1.getCorner(Geometry::CORNER_xYZ) == Geometry::Vec3(b1.getMinX(), b1.getMaxY(), b1.getMaxZ()));
-	CPPUNIT_ASSERT(b1.getCorner(Geometry::CORNER_XYZ) == Geometry::Vec3(b1.getMaxX(), b1.getMaxY(), b1.getMaxZ()));
+	CPPUNIT_ASSERT(b1.getCorner(Geometry::corner_t::xyz) == Geometry::Vec3(b1.getMinX(), b1.getMinY(), b1.getMinZ()));
+	CPPUNIT_ASSERT(b1.getCorner(Geometry::corner_t::Xyz) == Geometry::Vec3(b1.getMaxX(), b1.getMinY(), b1.getMinZ()));
+	CPPUNIT_ASSERT(b1.getCorner(Geometry::corner_t::xYz) == Geometry::Vec3(b1.getMinX(), b1.getMaxY(), b1.getMinZ()));
+	CPPUNIT_ASSERT(b1.getCorner(Geometry::corner_t::XYz) == Geometry::Vec3(b1.getMaxX(), b1.getMaxY(), b1.getMinZ()));
+	CPPUNIT_ASSERT(b1.getCorner(Geometry::corner_t::xyZ) == Geometry::Vec3(b1.getMinX(), b1.getMinY(), b1.getMaxZ()));
+	CPPUNIT_ASSERT(b1.getCorner(Geometry::corner_t::XyZ) == Geometry::Vec3(b1.getMaxX(), b1.getMinY(), b1.getMaxZ()));
+	CPPUNIT_ASSERT(b1.getCorner(Geometry::corner_t::xYZ) == Geometry::Vec3(b1.getMinX(), b1.getMaxY(), b1.getMaxZ()));
+	CPPUNIT_ASSERT(b1.getCorner(Geometry::corner_t::XYZ) == Geometry::Vec3(b1.getMaxX(), b1.getMaxY(), b1.getMaxZ()));
 
-	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::CORNER_xyz) == Geometry::CORNER_XYZ);
-	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::CORNER_Xyz) == Geometry::CORNER_xYZ);
-	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::CORNER_xYz) == Geometry::CORNER_XyZ);
-	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::CORNER_XYz) == Geometry::CORNER_xyZ);
-	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::CORNER_xyZ) == Geometry::CORNER_XYz);
-	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::CORNER_XyZ) == Geometry::CORNER_xYz);
-	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::CORNER_xYZ) == Geometry::CORNER_Xyz);
-	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::CORNER_XYZ) == Geometry::CORNER_xyz);
+	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::corner_t::xyz) == Geometry::corner_t::XYZ);
+	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::corner_t::Xyz) == Geometry::corner_t::xYZ);
+	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::corner_t::xYz) == Geometry::corner_t::XyZ);
+	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::corner_t::XYz) == Geometry::corner_t::xyZ);
+	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::corner_t::xyZ) == Geometry::corner_t::XYz);
+	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::corner_t::XyZ) == Geometry::corner_t::xYz);
+	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::corner_t::xYZ) == Geometry::corner_t::Xyz);
+	CPPUNIT_ASSERT(Geometry::Box::getOppositeCorner(Geometry::corner_t::XYZ) == Geometry::corner_t::xyz);
 
-	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::SIDE_X_NEG) == Geometry::Vec3(-1.0f, 0.0f, 0.0f));
-	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::SIDE_X_POS) == Geometry::Vec3(1.0f, 0.0f, 0.0f));
-	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::SIDE_Y_NEG) == Geometry::Vec3(0.0f, -1.0f, 0.0f));
-	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::SIDE_Y_POS) == Geometry::Vec3(0.0f, 1.0f, 0.0f));
-	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::SIDE_Z_NEG) == Geometry::Vec3(0.0f, 0.0f, -1.0f));
-	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::SIDE_Z_POS) == Geometry::Vec3(0.0f, 0.0f, 1.0f));
+	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::side_t::X_NEG) == Geometry::Vec3(-1.0f, 0.0f, 0.0f));
+	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::side_t::X_POS) == Geometry::Vec3(1.0f, 0.0f, 0.0f));
+	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::side_t::Y_NEG) == Geometry::Vec3(0.0f, -1.0f, 0.0f));
+	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::side_t::Y_POS) == Geometry::Vec3(0.0f, 1.0f, 0.0f));
+	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::side_t::Z_NEG) == Geometry::Vec3(0.0f, 0.0f, -1.0f));
+	CPPUNIT_ASSERT(Geometry::Helper::getNormal(Geometry::side_t::Z_POS) == Geometry::Vec3(0.0f, 0.0f, 1.0f));
 
-	for(uint_fast8_t s = 0; s < 6; ++s) {
+	for (uint_fast8_t s = 0; s < 6; ++s) {
 		const Geometry::side_t side = static_cast<const Geometry::side_t>(s);
 		const Geometry::corner_t * corners = Geometry::Helper::getCornerIndices(side);
-		for(uint_fast8_t i = 0; i < 4; ++i) {
+		for (uint_fast8_t i = 0; i < 4; ++i) {
 			const uint_fast8_t prevCorner = i % 4;
 			const uint_fast8_t currentCorner = (i + 1) % 4;
 			const uint_fast8_t nextCorner = (i + 2) % 4;
@@ -208,30 +209,34 @@ void BoxTest::testMisc() {
 	CPPUNIT_ASSERT(b1.contains(v2));
 	CPPUNIT_ASSERT(!b1.contains(v3));
 
-	CPPUNIT_ASSERT(Geometry::Intersection::isBoxIntersectingTriangle(b1, Geometry::Triangle<Geometry::Vec3>(v1, v2, v3)));
+	CPPUNIT_ASSERT(
+			Geometry::Intersection::isBoxIntersectingTriangle(b1, Geometry::Triangle<Geometry::Vec3>(v1, v2, v3)));
 
 	CPPUNIT_ASSERT(b1.contains(Geometry::Box()));
 	CPPUNIT_ASSERT(b1.contains(b1));
 	CPPUNIT_ASSERT(!b1.contains(Geometry::Box(-1.1f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f)));
 
-	CPPUNIT_ASSERT(Geometry::Intersection::isBoxIntersectingBox(Geometry::Box(0, 1,   0, 1,   0, 1),
-																Geometry::Box(0, 1,   0, 1,   0, 1)));
-	CPPUNIT_ASSERT(!Geometry::Intersection::isBoxIntersectingBox(Geometry::Box(0, 1,   0, 1,   0, 1),
-																 Geometry::Box(2, 3,   2, 3,   2, 3)));
-	CPPUNIT_ASSERT(!Geometry::Intersection::isBoxIntersectingBox(Geometry::Box(0, 1,   0, 1,   0, 1),
-																 Geometry::Box(0, 3,   2, 3,   2, 3)));
-	CPPUNIT_ASSERT(!Geometry::Intersection::isBoxIntersectingBox(Geometry::Box(0, 1,   0, 1,   0, 1),
-																 Geometry::Box(2, 3,   0, 3,   2, 3)));
-	CPPUNIT_ASSERT(!Geometry::Intersection::isBoxIntersectingBox(Geometry::Box(0, 1,   0, 1,   0, 1),
-																 Geometry::Box(2, 3,   2, 3,   0, 3)));
-	CPPUNIT_ASSERT(Geometry::Intersection::isBoxIntersectingBox(Geometry::Box(0, 1,   0, 1,   0, 1),
-																Geometry::Box(-1, 2,   -1, 2,   -1, 2)));
+	CPPUNIT_ASSERT(Geometry::Intersection::isBoxIntersectingBox(Geometry::Box(0, 1, 0, 1, 0, 1),
+																Geometry::Box(0, 1, 0, 1, 0, 1)));
+	CPPUNIT_ASSERT(!Geometry::Intersection::isBoxIntersectingBox(Geometry::Box(0, 1, 0, 1, 0, 1),
+																 Geometry::Box(2, 3, 2, 3, 2, 3)));
+	CPPUNIT_ASSERT(!Geometry::Intersection::isBoxIntersectingBox(Geometry::Box(0, 1, 0, 1, 0, 1),
+																 Geometry::Box(0, 3, 2, 3, 2, 3)));
+	CPPUNIT_ASSERT(!Geometry::Intersection::isBoxIntersectingBox(Geometry::Box(0, 1, 0, 1, 0, 1),
+																 Geometry::Box(2, 3, 0, 3, 2, 3)));
+	CPPUNIT_ASSERT(!Geometry::Intersection::isBoxIntersectingBox(Geometry::Box(0, 1, 0, 1, 0, 1),
+																 Geometry::Box(2, 3, 2, 3, 0, 3)));
+	CPPUNIT_ASSERT(Geometry::Intersection::isBoxIntersectingBox(Geometry::Box(0, 1, 0, 1, 0, 1),
+																Geometry::Box(-1, 2, -1, 2, -1, 2)));
 
-	CPPUNIT_ASSERT(Geometry::Intersection::isBoxIntersectingBox(b1, Geometry::Box(-1.1f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f)));
-	CPPUNIT_ASSERT(!Geometry::Intersection::isBoxIntersectingBox(b1, Geometry::Box(-1.1f, -1.0f, -2.1f, -2.0f, -3.0f, -3.0f)));
+	CPPUNIT_ASSERT(
+			Geometry::Intersection::isBoxIntersectingBox(b1, Geometry::Box(-1.1f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f)));
+	CPPUNIT_ASSERT(
+			!Geometry::Intersection::isBoxIntersectingBox(b1, Geometry::Box(-1.1f, -1.0f, -2.1f, -2.0f, -3.0f, -3.0f)));
 	b2 = Geometry::Box(0.5f, 1.5f, 1.5f, 2.5f, 2.5f, 3.5f);
 	CPPUNIT_ASSERT(Geometry::Intersection::isBoxIntersectingBox(b1, b2));
-	CPPUNIT_ASSERT(Geometry::Intersection::getBoxBoxIntersection(b1, b2) == Geometry::Box(0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f));
+	CPPUNIT_ASSERT(Geometry::Intersection::getBoxBoxIntersection(b1, b2)
+				   == Geometry::Box(0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f));
 
 	CPPUNIT_ASSERT(b1.getDistance(Geometry::Vec3(-2.0f, 0.0f, 0.0f)) == 1.0f);
 	CPPUNIT_ASSERT(b1.getDistance(Geometry::Vec3(2.0f, 0.0f, 0.0f)) == 1.0f);
@@ -253,12 +258,12 @@ void BoxTest::testSerialization() {
 	std::stringstream stream;
 	stream << b1 << ' ';
 	stream << b2;
-	
+
 	Geometry::Box b1Copy;
 	stream >> b1Copy;
 	Geometry::Box b2Copy;
 	stream >> b2Copy;
-	
+
 	CPPUNIT_ASSERT(b1 == b1Copy);
 	CPPUNIT_ASSERT(b2 == b2Copy);
 }

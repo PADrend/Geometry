@@ -3,9 +3,9 @@
 	Copyright (C) 2007-2012 Benjamin Eikel <benjamin@eikel.org>
 	Copyright (C) 2007-2012 Claudius Jähn <claudius@uni-paderborn.de>
 	Copyright (C) 2007-2012 Ralf Petring <ralf@petring.net>
-	
+
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
-	You should have received a copy of the MPL along with this library; see the 
+	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #include "BoundingSphere.h"
@@ -30,10 +30,8 @@ namespace BoundingSphere {
  * @param point %Point to calculate the excess for
  * @return Excess of the point
  */
-template<typename _T>
-static _T calcExcess(const _Vec3<_T> & center,
-			  _T radiusSquared,
-			  const _Vec3<_T> & point) {
+template <typename _T>
+static _T calcExcess(const _Vec3<_T> & center, _T radiusSquared, const _Vec3<_T> & point) {
 	return point.distanceSquared(center) - radiusSquared;
 }
 
@@ -49,16 +47,14 @@ static _T calcExcess(const _Vec3<_T> & center,
  * @param last Ending of the range of points
  * @return Pair containing the maximum excess and an iterator pointing to the element with maximum excess
  */
-template<typename InputIterator, typename _T>
-static std::pair<_T, InputIterator> calcMaxExcess(const _Vec3<_T> & center,
-		_T radiusSquared,
-		InputIterator first,
-		InputIterator last) {
+template <typename InputIterator, typename _T>
+static std::pair<_T, InputIterator> calcMaxExcess(const _Vec3<_T> & center, _T radiusSquared, InputIterator first,
+												  InputIterator last) {
 	_T maxExcess = std::numeric_limits<_T>::lowest();
 	InputIterator result;
-	for(; first != last; ++first) {
+	for (; first != last; ++first) {
 		const _T excess = calcExcess(center, radiusSquared, *first);
-		if(excess > maxExcess) {
+		if (excess > maxExcess) {
 			maxExcess = excess;
 			result = first;
 		}
@@ -72,9 +68,8 @@ static std::pair<_T, InputIterator> calcMaxExcess(const _Vec3<_T> & center,
  * @param points Container holding points
  * @param point %Point that is to be moved to the front
  */
-template<typename Container>
-static void moveToFront(Container & points,
-				 typename Container::iterator point) {
+template <typename Container>
+static void moveToFront(Container & points, typename Container::const_iterator point) {
 	points.emplace_front(*point);
 	points.erase(point);
 }
@@ -85,7 +80,7 @@ static void moveToFront(Container & points,
  *
  * @see Section 4 on Page 329 and Page 335
  */
-template<typename _T>
+template <typename _T>
 struct PrimitiveOperationData {
 	_T z;
 	_Vec3<_T> v;
@@ -97,13 +92,13 @@ struct PrimitiveOperationData {
 /**
  * Storage of data that is needed during the execution of the algorithm.
  */
-template<typename Container, typename _T>
+template <typename Container, typename _T>
 struct AlgorithmData {
 	//! Stack of miniball data calculated by mbBar()
 	std::vector<PrimitiveOperationData<_T>> stack;
 
 	//! End of the support set (see Page 327)
-	typename Container::iterator s;
+	typename Container::const_iterator s;
 
 	//! Cache for the lastest valid center of the sphere
 	_Vec3<_T> center;
@@ -120,9 +115,9 @@ struct AlgorithmData {
  * @param data Data containing the result for \f$\overline{\texttt{mb}}(B)\f$
  * @return @c false if and only if the push operation should be rejected (see Equation 12 on Page 332)
  */
-template<typename Container, typename _T>
+template <typename Container, typename _T>
 static bool mbBar(const _Vec3<_T> & point, AlgorithmData<Container, _T> & data) {
-	if(data.stack.empty()) {
+	if (data.stack.empty()) {
 		PrimitiveOperationData<_T> stackItem;
 		stackItem.center = point;
 		stackItem.radiusSquared = 0;
@@ -138,12 +133,12 @@ static bool mbBar(const _Vec3<_T> & point, AlgorithmData<Container, _T> & data) 
 
 		// Page 334: \alpha_{m,i} = (2 / z_i) * (Q_i - \bar{Q}_i)^T * Q_m   i < m
 		_Vec3<_T> alpha;
-		for(size_t i = 1; i < m; ++i) {
+		for (size_t i = 1; i < m; ++i) {
 			alpha[i] = (2 / data.stack[i].z) * data.stack[i].v.dot(current.v);
 		}
 
 		// Page 335: Store vector Q_m - \bar{Q}_m
-		for(size_t i = 1; i < m; ++i) {
+		for (size_t i = 1; i < m; ++i) {
 			current.v -= data.stack[i].v * alpha[i];
 		}
 
@@ -153,7 +148,7 @@ static bool mbBar(const _Vec3<_T> & point, AlgorithmData<Container, _T> & data) 
 
 		// Equation 12: Ignore push if z / r^2_{curr} < \epsilon
 		const _T epsilon = 1.0e-32;
-		if(current.z < epsilon * prev.radiusSquared) {
+		if (current.z < epsilon * prev.radiusSquared) {
 			return false;
 		}
 
@@ -179,25 +174,24 @@ static bool mbBar(const _Vec3<_T> & point, AlgorithmData<Container, _T> & data) 
  *
  * @see Algorithm 1 on Page 327
  */
-template<typename Container, typename _T>
-static void mtf_mb(Container & points,
-			typename Container::const_iterator endPoint,
-			AlgorithmData<Container, _T> & data) {
+template <typename Container, typename _T>
+static void mtf_mb(Container & points, typename Container::const_iterator endPoint,
+				   AlgorithmData<Container, _T> & data) {
 	// Support set is empty
-	data.s = points.begin();
+	data.s = points.cbegin();
 
-	if(data.stack.size() == 4) {
+	if (data.stack.size() == 4) {
 		return;
 	}
-	for(auto it = points.begin(); it != endPoint;) {
+	for (auto it = points.cbegin(); it != endPoint;) {
 		auto i = it++;
 		// Check if *i is outside of the sphere
-		if(calcExcess(data.center, data.radiusSquared, *i) > 0) {
-			if(mbBar(*i, data)) {
+		if (calcExcess(data.center, data.radiusSquared, *i) > 0) {
+			if (mbBar(*i, data)) {
 				mtf_mb(points, i, data);
 				data.stack.pop_back();
 				// If i is the end of the support set, the support set is increased by one
-				if(data.s == i) {
+				if (data.s == i) {
 					++data.s;
 				}
 				moveToFront(points, i);
@@ -211,7 +205,7 @@ static void mtf_mb(Container & points,
  *
  * @see Algorithm 2 on Page 328
  */
-template<typename Container, typename _T>
+template <typename Container, typename _T>
 static _Sphere<_T> pivot_mb(Container & points) {
 	AlgorithmData<Container, _T> data;
 
@@ -221,18 +215,18 @@ static _Sphere<_T> pivot_mb(Container & points) {
 	data.radiusSquared = std::numeric_limits<_T>::lowest();
 
 	// t := 1
-	auto t = std::next(points.begin());
+	auto t = std::next(points.cbegin());
 	mtf_mb(points, t, data);
 	_T maxExcess;
 	_T oldRadiusSquared = std::numeric_limits<_T>::lowest();
 	do {
 		// Use t as beginning of range, to make sure k > t
-		auto pair = calcMaxExcess(data.center, data.radiusSquared, t, points.end());
+		auto pair = calcMaxExcess(data.center, data.radiusSquared, t, points.cend());
 		maxExcess = pair.first;
 		const auto & k = pair.second;
-		if(maxExcess > 0) {
+		if (maxExcess > 0) {
 			t = data.s;
-			if(t == k) {
+			if (t == k) {
 				std::advance(t, 1);
 			}
 			oldRadiusSquared = data.radiusSquared;
@@ -241,12 +235,12 @@ static _Sphere<_T> pivot_mb(Container & points) {
 			data.stack.pop_back();
 
 			// If k is the end of the support set, the support set is increased by one
-			if(data.s == k) {
+			if (data.s == k) {
 				++data.s;
 			}
 			moveToFront(points, k);
 		}
-	} while(maxExcess > 0 && data.radiusSquared > oldRadiusSquared);
+	} while (maxExcess > 0 && data.radiusSquared > oldRadiusSquared);
 	return _Sphere<_T>(data.center, std::sqrt(data.radiusSquared));
 }
 
@@ -270,7 +264,7 @@ Sphere_f computeMiniball(const std::vector<Vec3f> & points) {
 	// Use a list here, because firstly the original algorithm suggests it,
 	// and secondly moving an element to the front is fastest for a list.
 	std::list<Vec3d> pointList;
-	for(const auto & p : points) {
+	for (const auto & p : points) {
 		pointList.emplace_back(p);
 	}
 
@@ -280,7 +274,7 @@ Sphere_f computeMiniball(const std::vector<Vec3f> & points) {
 /**
  * Project all points from a range onto a normal and identifiy the points with
  * the extremal projected values.
- * 
+ *
  * @tparam value_t Value type (e.g. float, double)
  * @tparam iterator_t Iterator type for points
  * @tparam nx X coordinate value of the normal
@@ -291,28 +285,22 @@ Sphere_f computeMiniball(const std::vector<Vec3f> & points) {
  * @param indices Array of iterators to which two iterators pointing to the
  * extremal points will be added
  */
-template<typename value_t,
-		 typename iterator_t,
-		 int nx, int ny, int nz>
-inline static void projectToNormal(iterator_t first,
-								   const iterator_t & last,
-								   std::vector<iterator_t> & indices) {
+template <typename value_t, typename iterator_t, int nx, int ny, int nz>
+inline static void projectToNormal(iterator_t first, const iterator_t & last, std::vector<iterator_t> & indices) {
 	auto minValue = std::numeric_limits<value_t>::max();
 	auto minPoint = last;
 	auto maxValue = std::numeric_limits<value_t>::lowest();
 	auto maxPoint = last;
 
-	for(; first != last; ++first) {
+	for (; first != last; ++first) {
 		const auto & point = *first;
 		// Project point onto normal
-		const auto projection = nx * point.getX() +
-								ny * point.getY() +
-								nz * point.getZ();
-		if(projection < minValue) {
+		const auto projection = nx * point.getX() + ny * point.getY() + nz * point.getZ();
+		if (projection < minValue) {
 			minValue = projection;
 			minPoint = first;
 		}
-		if(projection > maxValue) {
+		if (projection > maxValue) {
 			maxValue = projection;
 			maxPoint = first;
 		}
@@ -321,9 +309,9 @@ inline static void projectToNormal(iterator_t first,
 	indices.emplace_back(maxPoint);
 }
 
-template<size_t numNormals>
+template <size_t numNormals>
 std::list<Vec3d> findExtremalPoints(const std::vector<Vec3f> & points) {
-	typedef std::vector<Vec3f>::const_iterator it_t;
+	using it_t = std::vector<Vec3f>::const_iterator;
 
 	std::vector<it_t> extremalIndices;
 	extremalIndices.reserve(2 * numNormals);
@@ -333,14 +321,14 @@ std::list<Vec3d> findExtremalPoints(const std::vector<Vec3f> & points) {
 	projectToNormal<float, it_t, 1, 0, 0>(points.cbegin(), points.cend(), extremalIndices);
 	projectToNormal<float, it_t, 0, 1, 0>(points.cbegin(), points.cend(), extremalIndices);
 	projectToNormal<float, it_t, 0, 0, 1>(points.cbegin(), points.cend(), extremalIndices);
-	if(numNormals > 3) {
+	if (numNormals > 3) {
 		// type 1 1 1
 		projectToNormal<float, it_t, 1, 1, 1>(points.cbegin(), points.cend(), extremalIndices);
 		projectToNormal<float, it_t, 1, 1, -1>(points.cbegin(), points.cend(), extremalIndices);
 		projectToNormal<float, it_t, 1, -1, 1>(points.cbegin(), points.cend(), extremalIndices);
 		projectToNormal<float, it_t, 1, -1, -1>(points.cbegin(), points.cend(), extremalIndices);
 	}
-	if(numNormals > 7) {
+	if (numNormals > 7) {
 		// type 0 1 1
 		projectToNormal<float, it_t, 1, 1, 0>(points.cbegin(), points.cend(), extremalIndices);
 		projectToNormal<float, it_t, 1, -1, 0>(points.cbegin(), points.cend(), extremalIndices);
@@ -349,7 +337,7 @@ std::list<Vec3d> findExtremalPoints(const std::vector<Vec3f> & points) {
 		projectToNormal<float, it_t, 0, 1, 1>(points.cbegin(), points.cend(), extremalIndices);
 		projectToNormal<float, it_t, 0, 1, -1>(points.cbegin(), points.cend(), extremalIndices);
 	}
-	if(numNormals > 13) {
+	if (numNormals > 13) {
 		// type 0 1 2
 		projectToNormal<float, it_t, 0, 1, 2>(points.cbegin(), points.cend(), extremalIndices);
 		projectToNormal<float, it_t, 0, 2, 1>(points.cbegin(), points.cend(), extremalIndices);
@@ -393,24 +381,23 @@ std::list<Vec3d> findExtremalPoints(const std::vector<Vec3f> & points) {
 
 	// Remove duplicate indices
 	std::sort(extremalIndices.begin(), extremalIndices.end());
-	extremalIndices.erase(std::unique(extremalIndices.begin(), extremalIndices.end()),
-						  extremalIndices.end());
+	extremalIndices.erase(std::unique(extremalIndices.begin(), extremalIndices.end()), extremalIndices.end());
 
 	std::list<Vec3d> extremalPoints;
-	for(const auto & index : extremalIndices) {
+	for (const auto & index : extremalIndices) {
 		extremalPoints.emplace_back(*index);
 	}
 	return extremalPoints;
 }
 
-template<size_t s>
+template <size_t s>
 static Sphere_f extremalPointsOptimalSphere(const std::vector<Vec3f> & points) {
 	static_assert(s == 3 || s == 7 || s == 13 || s == 49, "s must be from {3, 7, 13, 49}");
 	const size_t n = points.size();
-	if(n > 2 * s) {
+	if (n > 2 * s) {
 		auto extremalPoints = findExtremalPoints<s>(points);
 		Sphere_f sphere = computeMiniballList(extremalPoints);
-		for(const auto & point : points) {
+		for (const auto & point : points) {
 			sphere.include(point);
 		}
 		return sphere;
@@ -434,6 +421,5 @@ Sphere_f computeEPOS26(const std::vector<Vec3f> & points) {
 Sphere_f computeEPOS98(const std::vector<Vec3f> & points) {
 	return extremalPointsOptimalSphere<49>(points);
 }
-
 }
 }

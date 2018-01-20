@@ -1,12 +1,12 @@
 #
 # This file is part of the Geometry library.
-# Copyright (C) 2010-2013 Benjamin Eikel <benjamin@eikel.org>
+# Copyright (C) 2010-2015 Benjamin Eikel <benjamin@eikel.org>
 #
 # This library is subject to the terms of the Mozilla Public License, v. 2.0.
 # You should have received a copy of the MPL along with this library; see the 
 # file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 #
-cmake_minimum_required(VERSION 2.8.11)
+cmake_minimum_required(VERSION 3.1.0)
 
 if(GEOMETRY_BUILD_TESTS)
 	add_executable(GeometryTest
@@ -33,19 +33,13 @@ if(GEOMETRY_BUILD_TESTS)
 		GeometryTestMain.cpp
 	)
 
-	target_link_libraries(GeometryTest LINK_PRIVATE Geometry)
+	target_link_libraries(GeometryTest PRIVATE Geometry)
 
 	# Dependency to CppUnit
 	set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake)
 	find_package(CppUnit REQUIRED)
 	target_include_directories(GeometryTest PRIVATE ${CPPUNIT_INCLUDE_DIRS})
-	target_link_libraries(GeometryTest LINK_PRIVATE ${CPPUNIT_LIBRARIES})
-
-	if(COMPILER_SUPPORTS_CXX11)
-		set_property(TARGET GeometryTest APPEND_STRING PROPERTY COMPILE_FLAGS "-std=c++11 ")
-	elseif(COMPILER_SUPPORTS_CXX0X)
-		set_property(TARGET GeometryTest APPEND_STRING PROPERTY COMPILE_FLAGS "-std=c++0x ")
-	endif()
+	target_link_libraries(GeometryTest PRIVATE ${CPPUNIT_LIBRARIES})
 
 	install(TARGETS GeometryTest
 		RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT tests

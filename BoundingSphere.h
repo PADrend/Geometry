@@ -3,9 +3,9 @@
 	Copyright (C) 2007-2012 Benjamin Eikel <benjamin@eikel.org>
 	Copyright (C) 2007-2012 Claudius Jähn <claudius@uni-paderborn.de>
 	Copyright (C) 2007-2012 Ralf Petring <ralf@petring.net>
-	
+
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
-	You should have received a copy of the MPL along with this library; see the 
+	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
 #ifndef GEOMETRY_BOUNDINGSPHERE_H
@@ -15,10 +15,12 @@
 
 namespace Geometry {
 // Forward declarations
-template<typename _T> class _Vec3;
-typedef _Vec3<float> Vec3f;
-template<typename _T> class _Sphere;
-typedef _Sphere<float> Sphere_f;
+template <typename _T>
+class _Vec3;
+using Vec3f = _Vec3<float>;
+template <typename _T>
+class _Sphere;
+using Sphere_f = _Sphere<float>;
 
 /**
  * @brief Bounding sphere computations
@@ -72,7 +74,6 @@ Sphere_f computeEPOS26(const std::vector<Vec3f> & points);
  * @date 2012-03-23
  */
 Sphere_f computeEPOS98(const std::vector<Vec3f> & points);
-
 }
 }
 
