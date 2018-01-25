@@ -98,6 +98,8 @@ public:
 		return _getIntersection(s, intersection);
 	}
 
+	bool getIntersection(const _Plane & plane, _Line<vec3_t> & intersection) const;
+
 	inline const vec3_t & getNormal() const {
 		return normal;
 	}
@@ -154,6 +156,43 @@ public:
 	}
 	//@}
 };
+
+template <typename T>
+bool _Plane<T>::getIntersection(const _Plane<T> & plane, _Line<vec3_t> & intersection) const {
+	// compute direction of intersection line
+	auto dir = plane.getNormal().cross(plane.getNormal());
+	if(dir.lengthSquared() < std::numeric_limits<T>::epsilon())
+		return false;
+	dir.normalize();
+	
+	// compute index to the largest component of D
+	value_t max = std::fabs(dir[0]);
+	uint8_t index = 0;
+	{
+		value_t b = std::fabs(dir[1]);
+		value_t c = std::fabs(dir[2]);
+		if (b > max)
+			max = b, index = 1;
+		if (c > max)
+			max = c, index = 2;
+	}
+	
+	vec3_t p;
+	T d1 = -offset;
+	T d2 = -plane.offset;
+	switch (index) {
+		case 0:
+			p.setValue(0, (d2*normal.z() - d1*plane.normal.z()) / dir.x(), (d1*plane.normal.y() - d2*normal.y()) / dir.x()); break;
+		case 1:
+			p.setValue((d1*plane.normal.z() - d2*normal.z()) / dir.y(), 0, (d2*normal.x() - d1*plane.normal.x()) / dir.y()); break;
+		default:
+			p.setValue((d2*normal.y() - d1*plane.normal.y()) / dir.z(), (d1*plane.normal.x() - d2*normal.x()) / dir.z(), 0); 
+	}
+	intersection.setOrigin(p);
+	intersection.setDirection(dir);
+	
+	return true;
+}
 
 typedef _Plane<float> Plane;
 typedef _Plane<float> Planef;
