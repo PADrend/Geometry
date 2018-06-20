@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <limits>
 #include <type_traits>
+#include <cstdint>
 
 namespace Geometry {
 
@@ -112,6 +113,66 @@ struct Convert {
 		static_assert(std::is_floating_point<_T>::value, "template argument not a floating point type");
 		const _T RAD_TO_DEG = 57.295779513082320876798154814105170;
 		return f * RAD_TO_DEG;
+	}
+	
+	/**
+	 * Convert a 32-bit floating-point value to 16-bit floating-point value encoded in a 16-bit unsigned integer.
+	 *
+	 * @param value Floating-point value
+	 * @return Floating-point value as uint16_t.
+	 * based on 'https://stackoverflow.com/questions/1659440/32-bit-to-16-bit-floating-point-conversion'
+	 */
+	static uint16_t floatToHalf(float value) {
+		static int32_t const infN = 0x7F800000; // flt32 infinity
+		static int32_t const maxN = 0x477FE000; // max flt16 normal as a flt32
+		static int32_t const minN = 0x38800000; // min flt16 normal as a flt32
+		static int32_t const nanN = 0x7f802000; // minimum flt16 nan as a flt32
+		union {
+			float f;
+			int32_t si;
+			uint32_t ui;
+		} v, s;
+		v.f = value;
+		uint32_t sign = v.si & 0x80000000; // flt32 sign bit
+		v.si ^= sign;
+		sign >>= 16; // logical shift
+		s.si = 0x52000000; // (1 << 23) / minN
+		s.si = s.f * v.f; // correct subnormals
+		v.si ^= (s.si ^ v.si) & -(minN > v.si);
+		v.si ^= (infN ^ v.si) & -((infN > v.si) & (v.si > maxN));
+		v.si ^= (nanN ^ v.si) & -((nanN > v.si) & (v.si > infN));
+		v.ui >>= 13; // logical shift
+		v.si ^= ((v.si - 0x1c000) ^ v.si) & -(v.si > 0x23bff);
+		v.si ^= ((v.si - 0x1c000) ^ v.si) & -(v.si > 0x003ff);
+		return v.ui | sign;
+	}
+	
+	/**
+	 * Convert a 16-bit floating-point value encoded in a 16-bit unsigned integer to a 32-bit floating-point value.
+	 *
+	 * @param value Floating-point value as uint16_t
+	 * @return Floating-point value.
+	 * based on 'https://stackoverflow.com/questions/1659440/32-bit-to-16-bit-floating-point-conversion'
+	 */
+	static float halfToFloat(uint16_t value) {
+		union {
+			float f;
+			int32_t si;
+			uint32_t ui;
+		} v, s;
+		v.ui = value;
+		int32_t sign = v.si & 0xffff8000; // flt16 sign bit
+		v.si ^= sign;
+		sign <<= 16;
+		v.si ^= ((v.si + 0x1c000) ^ v.si) & -(v.si > 0x003ff);
+		v.si ^= ((v.si + 0x1c000) ^ v.si) & -(v.si > 0x23bff);
+		s.si = 0x33800000; // minN / (1 << (23 - shift))
+		s.f *= v.si;
+		int32_t mask = -(0x00400 > v.si);
+		v.si <<= 13;
+		v.si ^= (s.si ^ v.si) & mask;
+		v.si |= sign;
+		return v.f;
 	}
 };
 }
