@@ -104,6 +104,13 @@ public:
 	inline bool insert(const Point_t & point);
 
 	/**
+	 * Removes the point from the octree.
+	 *
+	 * @param point Data item containing the position.
+	 */
+	inline bool remove(const Point_t & point);
+
+	/**
 	 * Return all points.
 	 *
 	 * @param out Points in the tree.
@@ -199,6 +206,65 @@ inline bool PointOctree<Point_t>::insert(const Point_t & point) {
 	} else {
 		PointOctree * leaf = findLeafCell(point.getPosition());
 		return leaf ? leaf->insert(point) : false;
+	}
+}
+
+template <typename Point_t>
+inline bool PointOctree<Point_t>::remove(const Point_t & point) {
+	// make sure point is within boundary
+	if (!box.contains(point.getPosition())) {
+		return false;
+	} else if (isLeaf()) {
+		std::deque<Point_t> updatedPoints;
+		bool removed = false;
+		for(auto& p : points) {
+			if(p.getPosition() == point.getPosition())
+				removed = true;
+			else
+				updatedPoints.emplace_back(std::move(p));
+		}
+		updatedPoints.swap(points);
+		return removed;
+	} else {
+		
+		std::deque<PointOctree*> path = {this};
+		bool found = true;
+		PointOctree * cell = this;
+		while(found && !cell->isLeaf()) {
+			found = false;
+			for (auto& i : cell->children) {
+				if (i.getBox().contains(point.getPosition())) {
+					cell = &i;
+					path.emplace_back(cell);
+					found = true;
+					break;
+				}
+			}
+		}
+		if(!found || !cell->isLeaf())
+			return false;
+			
+		if(cell->remove(point)) {
+			path.pop_back();
+			uint32_t count = 0;
+			// cleanup octree
+			while(!path.empty() && count < cell->maxNumPoints) {
+				cell = path.back();
+				path.pop_back();
+				count = 0;
+				for(auto& c : cell->children)
+					count += c.isLeaf() ? c.points.size() : c.maxNumPoints;
+				if(count < cell->maxNumPoints) {
+					std::deque<Point_t> allPoints;
+					cell->collectPoints(allPoints);
+					cell->clear();
+					for(const auto& p : allPoints)
+						cell->insert(p);
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 }
 

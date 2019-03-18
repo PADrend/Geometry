@@ -72,6 +72,32 @@ void PointOctreeTest::test() {
 				CPPUNIT_ASSERT_EQUAL(static_cast<std::size_t>(8), points.size());
 			}
 		}
+		{
+			CharPoint p(Vec3f(), 'X');
+			octree.insert(p);
+			std::deque<CharPoint> points;
+			octree.collectPointsWithinSphere(Sphere_f({}, std::numeric_limits<float>::epsilon()), points);
+			CPPUNIT_ASSERT_EQUAL(static_cast<std::size_t>(1), points.size());
+			points.clear();
+			CPPUNIT_ASSERT(octree.remove(p));
+			octree.collectPointsWithinSphere(Sphere_f({}, std::numeric_limits<float>::epsilon()), points);
+			CPPUNIT_ASSERT(points.empty());
+		}
+		{
+			std::deque<CharPoint> points;
+			std::deque<CharPoint> point;
+			octree.collectPoints(points);
+			for(uint32_t i=0; i<points.size(); ++i) {
+				Sphere_f s(points[i].getPosition(), std::numeric_limits<float>::epsilon());
+				point.clear(); octree.collectPointsWithinSphere(s, point); CPPUNIT_ASSERT(!point.empty());
+				CPPUNIT_ASSERT(octree.remove(points[i]));
+				point.clear(); octree.collectPointsWithinSphere(s, point); CPPUNIT_ASSERT(point.empty());
+				for(uint32_t j=0; j<=i; ++j) {
+					CPPUNIT_ASSERT(!octree.remove(points[i]));
+				}
+			}
+			CPPUNIT_ASSERT(octree.empty());
+		}
 	}
 
 	{
