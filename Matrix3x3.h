@@ -85,6 +85,11 @@ public:
 	 * @name Information
 	 */
 	//@{
+	
+	value_t & operator[](const unsigned int i) {
+		return data[i];
+	}
+ 
 	inline value_t at(uint_fast8_t row, uint_fast8_t column) const {
 		return data[row * 3 + column];
 	}
@@ -300,14 +305,14 @@ public:
 
 	//! @name Serialization
 	//@{
-	friend std::ostream & operator<<(std::ostream & out, const _Matrix3x3 & matrix) {
-		return out << matrix.at(R0C0) << ' ' << matrix.at(R0C1) << ' ' << matrix.at(R0C2) << ' ' << matrix.at(R1C0)
-				   << ' ' << matrix.at(R1C1) << ' ' << matrix.at(R1C2) << ' ' << matrix.at(R2C0) << ' '
-				   << matrix.at(R2C1) << ' ' << matrix.at(R2C2);
+	friend std::ostream & operator<<(std::ostream & out, const _Matrix3x3<value_t> & matrix) {
+		return out << matrix.data[R0C0] << ' ' << matrix.data[R0C1] << ' ' << matrix.data[R0C2] << ' ' << matrix.data[R1C0]
+				   << ' ' << matrix.data[R1C1] << ' ' << matrix.data[R1C2] << ' ' << matrix.data[R2C0] << ' '
+				   << matrix.data[R2C1] << ' ' << matrix.data[R2C2];
 	}
-	friend std::istream & operator>>(std::istream & in, _Matrix3x3 & matrix) {
-		return in >> matrix.at(R0C0) >> matrix.at(R0C1) >> matrix.at(R0C2) >> matrix.at(R1C0) >> matrix.at(R1C1)
-				>> matrix.at(R1C2) >> matrix.at(R2C0) >> matrix.at(R2C1) >> matrix.at(R2C2);
+	friend std::istream & operator>>(std::istream & in, _Matrix3x3<value_t> & matrix) {
+		return in >> matrix.data[R0C0] >> matrix.data[R0C1] >> matrix.data[R0C2] >> matrix.data[R1C0] >> matrix.data[R1C1]
+				>> matrix.data[R1C2] >> matrix.data[R2C0] >> matrix.data[R2C1] >> matrix.data[R2C2];
 	}
 	//@}
 };

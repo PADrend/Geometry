@@ -49,6 +49,9 @@ private:
 public:
 	//! @name Creation
 	//@{
+	//! Default constructor.
+	Triangle() : a(), b(), c() {}
+		
 	//! Default constructor with vertices.
 	Triangle(const vec_t & vertexA, const vec_t & vertexB, const vec_t & vertexC) : a(vertexA), b(vertexB), c(vertexC) {
 	}

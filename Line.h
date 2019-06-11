@@ -111,6 +111,16 @@ protected: // \note these methods are proteced as they should not be available i
 		direction.normalize();
 	}
 	//@}
+	
+	//! @name Serialization
+	//@{
+	friend std::ostream & operator<<(std::ostream & out, const impl_t& line) {
+		return out << line.origin << ' ' << line.direction << ' ' << line.minParam << ' ' << line.maxParam;
+	}
+	friend std::istream & operator>>(std::istream & in, impl_t& line) {
+		return in >> line.origin >> line.direction >> line.minParam >> line.maxParam;
+	}
+	//@}
 };
 
 // -----------------------------------------------------------------------------------------------------------
