@@ -1,13 +1,14 @@
 #
 # This file is part of the Geometry library.
 # Copyright (C) 2009-2015 Benjamin Eikel <benjamin@eikel.org>
+# Copyright (C) 2015-2019 Sascha Brandt <sascha@brandt.graphics>
 #
 # This library is subject to the terms of the Mozilla Public License, v. 2.0.
 # You should have received a copy of the MPL along with this library; see the 
 # file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 #
 cmake_minimum_required(VERSION 3.1.0)
-project(Geometry VERSION 0.2.0 LANGUAGES CXX)
+project(Geometry VERSION 0.3.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -110,7 +111,7 @@ include(InstallRequiredSystemLibraries)
 
 set(CPACK_PACKAGE_NAME "libgeometry${Geometry_VERSION_MAJOR}")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Geometry library")
-set(CPACK_PACKAGE_VENDOR "Benjamin Eikel; Claudius Jaehn; Ralf Petring")
+set(CPACK_PACKAGE_VENDOR "Benjamin Eikel; Claudius Jaehn; Ralf Petring; Sascha Brandt")
 set(CPACK_PACKAGE_CONTACT "Benjamin Eikel <benjamin@eikel.org>")
 set(CPACK_PACKAGE_VERSION_MAJOR ${Geometry_VERSION_MAJOR})
 set(CPACK_PACKAGE_VERSION_MINOR ${Geometry_VERSION_MINOR})
