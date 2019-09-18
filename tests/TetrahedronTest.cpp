@@ -2,27 +2,28 @@
 	This file is part of the Geometry library.
 	Copyright (C) 2011-2012 Benjamin Eikel <benjamin@eikel.org>
 	Copyright (C) 2012 Claudius Jähn <claudius@uni-paderborn.de>
+	Copyright (C) 2019 Sascha Brandt <sascha@brandt.graphics>
 
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
 	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
-#include "TetrahedronTest.h"
 #include "Tetrahedron.h"
 #include "Matrix3x3.h"
 #include "Vec3.h"
 #include "Vec4.h"
 #include <iostream>
 #include <random>
-
-CPPUNIT_TEST_SUITE_REGISTRATION(TetrahedronTest);
+#include <catch2/catch.hpp>
+#define REQUIRE_EQUAL(a,b) REQUIRE((a) == (b))
+#define REQUIRE_DOUBLES_EQUAL(a,b,e) REQUIRE((((a) <= (b) + e) && ((b) <= (a) + e)))
 
 static Geometry::Vec3d getRandomPoint(std::default_random_engine & engine,
 									  std::uniform_real_distribution<float> & dist) {
 	return Geometry::Vec3d(dist(engine), dist(engine), dist(engine));
 }
 
-void TetrahedronTest::testTetrahedronBarycentricCoordinates() {
+TEST_CASE("TetrahedronTest_testTetrahedronBarycentricCoordinates", "[TetrahedronTest]") {
 	const Geometry::Vec3d a(0.0, 0.0, 0.0);
 	const Geometry::Vec3d b(30.0, 0.0, 0.0);
 	const Geometry::Vec3d c(0.0, 30.0, 0.0);
@@ -30,19 +31,19 @@ void TetrahedronTest::testTetrahedronBarycentricCoordinates() {
 	const Geometry::Tetrahedron<double> tetrahedron(a, b, c, d);
 
 	// Check the vertices.
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec4d(1.0, 0.0, 0.0, 0.0), tetrahedron.calcBarycentricCoordinates(a).second);
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec4d(0.0, 1.0, 0.0, 0.0), tetrahedron.calcBarycentricCoordinates(b).second);
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec4d(0.0, 0.0, 1.0, 0.0), tetrahedron.calcBarycentricCoordinates(c).second);
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec4d(0.0, 0.0, 0.0, 1.0), tetrahedron.calcBarycentricCoordinates(d).second);
+	REQUIRE_EQUAL(Geometry::Vec4d(1.0, 0.0, 0.0, 0.0), tetrahedron.calcBarycentricCoordinates(a).second);
+	REQUIRE_EQUAL(Geometry::Vec4d(0.0, 1.0, 0.0, 0.0), tetrahedron.calcBarycentricCoordinates(b).second);
+	REQUIRE_EQUAL(Geometry::Vec4d(0.0, 0.0, 1.0, 0.0), tetrahedron.calcBarycentricCoordinates(c).second);
+	REQUIRE_EQUAL(Geometry::Vec4d(0.0, 0.0, 0.0, 1.0), tetrahedron.calcBarycentricCoordinates(d).second);
 
 	// Check the middle of edges.
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec4d(0.5, 0.5, 0.0, 0.0),
+	REQUIRE_EQUAL(Geometry::Vec4d(0.5, 0.5, 0.0, 0.0),
 						 tetrahedron.calcBarycentricCoordinates(Geometry::Vec3d(15.0, 0.0, 0.0)).second);
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec4d(0.0, 0.5, 0.5, 0.0),
+	REQUIRE_EQUAL(Geometry::Vec4d(0.0, 0.5, 0.5, 0.0),
 						 tetrahedron.calcBarycentricCoordinates(Geometry::Vec3d(15.0, 15.0, 0.0)).second);
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec4d(0.5, 0.0, 0.5, 0.0),
+	REQUIRE_EQUAL(Geometry::Vec4d(0.5, 0.0, 0.5, 0.0),
 						 tetrahedron.calcBarycentricCoordinates(Geometry::Vec3d(0.0, 15.0, 0.0)).second);
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec4d(0.5, 0.0, 0.0, 0.5),
+	REQUIRE_EQUAL(Geometry::Vec4d(0.5, 0.0, 0.0, 0.5),
 						 tetrahedron.calcBarycentricCoordinates(Geometry::Vec3d(0.0, 0.0, 15.0)).second);
 
 	std::default_random_engine engine;
@@ -62,13 +63,13 @@ void TetrahedronTest::testTetrahedronBarycentricCoordinates() {
 			if (!coordinates.first) { // degenerated
 				break;
 			}
-			CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, t.calcPointFromBarycentricCoordinates(coordinates.second).distance(point),
+			REQUIRE_DOUBLES_EQUAL(0.0, t.calcPointFromBarycentricCoordinates(coordinates.second).distance(point),
 										 delta);
 		}
 	}
 }
 
-void TetrahedronTest::testTetrahedronDistance() {
+TEST_CASE("TetrahedronTest_testTetrahedronDistance", "[TetrahedronTest]") {
 	const Geometry::Vec3d a(0.0, 0.0, 0.0);
 	const Geometry::Vec3d b(0.0, 30.0, 0.0);
 	const Geometry::Vec3d c(0.0, 0.0, -30.0);
@@ -78,38 +79,38 @@ void TetrahedronTest::testTetrahedronDistance() {
 	const double delta = 1.0e-6;
 
 	// Check the vertices.
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared(a), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared(b), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared(c), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared(d), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared(a), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared(b), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared(c), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared(d), delta);
 
 	// Check the middle of edges.
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared((a + b) * 0.5), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared((a + c) * 0.5), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared((a + d) * 0.5), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared((b + c) * 0.5), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared((b + d) * 0.5), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared((c + d) * 0.5), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared((a + b) * 0.5), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared((a + c) * 0.5), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared((a + d) * 0.5), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared((b + c) * 0.5), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared((b + d) * 0.5), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared((c + d) * 0.5), delta);
 
 	// Check the centroid.
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared((a + b + c + d) * 0.25), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, tetrahedron.distanceSquared((a + b + c + d) * 0.25), delta);
 
 	// Test points left of the tetrahedron.
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(200.0, tetrahedron.distanceSquared(Geometry::Vec3d(-10.0, -10.0, 0.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(100.0, tetrahedron.distanceSquared(Geometry::Vec3d(-10.0, 0.0, 0.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(100.0, tetrahedron.distanceSquared(Geometry::Vec3d(-10.0, 30.0, 0.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(200.0, tetrahedron.distanceSquared(Geometry::Vec3d(-10.0, 40.0, 0.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(200.0, tetrahedron.distanceSquared(Geometry::Vec3d(-10.0, -10.0, 0.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(100.0, tetrahedron.distanceSquared(Geometry::Vec3d(-10.0, 0.0, 0.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(100.0, tetrahedron.distanceSquared(Geometry::Vec3d(-10.0, 30.0, 0.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(200.0, tetrahedron.distanceSquared(Geometry::Vec3d(-10.0, 40.0, 0.0)), delta);
 
 	// Test points below the tetrahedron.
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(800.0, tetrahedron.distanceSquared(Geometry::Vec3d(-20.0, -20.0, 0.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(400.0, tetrahedron.distanceSquared(Geometry::Vec3d(0.0, -20.0, 0.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(400.0, tetrahedron.distanceSquared(Geometry::Vec3d(30.0, -20.0, 0.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(800.0, tetrahedron.distanceSquared(Geometry::Vec3d(50.0, -20.0, 0.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(800.0, tetrahedron.distanceSquared(Geometry::Vec3d(-20.0, -20.0, 0.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(400.0, tetrahedron.distanceSquared(Geometry::Vec3d(0.0, -20.0, 0.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(400.0, tetrahedron.distanceSquared(Geometry::Vec3d(30.0, -20.0, 0.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(800.0, tetrahedron.distanceSquared(Geometry::Vec3d(50.0, -20.0, 0.0)), delta);
 
 	// Test points top right of the tetrahedron.
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(900.0, tetrahedron.distanceSquared(Geometry::Vec3d(60.0, 0.0, 0.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(1800.0, tetrahedron.distanceSquared(Geometry::Vec3d(45.0, 45.0, 0.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(900.0, tetrahedron.distanceSquared(Geometry::Vec3d(0.0, 60.0, 0.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(900.0, tetrahedron.distanceSquared(Geometry::Vec3d(60.0, 0.0, 0.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(1800.0, tetrahedron.distanceSquared(Geometry::Vec3d(45.0, 45.0, 0.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(900.0, tetrahedron.distanceSquared(Geometry::Vec3d(0.0, 60.0, 0.0)), delta);
 }
 
 /**
@@ -137,7 +138,7 @@ static double calcTetrahedronVolume(const Geometry::Tetrahedron<double> & t) {
 	return sqrtf((-a + b + c + d) * (a - b + c + d) * (a + b - c + d) * (a + b + c - d)) / (192.0 * u * v * w);
 }
 
-void TetrahedronTest::testTetrahedronVolume() {
+TEST_CASE("TetrahedronTest_testTetrahedronVolume", "[TetrahedronTest]") {
 	const double delta = 0.2;
 
 	{
@@ -147,7 +148,7 @@ void TetrahedronTest::testTetrahedronVolume() {
 		for (double f = -100; f < 100; f += 1.73) {
 			const Geometry::Tetrahedron<double> tetrahedron(
 					(Geometry::Tetrahedron<double>(a, b, c, Geometry::Vec3d(f, 0.0, 0.0))));
-			CPPUNIT_ASSERT_DOUBLES_EQUAL(tetrahedron.calcVolume(), calcTetrahedronVolume(tetrahedron), delta);
+			REQUIRE_DOUBLES_EQUAL(tetrahedron.calcVolume(), calcTetrahedronVolume(tetrahedron), delta);
 		}
 	}
 
@@ -176,7 +177,7 @@ void TetrahedronTest::testTetrahedronVolume() {
 			const Geometry::Vec3d c2(r * c);
 			const Geometry::Vec3d d2(r * d);
 
-			CPPUNIT_ASSERT_DOUBLES_EQUAL(referenceVolume, Geometry::Tetrahedron<double>(a2, b2, c2, d2).calcVolume(),
+			REQUIRE_DOUBLES_EQUAL(referenceVolume, Geometry::Tetrahedron<double>(a2, b2, c2, d2).calcVolume(),
 										 delta);
 		}
 	}

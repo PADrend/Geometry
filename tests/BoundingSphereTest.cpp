@@ -1,23 +1,24 @@
 /*
 	This file is part of the Geometry library.
 	Copyright (C) 2012-2013 Benjamin Eikel <benjamin@eikel.org>
+	Copyright (C) 2019 Sascha Brandt <sascha@brandt.graphics>
 
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
 	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
-#include "BoundingSphereTest.h"
 #include "BoundingSphere.h"
 #include "Box.h"
 #include "Sphere.h"
 #include "Vec3.h"
 #include <random>
-
-CPPUNIT_TEST_SUITE_REGISTRATION(BoundingSphereTest);
+#include <catch2/catch.hpp>
+#define REQUIRE_EQUAL(a,b) REQUIRE((a) == (b))
+#define REQUIRE_DOUBLES_EQUAL(a,b,e) REQUIRE((((a) <= (b) + e) && ((b) <= (a) + e)))
 
 using namespace Geometry;
 
-void BoundingSphereTest::testRandomPoints() {
+TEST_CASE("BoundingSphereTest_testRandomPoints", "[BoundingSphereTest]") {
 	const float coordinateRange = 1000.0f;
 	std::uniform_real_distribution<float> coordinateDist(-coordinateRange, coordinateRange);
 	const unsigned int count = 100000;
@@ -43,50 +44,50 @@ void BoundingSphereTest::testRandomPoints() {
 			}
 
 			const Sphere_f boundingSphere(boundingBox.getCenter(), boundingBox.getBoundingSphereRadius());
-			CPPUNIT_ASSERT(boundingSphere.getRadius() < maxRadius);
+			REQUIRE(boundingSphere.getRadius() < maxRadius);
 			for (const auto & point : points) {
-				CPPUNIT_ASSERT(boundingSphere.distance(point) < epsilon);
+				REQUIRE(boundingSphere.distance(point) < epsilon);
 			}
 		}
 		{
 			const Sphere_f boundingSphere = BoundingSphere::computeMiniball(points);
-			CPPUNIT_ASSERT(boundingSphere.getRadius() < maxRadius);
+			REQUIRE(boundingSphere.getRadius() < maxRadius);
 			for (const auto & point : points) {
-				CPPUNIT_ASSERT(boundingSphere.distance(point) < epsilon);
+				REQUIRE(boundingSphere.distance(point) < epsilon);
 			}
 		}
 		{
 			const Sphere_f boundingSphere = BoundingSphere::computeEPOS6(points);
-			CPPUNIT_ASSERT(boundingSphere.getRadius() < 1.2f * maxRadius);
+			REQUIRE(boundingSphere.getRadius() < 1.2f * maxRadius);
 			for (const auto & point : points) {
-				CPPUNIT_ASSERT(boundingSphere.distance(point) < epsilon);
+				REQUIRE(boundingSphere.distance(point) < epsilon);
 			}
 		}
 		{
 			const Sphere_f boundingSphere = BoundingSphere::computeEPOS14(points);
-			CPPUNIT_ASSERT(boundingSphere.getRadius() < maxRadius);
+			REQUIRE(boundingSphere.getRadius() < maxRadius);
 			for (const auto & point : points) {
-				CPPUNIT_ASSERT(boundingSphere.distance(point) < epsilon);
+				REQUIRE(boundingSphere.distance(point) < epsilon);
 			}
 		}
 		{
 			const Sphere_f boundingSphere = BoundingSphere::computeEPOS26(points);
-			CPPUNIT_ASSERT(boundingSphere.getRadius() < maxRadius);
+			REQUIRE(boundingSphere.getRadius() < maxRadius);
 			for (const auto & point : points) {
-				CPPUNIT_ASSERT(boundingSphere.distance(point) < epsilon);
+				REQUIRE(boundingSphere.distance(point) < epsilon);
 			}
 		}
 		{
 			const Sphere_f boundingSphere = BoundingSphere::computeEPOS98(points);
-			CPPUNIT_ASSERT(boundingSphere.getRadius() < maxRadius);
+			REQUIRE(boundingSphere.getRadius() < maxRadius);
 			for (const auto & point : points) {
-				CPPUNIT_ASSERT(boundingSphere.distance(point) < epsilon);
+				REQUIRE(boundingSphere.distance(point) < epsilon);
 			}
 		}
 	}
 }
 
-void BoundingSphereTest::testRandomSpheres() {
+TEST_CASE("BoundingSphereTest_testRandomSpheres", "[BoundingSphereTest]") {
 	const float coordinateRange = 1000.0f;
 	std::uniform_real_distribution<float> coordinateDist(-coordinateRange, coordinateRange);
 	std::uniform_real_distribution<float> radiusDist(1.0f, 100.0f);
@@ -116,28 +117,28 @@ void BoundingSphereTest::testRandomSpheres() {
 
 		{
 			const Sphere_f boundingSphere = BoundingSphere::computeMiniball(points);
-			CPPUNIT_ASSERT(randomSphere.getCenter().distance(boundingSphere.getCenter()) < epsilon);
-			CPPUNIT_ASSERT_DOUBLES_EQUAL(randomSphere.getRadius(), boundingSphere.getRadius(), epsilon);
+			REQUIRE(randomSphere.getCenter().distance(boundingSphere.getCenter()) < epsilon);
+			REQUIRE_DOUBLES_EQUAL(randomSphere.getRadius(), boundingSphere.getRadius(), epsilon);
 		}
 		{
 			const Sphere_f boundingSphere = BoundingSphere::computeEPOS6(points);
-			CPPUNIT_ASSERT(randomSphere.getCenter().distance(boundingSphere.getCenter()) < epsilon);
-			CPPUNIT_ASSERT_DOUBLES_EQUAL(randomSphere.getRadius(), boundingSphere.getRadius(), epsilon);
+			REQUIRE(randomSphere.getCenter().distance(boundingSphere.getCenter()) < epsilon);
+			REQUIRE_DOUBLES_EQUAL(randomSphere.getRadius(), boundingSphere.getRadius(), epsilon);
 		}
 		{
 			const Sphere_f boundingSphere = BoundingSphere::computeEPOS14(points);
-			CPPUNIT_ASSERT(randomSphere.getCenter().distance(boundingSphere.getCenter()) < epsilon);
-			CPPUNIT_ASSERT_DOUBLES_EQUAL(randomSphere.getRadius(), boundingSphere.getRadius(), epsilon);
+			REQUIRE(randomSphere.getCenter().distance(boundingSphere.getCenter()) < epsilon);
+			REQUIRE_DOUBLES_EQUAL(randomSphere.getRadius(), boundingSphere.getRadius(), epsilon);
 		}
 		{
 			const Sphere_f boundingSphere = BoundingSphere::computeEPOS26(points);
-			CPPUNIT_ASSERT(randomSphere.getCenter().distance(boundingSphere.getCenter()) < epsilon);
-			CPPUNIT_ASSERT_DOUBLES_EQUAL(randomSphere.getRadius(), boundingSphere.getRadius(), epsilon);
+			REQUIRE(randomSphere.getCenter().distance(boundingSphere.getCenter()) < epsilon);
+			REQUIRE_DOUBLES_EQUAL(randomSphere.getRadius(), boundingSphere.getRadius(), epsilon);
 		}
 		{
 			const Sphere_f boundingSphere = BoundingSphere::computeEPOS98(points);
-			CPPUNIT_ASSERT(randomSphere.getCenter().distance(boundingSphere.getCenter()) < epsilon);
-			CPPUNIT_ASSERT_DOUBLES_EQUAL(randomSphere.getRadius(), boundingSphere.getRadius(), epsilon);
+			REQUIRE(randomSphere.getCenter().distance(boundingSphere.getCenter()) < epsilon);
+			REQUIRE_DOUBLES_EQUAL(randomSphere.getRadius(), boundingSphere.getRadius(), epsilon);
 		}
 	}
 }

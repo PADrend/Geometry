@@ -1,18 +1,20 @@
 /*
 	This file is part of the Geometry library.
 	Copyright (C) 2011-2012 Benjamin Eikel <benjamin@eikel.org>
+	Copyright (C) 2019 Sascha Brandt <sascha@brandt.graphics>
 
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
 	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
-#include "PointOctreeTest.h"
 #include "Point.h"
 #include "PointOctree.h"
 #include <cstdint>
 #include <deque>
 #include <random>
-CPPUNIT_TEST_SUITE_REGISTRATION(PointOctreeTest);
+#include <catch2/catch.hpp>
+#define REQUIRE_EQUAL(a,b) REQUIRE((a) == (b))
+#define REQUIRE_DOUBLES_EQUAL(a,b,e) REQUIRE((((a) <= (b) + e) && ((b) <= (a) + e)))
 
 struct CharPoint : public Geometry::Point<Geometry::Vec3f> {
 	char data;
@@ -21,7 +23,7 @@ struct CharPoint : public Geometry::Point<Geometry::Vec3f> {
 	}
 };
 
-void PointOctreeTest::test() {
+TEST_CASE("PointOctreeTest_test", "[PointOctreeTest]") {
 	using namespace Geometry;
 
 	{
@@ -54,8 +56,8 @@ void PointOctreeTest::test() {
 					++foundC;
 				}
 			}
-			CPPUNIT_ASSERT_EQUAL(static_cast<uint_fast32_t>(1), foundB);
-			CPPUNIT_ASSERT_EQUAL(static_cast<uint_fast32_t>(1), foundC);
+			REQUIRE_EQUAL(static_cast<uint_fast32_t>(1), foundB);
+			REQUIRE_EQUAL(static_cast<uint_fast32_t>(1), foundC);
 		}
 		{
 			const float distance = std::sqrt(0.03f);
@@ -63,13 +65,13 @@ void PointOctreeTest::test() {
 				std::deque<CharPoint> points;
 				octree.collectPointsWithinSphere(
 						Sphere_f(Vec3f(-0.5f, -0.5f, -0.5f), distance - std::numeric_limits<float>::epsilon()), points);
-				CPPUNIT_ASSERT(points.empty());
+				REQUIRE(points.empty());
 			}
 			{
 				std::deque<CharPoint> points;
 				octree.collectPointsWithinSphere(
 						Sphere_f(Vec3f(-0.5f, -0.5f, -0.5f), distance + std::numeric_limits<float>::epsilon()), points);
-				CPPUNIT_ASSERT_EQUAL(static_cast<std::size_t>(8), points.size());
+				REQUIRE_EQUAL(static_cast<std::size_t>(8), points.size());
 			}
 		}
 		{
@@ -77,11 +79,11 @@ void PointOctreeTest::test() {
 			octree.insert(p);
 			std::deque<CharPoint> points;
 			octree.collectPointsWithinSphere(Sphere_f({}, std::numeric_limits<float>::epsilon()), points);
-			CPPUNIT_ASSERT_EQUAL(static_cast<std::size_t>(1), points.size());
+			REQUIRE_EQUAL(static_cast<std::size_t>(1), points.size());
 			points.clear();
-			CPPUNIT_ASSERT(octree.remove(p));
+			REQUIRE(octree.remove(p));
 			octree.collectPointsWithinSphere(Sphere_f({}, std::numeric_limits<float>::epsilon()), points);
-			CPPUNIT_ASSERT(points.empty());
+			REQUIRE(points.empty());
 		}
 		{
 			std::deque<CharPoint> points;
@@ -89,14 +91,14 @@ void PointOctreeTest::test() {
 			octree.collectPoints(points);
 			for(uint32_t i=0; i<points.size(); ++i) {
 				Sphere_f s(points[i].getPosition(), std::numeric_limits<float>::epsilon());
-				point.clear(); octree.collectPointsWithinSphere(s, point); CPPUNIT_ASSERT(!point.empty());
-				CPPUNIT_ASSERT(octree.remove(points[i]));
-				point.clear(); octree.collectPointsWithinSphere(s, point); CPPUNIT_ASSERT(point.empty());
+				point.clear(); octree.collectPointsWithinSphere(s, point); REQUIRE(!point.empty());
+				REQUIRE(octree.remove(points[i]));
+				point.clear(); octree.collectPointsWithinSphere(s, point); REQUIRE(point.empty());
 				for(uint32_t j=0; j<=i; ++j) {
-					CPPUNIT_ASSERT(!octree.remove(points[i]));
+					REQUIRE(!octree.remove(points[i]));
 				}
 			}
-			CPPUNIT_ASSERT(octree.empty());
+			REQUIRE(octree.empty());
 		}
 	}
 
@@ -119,16 +121,16 @@ void PointOctreeTest::test() {
 			const Vec3f point(x, y, z);
 			// Check if point is inside ('i') or outside ('o') of sphere
 			if (sphere.isOutside(point)) {
-				CPPUNIT_ASSERT(octree.insert(CharPoint(point, 'o')));
+				REQUIRE(octree.insert(CharPoint(point, 'o')));
 			} else {
-				CPPUNIT_ASSERT(octree.insert(CharPoint(point, 'i')));
+				REQUIRE(octree.insert(CharPoint(point, 'i')));
 			}
 		}
 
 		std::deque<CharPoint> points;
 		octree.collectPointsWithinSphere(sphere, points);
 		for (auto point : points) {
-			CPPUNIT_ASSERT_EQUAL('i', point.data);
+			REQUIRE_EQUAL('i', point.data);
 		}
 	}
 }

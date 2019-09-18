@@ -3,46 +3,48 @@
 	Copyright (C) 2011-2012 Benjamin Eikel <benjamin@eikel.org>
 	Copyright (C) 2012 Claudius Jähn <claudius@uni-paderborn.de>
 	Copyright (C) 2013 Ralf Petring <ralf@petring.net>
+	Copyright (C) 2019 Sascha Brandt <sascha@brandt.graphics>
 
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
 	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
-#include "TriangleTest.h"
 #include "Triangle.h"
 #include "Vec2.h"
 #include "Vec3.h"
 #include "Matrix3x3.h"
-CPPUNIT_TEST_SUITE_REGISTRATION(TriangleTest);
+#include <catch2/catch.hpp>
+#define REQUIRE_EQUAL(a,b) REQUIRE((a) == (b))
+#define REQUIRE_DOUBLES_EQUAL(a,b,e) REQUIRE((((a) <= (b) + e) && ((b) <= (a) + e)))
 
-void TriangleTest::testBarycentricCoordinates() {
+TEST_CASE("TriangleTest_testBarycentricCoordinates", "[TriangleTest]") {
 	const Geometry::Vec3d a(0.0, 0.0, 0.0);
 	const Geometry::Vec3d b(30.0, 0.0, 0.0);
 	const Geometry::Vec3d c(0.0, 30.0, 0.0);
 	const Geometry::Triangle<Geometry::Vec3d> triangle(a, b, c);
 
 	// Check the vertices.
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec3d(1.0, 0.0, 0.0), triangle.calcBarycentricCoordinates(a));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec3d(0.0, 1.0, 0.0), triangle.calcBarycentricCoordinates(b));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec3d(0.0, 0.0, 1.0), triangle.calcBarycentricCoordinates(c));
+	REQUIRE_EQUAL(Geometry::Vec3d(1.0, 0.0, 0.0), triangle.calcBarycentricCoordinates(a));
+	REQUIRE_EQUAL(Geometry::Vec3d(0.0, 1.0, 0.0), triangle.calcBarycentricCoordinates(b));
+	REQUIRE_EQUAL(Geometry::Vec3d(0.0, 0.0, 1.0), triangle.calcBarycentricCoordinates(c));
 
 	// Check the middle of edges.
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec3d(0.5, 0.5, 0.0),
+	REQUIRE_EQUAL(Geometry::Vec3d(0.5, 0.5, 0.0),
 						 triangle.calcBarycentricCoordinates(Geometry::Vec3d(15.0, 0.0, 0.0)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec3d(0.0, 0.5, 0.5),
+	REQUIRE_EQUAL(Geometry::Vec3d(0.0, 0.5, 0.5),
 						 triangle.calcBarycentricCoordinates(Geometry::Vec3d(15.0, 15.0, 0.0)));
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec3d(0.5, 0.0, 0.5),
+	REQUIRE_EQUAL(Geometry::Vec3d(0.5, 0.0, 0.5),
 						 triangle.calcBarycentricCoordinates(Geometry::Vec3d(0.0, 15.0, 0.0)));
 
 	// Check the centroid.
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec3d(1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0),
+	REQUIRE_EQUAL(Geometry::Vec3d(1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0),
 						 triangle.calcBarycentricCoordinates(Geometry::Vec3d(10.0, 10.0, 0.0)));
 
-	CPPUNIT_ASSERT_EQUAL(Geometry::Vec3d(0.8, 0.1, 0.1),
+	REQUIRE_EQUAL(Geometry::Vec3d(0.8, 0.1, 0.1),
 						 triangle.calcBarycentricCoordinates(Geometry::Vec3d(3.0, 3.0, 0.0)));
 }
 
-void TriangleTest::testTriangleClosestPoint() {
+TEST_CASE("TriangleTest_testTriangleClosestPoint", "[TriangleTest]") {
 	//              normal of ca
 	//                          / p
 	//                         /  x ....... extension of ab
@@ -63,13 +65,13 @@ void TriangleTest::testTriangleClosestPoint() {
 	const double delta = 1.0e-6;
 	Geometry::Vec3d barycentric;
 	const Geometry::Vec2d closest = triangle.closestPoint(p, barycentric);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, Geometry::Vec2d(19.3, 0.9).distanceSquared(closest), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.45, barycentric.getX(), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, barycentric.getY(), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.55, barycentric.getZ(), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, Geometry::Vec2d(19.3, 0.9).distanceSquared(closest), delta);
+	REQUIRE_DOUBLES_EQUAL(0.45, barycentric.getX(), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, barycentric.getY(), delta);
+	REQUIRE_DOUBLES_EQUAL(0.55, barycentric.getZ(), delta);
 }
 
-void TriangleTest::testTriangleDistance() {
+TEST_CASE("TriangleTest_testTriangleDistance", "[TriangleTest]") {
 	/* c
 	   x
 	   |\
@@ -86,48 +88,48 @@ void TriangleTest::testTriangleDistance() {
 	const double delta = 1.0e-6;
 
 	// Check the vertices.
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, triangle.distanceSquared(a), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, triangle.distanceSquared(b), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, triangle.distanceSquared(c), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, triangle.distanceSquared(a), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, triangle.distanceSquared(b), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, triangle.distanceSquared(c), delta);
 
 	// Check the middle of edges.
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, triangle.distanceSquared(Geometry::Vec2d(15.0, 0.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, triangle.distanceSquared(Geometry::Vec2d(15.0, 15.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, triangle.distanceSquared(Geometry::Vec2d(0.0, 15.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, triangle.distanceSquared(Geometry::Vec2d(15.0, 0.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, triangle.distanceSquared(Geometry::Vec2d(15.0, 15.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, triangle.distanceSquared(Geometry::Vec2d(0.0, 15.0)), delta);
 
 	// Check the centroid.
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, triangle.distanceSquared(Geometry::Vec2d(10.0, 10.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(0.0, triangle.distanceSquared(Geometry::Vec2d(10.0, 10.0)), delta);
 
 	// Test points left of the triangle.
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(200.0, triangle.distanceSquared(Geometry::Vec2d(-10.0, -10.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(100.0, triangle.distanceSquared(Geometry::Vec2d(-10.0, 0.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(100.0, triangle.distanceSquared(Geometry::Vec2d(-10.0, 30.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(200.0, triangle.distanceSquared(Geometry::Vec2d(-10.0, 40.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(200.0, triangle.distanceSquared(Geometry::Vec2d(-10.0, -10.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(100.0, triangle.distanceSquared(Geometry::Vec2d(-10.0, 0.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(100.0, triangle.distanceSquared(Geometry::Vec2d(-10.0, 30.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(200.0, triangle.distanceSquared(Geometry::Vec2d(-10.0, 40.0)), delta);
 
 	// Test points below the triangle.
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(800.0, triangle.distanceSquared(Geometry::Vec2d(-20.0, -20.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(400.0, triangle.distanceSquared(Geometry::Vec2d(0.0, -20.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(400.0, triangle.distanceSquared(Geometry::Vec2d(30.0, -20.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(800.0, triangle.distanceSquared(Geometry::Vec2d(50.0, -20.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(800.0, triangle.distanceSquared(Geometry::Vec2d(-20.0, -20.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(400.0, triangle.distanceSquared(Geometry::Vec2d(0.0, -20.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(400.0, triangle.distanceSquared(Geometry::Vec2d(30.0, -20.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(800.0, triangle.distanceSquared(Geometry::Vec2d(50.0, -20.0)), delta);
 
 	// Test points top right of the triangle.
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(900.0, triangle.distanceSquared(Geometry::Vec2d(60.0, 0.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(1800.0, triangle.distanceSquared(Geometry::Vec2d(45.0, 45.0)), delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(900.0, triangle.distanceSquared(Geometry::Vec2d(0.0, 60.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(900.0, triangle.distanceSquared(Geometry::Vec2d(60.0, 0.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(1800.0, triangle.distanceSquared(Geometry::Vec2d(45.0, 45.0)), delta);
+	REQUIRE_DOUBLES_EQUAL(900.0, triangle.distanceSquared(Geometry::Vec2d(0.0, 60.0)), delta);
 }
 
-void TriangleTest::testTriangleArea() {
+TEST_CASE("TriangleTest_testTriangleArea", "[TriangleTest]") {
 	const double delta = 9.0e-5; // use a larger delta here; the calculations are not extremely accurate
 
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(50.0, Geometry::Triangle<Geometry::Vec3d>(Geometry::Vec3d(0.0, 0.0, 0.0),
+	REQUIRE_DOUBLES_EQUAL(50.0, Geometry::Triangle<Geometry::Vec3d>(Geometry::Vec3d(0.0, 0.0, 0.0),
 																		   Geometry::Vec3d(10.0, 0.0, 0.0),
 																		   Geometry::Vec3d(-5.0, 10.0, 0.0)).calcArea(),
 								 delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(50.0, Geometry::Triangle<Geometry::Vec3d>(Geometry::Vec3d(0.0, 0.0, 0.0),
+	REQUIRE_DOUBLES_EQUAL(50.0, Geometry::Triangle<Geometry::Vec3d>(Geometry::Vec3d(0.0, 0.0, 0.0),
 																		   Geometry::Vec3d(10.0, 0.0, 0.0),
 																		   Geometry::Vec3d(5.0, 10.0, 0.0)).calcArea(),
 								 delta);
-	CPPUNIT_ASSERT_DOUBLES_EQUAL(0.0, Geometry::Triangle<Geometry::Vec3d>(Geometry::Vec3d(0.0, 0.0, 0.0),
+	REQUIRE_DOUBLES_EQUAL(0.0, Geometry::Triangle<Geometry::Vec3d>(Geometry::Vec3d(0.0, 0.0, 0.0),
 																		  Geometry::Vec3d(0.0, 0.0, 0.0),
 																		  Geometry::Vec3d(0.0, 0.0, 0.0)).calcArea(),
 								 delta);
@@ -152,6 +154,6 @@ void TriangleTest::testTriangleArea() {
 		const Geometry::Vec3d b2(r * b);
 		const Geometry::Vec3d c2(r * c);
 		const Geometry::Triangle<Geometry::Vec3d> triangle(a2, b2, c2);
-		CPPUNIT_ASSERT_DOUBLES_EQUAL(100.0, triangle.calcArea(), delta);
+		REQUIRE_DOUBLES_EQUAL(100.0, triangle.calcArea(), delta);
 	}
 }

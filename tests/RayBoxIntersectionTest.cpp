@@ -1,18 +1,20 @@
 /*
 	This file is part of the Geometry library.
 	Copyright (C) 2013 Benjamin Eikel <benjamin@eikel.org>
+	Copyright (C) 2019 Sascha Brandt <sascha@brandt.graphics>
 
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
 	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
-#include "RayBoxIntersectionTest.h"
 #include "Box.h"
 #include "Line.h"
 #include "RayBoxIntersection.h"
 #include <cstdint>
 #include <vector>
-CPPUNIT_TEST_SUITE_REGISTRATION(RayBoxIntersectionTest);
+#include <catch2/catch.hpp>
+#define REQUIRE_EQUAL(a,b) REQUIRE((a) == (b))
+#define REQUIRE_DOUBLES_EQUAL(a,b,e) REQUIRE((((a) <= (b) + e) && ((b) <= (a) + e)))
 
 static const int32_t halfSideLength = 16;
 
@@ -72,20 +74,20 @@ static void testSingleRay(const ray_t & ray, const dim3_t & boxCube) {
 			for (int_fast32_t x = -halfSideLength; x < halfSideLength; ++x) {
 				const auto & currentBox = boxCube[halfSideLength + z][halfSideLength + y][halfSideLength + x];
 
-				CPPUNIT_ASSERT_EQUAL(BoolVerifyer()(x, y, z, ray), slope.isRayIntersectingBox(currentBox));
+				REQUIRE_EQUAL(BoolVerifyer()(x, y, z, ray), slope.isRayIntersectingBox(currentBox));
 
 				double intersection;
 				const bool result = slope.getRayBoxIntersection(currentBox, intersection);
-				CPPUNIT_ASSERT_EQUAL(BoolVerifyer()(x, y, z, ray), result);
+				REQUIRE_EQUAL(BoolVerifyer()(x, y, z, ray), result);
 				if (result) {
-					CPPUNIT_ASSERT_DOUBLES_EQUAL(DistanceVerifyer()(currentBox, ray), intersection, 1.0e-12);
+					REQUIRE_DOUBLES_EQUAL(DistanceVerifyer()(currentBox, ray), intersection, 1.0e-12);
 				}
 			}
 		}
 	}
 }
 
-void RayBoxIntersectionTest::testRayBoxIntersection() {
+TEST_CASE("RayBoxIntersectionTest_testRayBoxIntersection", "[RayBoxIntersectionTest]") {
 	dim3_t boxCube;
 	boxCube.reserve(2 * halfSideLength);
 	for (int_fast32_t z = -halfSideLength; z < halfSideLength; ++z) {

@@ -19,7 +19,7 @@ include(GNUInstallDirs)
 set(CMAKE_INSTALL_CMAKECONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/Geometry)
 
 # Add the library
-add_library(Geometry
+add_library(Geometry SHARED
 	BoundingSphere.cpp
 	BoxHelper.cpp
 	BoxIntersection.cpp

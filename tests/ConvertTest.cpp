@@ -1,16 +1,17 @@
 /*
 	This file is part of the Geometry library.
 	Copyright (C) 2013 Benjamin Eikel <benjamin@eikel.org>
+	Copyright (C) 2019 Sascha Brandt <sascha@brandt.graphics>
 
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
 	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
-#include "ConvertTest.h"
 #include "Convert.h"
 #include <limits>
 #include <string>
-CPPUNIT_TEST_SUITE_REGISTRATION(ConvertTest);
+#include <catch2/catch.hpp>
+#define REQUIRE_EQUAL(a,b) REQUIRE((a) == (b))
 
 template <typename signed_t, typename unsigned_t, typename float_t>
 static void testNormalConversionForTypes() {
@@ -34,39 +35,39 @@ static void testNormalConversionForTypes() {
 
 	// signed ---> floating
 	// Test invalid minimum value
-	CPPUNIT_ASSERT_EQUAL(minusOne, Convert::fromSignedTo<float_t>(std::numeric_limits<signed_t>::min()));
+	REQUIRE_EQUAL(minusOne, Convert::fromSignedTo<float_t>(std::numeric_limits<signed_t>::min()));
 
-	CPPUNIT_ASSERT_EQUAL(minusOne, Convert::fromSignedTo<float_t>(sMin));
-	CPPUNIT_ASSERT_EQUAL(zero, Convert::fromSignedTo<float_t>(sZero));
-	CPPUNIT_ASSERT_EQUAL(one, Convert::fromSignedTo<float_t>(sMax));
+	REQUIRE_EQUAL(minusOne, Convert::fromSignedTo<float_t>(sMin));
+	REQUIRE_EQUAL(zero, Convert::fromSignedTo<float_t>(sZero));
+	REQUIRE_EQUAL(one, Convert::fromSignedTo<float_t>(sMax));
 
 	// unsigned ---> floating
-	CPPUNIT_ASSERT_EQUAL(zero, Convert::fromUnsignedTo<float_t>(uMin));
-	CPPUNIT_ASSERT_EQUAL(one, Convert::fromUnsignedTo<float_t>(uMax));
+	REQUIRE_EQUAL(zero, Convert::fromUnsignedTo<float_t>(uMin));
+	REQUIRE_EQUAL(one, Convert::fromUnsignedTo<float_t>(uMax));
 
 	// floating ---> signed
-	CPPUNIT_ASSERT_EQUAL(sMin, Convert::toSigned<signed_t>(minusOne));
-	CPPUNIT_ASSERT_EQUAL(sMinusHalf, Convert::toSigned<signed_t>(minusHalf));
-	CPPUNIT_ASSERT_EQUAL(sZero, Convert::toSigned<signed_t>(zero));
-	CPPUNIT_ASSERT_EQUAL(sHalf, Convert::toSigned<signed_t>(half));
-	CPPUNIT_ASSERT_EQUAL(sMax, Convert::toSigned<signed_t>(one));
+	REQUIRE_EQUAL(sMin, Convert::toSigned<signed_t>(minusOne));
+	REQUIRE_EQUAL(sMinusHalf, Convert::toSigned<signed_t>(minusHalf));
+	REQUIRE_EQUAL(sZero, Convert::toSigned<signed_t>(zero));
+	REQUIRE_EQUAL(sHalf, Convert::toSigned<signed_t>(half));
+	REQUIRE_EQUAL(sMax, Convert::toSigned<signed_t>(one));
 
 	// floating ---> unsigned
-	CPPUNIT_ASSERT_EQUAL(uMin, Convert::toUnsigned<unsigned_t>(zero));
-	CPPUNIT_ASSERT_EQUAL(uHalf, Convert::toUnsigned<unsigned_t>(half));
-	CPPUNIT_ASSERT_EQUAL(uMax, Convert::toUnsigned<unsigned_t>(one));
+	REQUIRE_EQUAL(uMin, Convert::toUnsigned<unsigned_t>(zero));
+	REQUIRE_EQUAL(uHalf, Convert::toUnsigned<unsigned_t>(half));
+	REQUIRE_EQUAL(uMax, Convert::toUnsigned<unsigned_t>(one));
 
 	// signed ---> floating ---> signed
 	for (signed_t n = sMax; n > sMin; --n) {
-		CPPUNIT_ASSERT_EQUAL(n, Convert::toSigned<signed_t>(Convert::fromSignedTo<float_t>(n)));
+		REQUIRE_EQUAL(n, Convert::toSigned<signed_t>(Convert::fromSignedTo<float_t>(n)));
 	}
 	// unsigned ---> floating ---> unsigned
 	for (unsigned_t n = uMin; n < uMax; ++n) {
-		CPPUNIT_ASSERT_EQUAL(n, Convert::toUnsigned<unsigned_t>(Convert::fromUnsignedTo<float_t>(n)));
+		REQUIRE_EQUAL(n, Convert::toUnsigned<unsigned_t>(Convert::fromUnsignedTo<float_t>(n)));
 	}
 }
 
-void ConvertTest::testNormalConversion() {
+TEST_CASE("ConvertTest_testNormalConversion", "[ConvertTest]") {
 	testNormalConversionForTypes<char, unsigned char, float>();
 	testNormalConversionForTypes<char, unsigned char, double>();
 

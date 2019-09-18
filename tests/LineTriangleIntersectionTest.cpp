@@ -1,19 +1,21 @@
 /*
 	This file is part of the Geometry library.
 	Copyright (C) 2013 Benjamin Eikel <benjamin@eikel.org>
+	Copyright (C) 2019 Sascha Brandt <sascha@brandt.graphics>
 
 	This library is subject to the terms of the Mozilla Public License, v. 2.0.
 	You should have received a copy of the MPL along with this library; see the
 	file LICENSE. If not, you can obtain one at http://mozilla.org/MPL/2.0/.
 */
-#include "LineTriangleIntersectionTest.h"
 #include "Line.h"
 #include "LineTriangleIntersection.h"
 #include "Triangle.h"
 #include <limits>
-CPPUNIT_TEST_SUITE_REGISTRATION(LineTriangleIntersectionTest);
+#include <catch2/catch.hpp>
+#define REQUIRE_EQUAL(a,b) REQUIRE((a) == (b))
+#define REQUIRE_DOUBLES_EQUAL(a,b,e) REQUIRE((((a) <= (b) + e) && ((b) <= (a) + e)))
 
-void LineTriangleIntersectionTest::testLineTriangleIntersection() {
+TEST_CASE("LineTriangleIntersectionTest_testLineTriangleIntersection", "[LineTriangleIntersectionTest]") {
 	using vec_t = Geometry::_Vec3<double>;
 	using line_t = Geometry::_Line<vec_t>;
 	using triangle_t = Geometry::Triangle<vec_t>;
@@ -27,7 +29,7 @@ void LineTriangleIntersectionTest::testLineTriangleIntersection() {
 	{
 		// Line inside triangle
 		const line_t line(vec_t(0.0, 0.2, 0.2), vec_t(0.0, 1.0, 1.0));
-		CPPUNIT_ASSERT_EQUAL(false, Geometry::Intersection::getLineTriangleIntersection(line, triangle, t, u, v));
+		REQUIRE_EQUAL(false, Geometry::Intersection::getLineTriangleIntersection(line, triangle, t, u, v));
 	}
 	for (double x = -3.0; x <= 3.0; x += 0.1) {
 		for (double y = -3.0; y <= 3.0; y += 0.1) {
@@ -37,18 +39,18 @@ void LineTriangleIntersectionTest::testLineTriangleIntersection() {
 				v = sentinel;
 				const line_t line(vec_t(x, y, z), dirX);
 				const bool intersection = (y >= 0.0 && z >= 0.0 && (y + z) <= 1.0);
-				CPPUNIT_ASSERT_EQUAL(intersection,
+				REQUIRE_EQUAL(intersection,
 									 Geometry::Intersection::getLineTriangleIntersection(line, triangle, t, u, v));
 				if (intersection) {
-					CPPUNIT_ASSERT_DOUBLES_EQUAL(-x, t, epsilon);
-					CPPUNIT_ASSERT_DOUBLES_EQUAL(y, u, epsilon);
-					CPPUNIT_ASSERT_DOUBLES_EQUAL(z, v, epsilon);
-					CPPUNIT_ASSERT_EQUAL(line.getPoint(t), triangle.calcPoint(u, v));
+					REQUIRE_DOUBLES_EQUAL(-x, t, epsilon);
+					REQUIRE_DOUBLES_EQUAL(y, u, epsilon);
+					REQUIRE_DOUBLES_EQUAL(z, v, epsilon);
+					REQUIRE_EQUAL(line.getPoint(t), triangle.calcPoint(u, v));
 				} else {
 					// Make sure that the values were not changed
-					CPPUNIT_ASSERT_DOUBLES_EQUAL(sentinel, t, epsilon);
-					CPPUNIT_ASSERT_DOUBLES_EQUAL(sentinel, u, epsilon);
-					CPPUNIT_ASSERT_DOUBLES_EQUAL(sentinel, v, epsilon);
+					REQUIRE_DOUBLES_EQUAL(sentinel, t, epsilon);
+					REQUIRE_DOUBLES_EQUAL(sentinel, u, epsilon);
+					REQUIRE_DOUBLES_EQUAL(sentinel, v, epsilon);
 				}
 			}
 		}
@@ -73,14 +75,14 @@ void LineTriangleIntersectionTest::testLineTriangleIntersection() {
 	const vec_t dirZ(0.0, 0.0, 1.0);
 	{
 		const line_t line(t1, dirZ);
-		CPPUNIT_ASSERT_EQUAL(true, Geometry::Intersection::getLineTriangleIntersection(line, triangle2, t, u, v));
-		CPPUNIT_ASSERT_DOUBLES_EQUAL(8.0, t, epsilon);
-		CPPUNIT_ASSERT_EQUAL(line.getPoint(t), triangle2.calcPoint(u, v));
+		REQUIRE_EQUAL(true, Geometry::Intersection::getLineTriangleIntersection(line, triangle2, t, u, v));
+		REQUIRE_DOUBLES_EQUAL(8.0, t, epsilon);
+		REQUIRE_EQUAL(line.getPoint(t), triangle2.calcPoint(u, v));
 	}
-	CPPUNIT_ASSERT_EQUAL(false,
+	REQUIRE_EQUAL(false,
 						 Geometry::Intersection::getLineTriangleIntersection(line_t(t2, dirZ), triangle2, t, u, v));
-	CPPUNIT_ASSERT_EQUAL(false,
+	REQUIRE_EQUAL(false,
 						 Geometry::Intersection::getLineTriangleIntersection(line_t(t3, dirZ), triangle2, t, u, v));
-	CPPUNIT_ASSERT_EQUAL(false,
+	REQUIRE_EQUAL(false,
 						 Geometry::Intersection::getLineTriangleIntersection(line_t(t4, dirZ), triangle2, t, u, v));
 }
