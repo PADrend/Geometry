@@ -19,7 +19,7 @@ include(GNUInstallDirs)
 set(CMAKE_INSTALL_CMAKECONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/Geometry)
 
 # Add the library
-add_library(Geometry SHARED
+add_library(Geometry
 	BoundingSphere.cpp
 	BoxHelper.cpp
 	BoxIntersection.cpp
@@ -63,12 +63,14 @@ set_property(TARGET Geometry PROPERTY PUBLIC_HEADER
 
 # Set version of library
 set_target_properties(Geometry PROPERTIES VERSION ${Geometry_VERSION}
-                                          SOVERSION ${Geometry_VERSION_MAJOR})
+																					SOVERSION ${Geometry_VERSION_MAJOR}
+																					POSITION_INDEPENDENT_CODE ON
+																					LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
 option(GEOMETRY_BUILD_TESTS "Defines if CppUnit tests for the Geometry library are built.")
 if(GEOMETRY_BUILD_TESTS)
 	if(UNIX AND NOT APPLE)
-	        find_program(MEMORYCHECK_COMMAND NAMES valgrind)
+					find_program(MEMORYCHECK_COMMAND NAMES valgrind)
 		set(MEMORYCHECK_COMMAND_OPTIONS "--tool=memcheck --leak-check=summary --num-callers=1 --vgdb=no")
 	endif()
 	include(CTest)
@@ -85,9 +87,9 @@ install(TARGETS Geometry EXPORT LibraryExport
 
 # Set include directories for users of this library
 target_include_directories(Geometry
-                           INTERFACE
-                           "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>" "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/.."
-                           "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+													 INTERFACE
+													 "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>" "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/.."
+													 "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
 
 # Library export
 install(EXPORT LibraryExport DESTINATION ${CMAKE_INSTALL_CMAKECONFIGDIR} FILE GeometryTargets.cmake COMPONENT developmentlibraries)
@@ -95,16 +97,16 @@ install(EXPORT LibraryExport DESTINATION ${CMAKE_INSTALL_CMAKECONFIGDIR} FILE Ge
 # Create the configuration files
 include(CMakePackageConfigHelpers)
 configure_package_config_file(GeometryConfig.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/GeometryConfig.cmake
-                              INSTALL_DESTINATION ${CMAKE_INSTALL_CMAKECONFIGDIR}
-                              PATH_VARS CMAKE_INSTALL_CMAKECONFIGDIR
-                              NO_SET_AND_CHECK_MACRO
-                              NO_CHECK_REQUIRED_COMPONENTS_MACRO)
+															INSTALL_DESTINATION ${CMAKE_INSTALL_CMAKECONFIGDIR}
+															PATH_VARS CMAKE_INSTALL_CMAKECONFIGDIR
+															NO_SET_AND_CHECK_MACRO
+															NO_CHECK_REQUIRED_COMPONENTS_MACRO)
 write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/GeometryConfigVersion.cmake
-                                 COMPATIBILITY SameMajorVersion)
+																 COMPATIBILITY SameMajorVersion)
 
 # Install the configuration files
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/GeometryConfig.cmake ${CMAKE_CURRENT_BINARY_DIR}/GeometryConfigVersion.cmake
-        DESTINATION ${CMAKE_INSTALL_CMAKECONFIGDIR} COMPONENT developmentlibraries)
+				DESTINATION ${CMAKE_INSTALL_CMAKECONFIGDIR} COMPONENT developmentlibraries)
 
 # Packaging
 include(InstallRequiredSystemLibraries)
