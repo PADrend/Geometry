@@ -55,6 +55,11 @@ public:
 		y(static_cast<value_t>(0));
 		// ctor
 	}
+	_Vec2(value_t _xy) {
+		x(_xy);
+		y(_xy);
+		// ctor
+	}
 	_Vec2(value_t _x, value_t _y) {
 		x(_x);
 		y(_y);
@@ -252,6 +257,12 @@ public:
 	const vec2_t operator/(const value_t & f) const {
 		static_assert(std::is_floating_point<value_t>::value, "template argument not a floating point type");
 		return vec2_t(x() / f, y() / f);
+	}
+	const vec2_t operator*(const vec2_t & p) const {
+		return vec2_t(x() * p.x(), y() * p.y());
+	}
+	const vec2_t operator/(const vec2_t & p) const {
+		return vec2_t(x() / p.x(), y() / p.y());
 	}
 	//@}
 

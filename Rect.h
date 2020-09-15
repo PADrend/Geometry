@@ -75,6 +75,12 @@ public:
 	vec2_t getSize() const {
 		return vec2_t(width, height);
 	}
+	vec2_t getMin() const {
+		return vec2_t(x, y);
+	}
+	vec2_t getMax() const {
+		return vec2_t(x+width, y+height);
+	}
 	value_t getX() const {
 		return x;
 	}
@@ -131,6 +137,20 @@ public:
 	vec2_t getCorner(const rectCorner_t corner) const {
 		auto nr = static_cast<std::size_t>(corner);
 		return vec2_t((nr & 1) ? getMaxX() : getMinX(), (nr & 2) ? getMaxY() : getMinY());
+	}
+	vec2_t getClosestPoint(const vec2_t& pos) const {
+		vec2_t closest = pos;
+		if(isInvalid())
+			return closest;
+		if(pos.x() < x)
+			closest.x(x);
+		else if(pos.x() > x+width)
+			closest.x(x+width);
+		if(pos.y() < y)
+			closest.y(y);
+		else if(pos.y() > y+height)
+			closest.y(y+height);
+		return closest;
 	}
 
 	//@}

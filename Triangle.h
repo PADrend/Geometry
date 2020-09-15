@@ -80,6 +80,18 @@ public:
 		return c;
 	}
 
+	/*! array-access operator */
+	inline vec_t & operator[](uint_fast8_t nr) {
+		const uint_fast8_t nrMod3 = nr%3;
+		return nrMod3 == 0 ? a : (nrMod3 == 1 ? b : c);
+	}
+
+	/*! const array-access operator	*/
+	inline const vec_t & operator[](uint_fast8_t nr) const {
+		const uint_fast8_t nrMod3 = nr%3;
+		return nrMod3 == 0 ? a : (nrMod3 == 1 ? b : c);
+	}
+
 	//! Return the first edge.
 	vec_t getEdgeAB() const {
 		return (b - a);

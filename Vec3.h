@@ -396,6 +396,13 @@ public:
 		static_assert(std::is_floating_point<value_t>::value, "template argument not a floating point type");
 		return vec3_t(vec[0] * f, vec[1] * f, vec[2] * f);
 	}
+	/*! multiplies this componentwise with another vector
+		@param p the other vector
+		@return a new Vec3
+		@note this remains unchanged	*/
+	const vec3_t operator*(const vec3_t & p) const {
+		return vec3_t(x() * p.x(), y() * p.y(), z() * p.z());
+	}
 
 	/*! divides this componentwise by a scalar value
 		@param f the scalar
@@ -405,7 +412,13 @@ public:
 		static_assert(std::is_floating_point<value_t>::value, "template argument not a floating point type");
 		return vec3_t(vec[0] / f, vec[1] / f, vec[2] / f);
 	}
-
+	/*! divides this componentwise by a another vector
+		@param p the other vector
+		@return a new Vec3
+		@note this remains unchanged	*/
+	const vec3_t operator/(const vec3_t & p) const {
+		return vec3_t(x() / p.x(), y() / p.y(), z() / p.z());
+	}
 	/*! calculates the crossproduct of this and another Vec3
 		@param p the vector to be used for calculation
 		@return a vector standing orthogonal on the plane defined by this and p
