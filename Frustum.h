@@ -34,8 +34,8 @@ public:
 	 * @name Main
 	 */
 	//@{
-	Frustum();
-	Frustum(const Angle & angle, float ratio, float nearD, float farD);
+	GEOMETRYAPI Frustum();
+	GEOMETRYAPI Frustum(const Angle & angle, float ratio, float nearD, float farD);
 	//@}
 
 	/**
@@ -79,7 +79,7 @@ public:
 		return projectionMatrix;
 	}
 
-	intersection_t isBoxInFrustum(const Box & b) const;
+	GEOMETRYAPI intersection_t isBoxInFrustum(const Box & b) const;
 	inline bool pointInFrustum(const Vec3 & p) const;
 	inline Vec3 operator[](corner_t nr) const;
 	bool operator==(const Frustum & other) const;
@@ -93,17 +93,17 @@ public:
 	 * @name Modification
 	 */
 	//@{
-	void setPerspective(const Angle & angle, float ratio, float near, float far);
-	void setFrustum(float left, float right, float bottom, float top, float near, float far, bool orthogonal = false);
-	void setFrustumFromAngles(const Angle & fovLeft, const Angle & fovRight, const Angle & fovBottom,
+	GEOMETRYAPI void setPerspective(const Angle & angle, float ratio, float near, float far);
+	GEOMETRYAPI void setFrustum(float left, float right, float bottom, float top, float near, float far, bool orthogonal = false);
+	GEOMETRYAPI void setFrustumFromAngles(const Angle & fovLeft, const Angle & fovRight, const Angle & fovBottom,
 							  const Angle & fovTop, float near, float far);
 	void setOrthogonal(float l, float r, float b, float t, float n, float f) {
 		setFrustum(l, r, b, t, n, f, true);
 	}
-	void setPosition(const Vec3 & pos, const Vec3 & dir, const Vec3 & up);
+	GEOMETRYAPI void setPosition(const Vec3 & pos, const Vec3 & dir, const Vec3 & up);
 
 protected:
-	void recalculateCornersAndPlanes();
+	GEOMETRYAPI void recalculateCornersAndPlanes();
 	//@}
 
 	// ---- Data
