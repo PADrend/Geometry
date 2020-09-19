@@ -56,8 +56,8 @@ bool rayPlaneIntersection(const Plane & plane, const Ray3f & ray, Vec3f & inters
 }
 
 /*! (intersects?, lineIntersectionValue1, lineIntersectionValue2) */
-std::tuple<bool, float, float> normLineSphereIntersections(const Line3f & normalizedLine, const Sphere_f & sphere);
-std::tuple<bool, float, float> lineSphereIntersections(const Line3f & line, const Sphere_f & sphere);
+GEOMETRYAPI std::tuple<bool, float, float> normLineSphereIntersections(const Line3f & normalizedLine, const Sphere_f & sphere);
+GEOMETRYAPI std::tuple<bool, float, float> lineSphereIntersections(const Line3f & line, const Sphere_f & sphere);
 
 /**
  * Calculate a pair of points on the given lines @a lineA and @a lineB that is closest to each other.
@@ -180,7 +180,7 @@ inline _Vec3<_T> unProject(const _Vec3<_T> & win, const _Matrix4x4<_T> & worldTo
  * @param viewport Viewport
  * @return Rect in window coordinates
  */
-Rect_f projectBox(const Box & box, const Matrix4x4f & modelView, const Matrix4x4f & projection,
+GEOMETRYAPI Rect_f projectBox(const Box & box, const Matrix4x4f & modelView, const Matrix4x4f & projection,
 				  const Rect_f & viewport);
 
 /**
@@ -195,7 +195,7 @@ Rect_f projectBox(const Box & box, const Matrix4x4f & modelView, const Matrix4x4
  * @note Example 2: @a box can be given in object coordinates,
  * and @a modelView contains the product of a camera matrix and the transformation matrix of the object.
  */
-Frustum calcEnclosingOrthoFrustum(const Box & box, const Matrix4x4f & modelView);
+GEOMETRYAPI Frustum calcEnclosingOrthoFrustum(const Box & box, const Matrix4x4f & modelView);
 }
 
 #endif /* GEOMETRY_TOOLS_H */

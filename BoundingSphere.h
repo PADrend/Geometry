@@ -43,25 +43,25 @@ namespace BoundingSphere {
  * @author Benjamin Eikel
  * @date 2012-03-20
  */
-Sphere_f computeMiniball(const std::vector<Vec3f> & points);
+GEOMETRYAPI Sphere_f computeMiniball(const std::vector<Vec3f> & points);
 
 /**
  * @see computeEPOS98()
  * @note This version uses 3 normals
  */
-Sphere_f computeEPOS6(const std::vector<Vec3f> & points);
+GEOMETRYAPI Sphere_f computeEPOS6(const std::vector<Vec3f> & points);
 
 /**
  * @see computeEPOS98()
  * @note This version uses 7 normals
  */
-Sphere_f computeEPOS14(const std::vector<Vec3f> & points);
+GEOMETRYAPI Sphere_f computeEPOS14(const std::vector<Vec3f> & points);
 
 /**
  * @see computeEPOS98()
  * @note This version uses 13 normals
  */
-Sphere_f computeEPOS26(const std::vector<Vec3f> & points);
+GEOMETRYAPI Sphere_f computeEPOS26(const std::vector<Vec3f> & points);
 
 /**
  * Bounding sphere algorithm using an extremal points heuristic.
@@ -73,7 +73,7 @@ Sphere_f computeEPOS26(const std::vector<Vec3f> & points);
  * @author Benjamin Eikel
  * @date 2012-03-23
  */
-Sphere_f computeEPOS98(const std::vector<Vec3f> & points);
+GEOMETRYAPI Sphere_f computeEPOS98(const std::vector<Vec3f> & points);
 }
 }
 

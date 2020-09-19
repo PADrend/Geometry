@@ -86,7 +86,7 @@ private:
 
 public:
 	//! Create a new instance and associate it with a ray.
-	Slope(const ray_t & ray);
+	GEOMETRYAPI Slope(const ray_t & ray);
 
 	/**
 	 * Check if the associated ray intersects a box.
@@ -98,7 +98,7 @@ public:
 	 * @note This function is usually a little bit faster than
 	 * getRayBoxIntersection()
 	 */
-	bool isRayIntersectingBox(const box_t & box) const;
+	GEOMETRYAPI bool isRayIntersectingBox(const box_t & box) const;
 
 	/**
 	 * Calculate the intersection between the associated ray and a box.
@@ -113,7 +113,7 @@ public:
 	 * @note This function is usually a little bit slower than
 	 * isRayIntersectingBox()
 	 */
-	bool getRayBoxIntersection(const box_t & box, value_t & intersection) const;
+	GEOMETRYAPI bool getRayBoxIntersection(const box_t & box, value_t & intersection) const;
 
 	//! Return the stored ray.
 	const ray_t & getRay() const {
