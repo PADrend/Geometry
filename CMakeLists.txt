@@ -61,6 +61,14 @@ set_property(TARGET Geometry PROPERTY PUBLIC_HEADER
 	VecN.h
 )
 
+if(MSVC)
+	target_compile_definitions(Geometry PRIVATE "GEOMETRYAPI=__declspec(dllexport)")
+	target_compile_definitions(Geometry INTERFACE "GEOMETRYAPI=__declspec(dllimport)")
+else()
+	target_compile_definitions(Geometry PRIVATE "GEOMETRYAPI=")
+	target_compile_definitions(Geometry INTERFACE "GEOMETRYAPI=")
+endif()
+
 # Set version of library
 set_target_properties(Geometry PROPERTIES VERSION ${Geometry_VERSION}
 																					SOVERSION ${Geometry_VERSION_MAJOR}

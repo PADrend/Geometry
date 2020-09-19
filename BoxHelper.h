@@ -29,10 +29,10 @@ using Vec3f = _Vec3<float>;
 namespace Helper {
 
 //! Return the indices of the corners for the requested @p side.
-const corner_t * getCornerIndices(const side_t side);
+GEOMETRYAPI const corner_t * getCornerIndices(const side_t side);
 
 //! Return the normal for the requested @p side.
-const Vec3f & getNormal(const side_t side);
+GEOMETRYAPI const Vec3f & getNormal(const side_t side);
 
 /**
  * Create new boxes by splitting up a box along x/y/z axis.
@@ -43,7 +43,7 @@ const Vec3f & getNormal(const side_t side);
  * @param partsZ number of resulting boxes along z-axis
  * @return Container with the new boxes
  */
-std::vector<Box_f> splitUpBox(const Box_f & box, unsigned int partsX, unsigned int partsY, unsigned int partsZ);
+GEOMETRYAPI std::vector<Box_f> splitUpBox(const Box_f & box, unsigned int partsX, unsigned int partsY, unsigned int partsZ);
 
 /**
  * Split up a box once along up to three axis such that the resulting boxes are
@@ -53,7 +53,7 @@ std::vector<Box_f> splitUpBox(const Box_f & box, unsigned int partsX, unsigned i
  * @param box Box that will be used for splitting
  * @return Container with the new boxes
  */
-std::vector<Box_f> splitBoxCubeLike(const Box_f & box);
+GEOMETRYAPI std::vector<Box_f> splitBoxCubeLike(const Box_f & box);
 
 /**
  * Take a box and transform it by applying a transformation matrix to the
@@ -63,7 +63,7 @@ std::vector<Box_f> splitBoxCubeLike(const Box_f & box);
  * @param matrix Transformation matrix
  * @return Axis-aligned box including the transformed corners
  */
-Box_f getTransformedBox(const Box_f & box, const Matrix4x4f & matrix);
+GEOMETRYAPI Box_f getTransformedBox(const Box_f & box, const Matrix4x4f & matrix);
 }
 }
 

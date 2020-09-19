@@ -41,7 +41,7 @@ namespace Intersection {
 \see original source code:
 	http://jgt.akpeters.com/papers/AkenineMoller01/tribox.html
 */
-bool isBoxIntersectingTriangle(const Box_f & box, const Triangle_f & triangle);
+GEOMETRYAPI bool isBoxIntersectingTriangle(const Box_f & box, const Triangle_f & triangle);
 
 /**
  * Check if two boxes intersect.
