@@ -82,7 +82,7 @@ public:
 	GEOMETRYAPI intersection_t isBoxInFrustum(const Box & b) const;
 	inline bool pointInFrustum(const Vec3 & p) const;
 	inline Vec3 operator[](corner_t nr) const;
-	bool operator==(const Frustum & other) const;
+	GEOMETRYAPI bool operator==(const Frustum & other) const;
 
 	const Plane & getPlane(side_t side) const {
 		return planes[static_cast<std::size_t>(side)];
