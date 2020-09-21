@@ -27,25 +27,32 @@ namespace Geometry {
  * @author Benjamin Eikel
  * @date 2009-12-13
  */
-class Quaternion {
+template<typename T>
+class _Quaternion {
 public:
-	typedef float value_t;
+	typedef T value_t;
 	typedef _Angle<value_t> angle_t;
 	typedef _Vec3<value_t> vec3_t;
+	typedef _Quaternion<value_t> quaternion_t;
+	typedef _Matrix3x3<value_t> matrix3x3_t;
 
-	Quaternion() {
+	_Quaternion() {
 		set(0.0f, 0.0f, 0.0f, 1.0f);
 	}
 
-	Quaternion(value_t _x, value_t _y, value_t _z, value_t _w) {
+	_Quaternion(value_t _x, value_t _y, value_t _z, value_t _w) {
 		set(_x, _y, _z, _w);
 	}
 
-	bool operator==(const Quaternion & other) const {
+	explicit _Quaternion(const value_t * v) {
+		set(v[0], v[1], v[2], v[3]);
+	}
+
+	bool operator==(const quaternion_t & other) const {
 		return values[0] == other.values[0] && values[1] == other.values[1] && values[2] == other.values[2]
 				&& values[3] == other.values[3];
 	}
-	bool operator!=(const Quaternion & other) const {
+	bool operator!=(const quaternion_t & other) const {
 		return values[0] != other.values[0] || values[1] != other.values[1] || values[2] != other.values[2]
 				|| values[3] != other.values[3];
 	}
@@ -90,11 +97,11 @@ public:
 		return values[3];
 	}
 
-	const Quaternion operator*(value_t factor) const {
-		return Quaternion(values[0] * factor, values[1] * factor, values[2] * factor, values[3] * factor);
+	const quaternion_t operator*(value_t factor) const {
+		return quaternion_t(values[0] * factor, values[1] * factor, values[2] * factor, values[3] * factor);
 	}
 
-	Quaternion & operator*=(value_t factor) {
+	quaternion_t & operator*=(value_t factor) {
 		values[0] *= factor;
 		values[1] *= factor;
 		values[2] *= factor;
@@ -102,12 +109,12 @@ public:
 		return *this;
 	}
 
-	const Quaternion operator/(value_t divisor) const {
+	const quaternion_t operator/(value_t divisor) const {
 		value_t factor = 1.0f / divisor;
-		return Quaternion(values[0] * factor, values[1] * factor, values[2] * factor, values[3] * factor);
+		return quaternion_t(values[0] * factor, values[1] * factor, values[2] * factor, values[3] * factor);
 	}
 
-	Quaternion & operator/=(value_t divisor) {
+	quaternion_t & operator/=(value_t divisor) {
 		value_t factor = 1.0f / divisor;
 		values[0] *= factor;
 		values[1] *= factor;
@@ -116,14 +123,14 @@ public:
 		return *this;
 	}
 
-	const Quaternion operator*(const Quaternion & q2) const {
-		return Quaternion(values[3] * q2[0] + values[0] * q2[3] + values[1] * q2[2] - values[2] * q2[1],
+	const quaternion_t operator*(const quaternion_t & q2) const {
+		return quaternion_t(values[3] * q2[0] + values[0] * q2[3] + values[1] * q2[2] - values[2] * q2[1],
 						  values[3] * q2[1] - values[0] * q2[2] + values[1] * q2[3] + values[2] * q2[0],
 						  values[3] * q2[2] + values[0] * q2[1] - values[1] * q2[0] + values[2] * q2[3],
 						  values[3] * q2[3] - values[0] * q2[0] - values[1] * q2[1] - values[2] * q2[2]);
 	}
 
-	Quaternion operator*=(const Quaternion & q2) {
+	quaternion_t operator*=(const quaternion_t & q2) {
 		value_t tempX = values[3] * q2[0] + values[0] * q2[3] + values[1] * q2[2] - values[2] * q2[1];
 		value_t tempY = values[3] * q2[1] - values[0] * q2[2] + values[1] * q2[3] + values[2] * q2[0];
 		value_t tempZ = values[3] * q2[2] + values[0] * q2[1] - values[1] * q2[0] + values[2] * q2[3];
@@ -136,20 +143,20 @@ public:
 		return *this;
 	}
 
-	const Quaternion operator/(const Quaternion & q2) const {
-		return Quaternion((*this) * q2.inverse());
+	const quaternion_t operator/(const quaternion_t & q2) const {
+		return quaternion_t((*this) * q2.inverse());
 	}
 
-	Quaternion operator/=(const Quaternion & q2) {
+	quaternion_t operator/=(const quaternion_t & q2) {
 		*this = (*this) * q2.inverse();
 		return *this;
 	}
 
-	const Quaternion operator+(const Quaternion & source) const {
-		return Quaternion(values[0] + source[0], values[1] + source[1], values[2] + source[2], values[3] + source[3]);
+	const quaternion_t operator+(const quaternion_t & source) const {
+		return quaternion_t(values[0] + source[0], values[1] + source[1], values[2] + source[2], values[3] + source[3]);
 	}
 
-	Quaternion operator+=(const Quaternion & source) {
+	quaternion_t operator+=(const quaternion_t & source) {
 		values[0] += source[0];
 		values[1] += source[1];
 		values[2] += source[2];
@@ -157,11 +164,11 @@ public:
 		return *this;
 	}
 
-	const Quaternion operator-(const Quaternion & source) const {
-		return Quaternion(values[0] - source[0], values[1] - source[1], values[2] - source[2], values[3] - source[3]);
+	const quaternion_t operator-(const quaternion_t & source) const {
+		return quaternion_t(values[0] - source[0], values[1] - source[1], values[2] - source[2], values[3] - source[3]);
 	}
 
-	Quaternion operator-=(const Quaternion & source) {
+	quaternion_t operator-=(const quaternion_t & source) {
 		values[0] -= source[0];
 		values[1] -= source[1];
 		values[2] -= source[2];
@@ -177,11 +184,11 @@ public:
 		return values[0] * values[0] + values[1] * values[1] + values[2] * values[2] + values[3] * values[3];
 	}
 
-	Quaternion conjugate() const {
-		return Quaternion(-x(), -y(), -z(), w());
+	quaternion_t conjugate() const {
+		return quaternion_t(-x(), -y(), -z(), w());
 	}
 
-	Quaternion inverse() const {
+	quaternion_t inverse() const {
 		return conjugate() / length2();
 	}
 
@@ -189,31 +196,31 @@ public:
 		*this /= length();
 	}
 
-	value_t dot(const Quaternion & q) const {
+	value_t dot(const quaternion_t & q) const {
 		return values[0] * q[0] + values[1] * q[1] + values[2] * q[2] + values[3] * q[3];
 	}
 
 	/* source;
 	   http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
 	 */
-	static Quaternion matrixToQuaternion(const Matrix3x3 & src) {
+	static quaternion_t matrixToQuaternion(const matrix3x3_t & src) {
 		const value_t trace = 1.0f + src.at(0, 0) + src.at(1, 1) + src.at(2, 2);
 
 		if (trace > 0.00001f) {
 			const value_t s = std::sqrt(trace) * 2;
-			return Quaternion((src.at(2, 1) - src.at(1, 2)) / s, (src.at(0, 2) - src.at(2, 0)) / s,
+			return quaternion_t((src.at(2, 1) - src.at(1, 2)) / s, (src.at(0, 2) - src.at(2, 0)) / s,
 							  (src.at(1, 0) - src.at(0, 1)) / s, s / 4);
 		} else if (src.at(0, 0) > src.at(1, 1) && src.at(0, 0) > src.at(2, 2)) {
 			const value_t s = std::sqrt(1.0f + src.at(0, 0) - src.at(1, 1) - src.at(2, 2)) * 2;
-			return Quaternion(s / 4, (src.at(1, 0) + src.at(0, 1)) / s, (src.at(0, 2) + src.at(2, 0)) / s,
+			return quaternion_t(s / 4, (src.at(1, 0) + src.at(0, 1)) / s, (src.at(0, 2) + src.at(2, 0)) / s,
 							  (src.at(2, 1) - src.at(1, 2)) / s);
 		} else if (src.at(1, 1) > src.at(2, 2)) {
 			const value_t s = std::sqrt(1.0f + src.at(1, 1) - src.at(0, 0) - src.at(2, 2)) * 2;
-			return Quaternion((src.at(1, 0) + src.at(0, 1)) / s, s / 4, (src.at(2, 1) + src.at(1, 2)) / s,
+			return quaternion_t((src.at(1, 0) + src.at(0, 1)) / s, s / 4, (src.at(2, 1) + src.at(1, 2)) / s,
 							  (src.at(0, 2) - src.at(2, 0)) / s);
 		} else {
 			const value_t s = std::sqrt(1.0f + src.at(2, 2) - src.at(0, 0) - src.at(1, 1)) * 2;
-			return Quaternion((src.at(0, 2) + src.at(2, 0)) / s, (src.at(2, 1) + src.at(1, 2)) / s, s / 4,
+			return quaternion_t((src.at(0, 2) + src.at(2, 0)) / s, (src.at(2, 1) + src.at(1, 2)) / s, s / 4,
 							  (src.at(1, 0) - src.at(0, 1)) / s);
 		}
 	}
@@ -221,8 +228,8 @@ public:
 	/*  source:
 	 *  http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToMatrix/index.htm
 	 */
-	Matrix3x3 toMatrix() const {
-		Quaternion q(*this);
+	matrix3x3_t toMatrix() const {
+		quaternion_t q(*this);
 		q.normalize();
 
 		value_t wx = q.w() * q.x();
@@ -237,7 +244,7 @@ public:
 		value_t yz = q.y() * q.z();
 		value_t zz = q.z() * q.z();
 
-		Matrix3x3 mat;
+		matrix3x3_t mat;
 		mat.set(0, 0, 1.0 - 2.0 * (yy + zz));
 		mat.set(0, 1, 2.0 * (xy - wz));
 		mat.set(0, 2, 2.0 * (xz + wy));
@@ -277,7 +284,7 @@ public:
 	 * source:
 	 * http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm
 	 */
-	static Quaternion eulerToQuaternion(const vec3_t & euler) {
+	static quaternion_t eulerToQuaternion(const vec3_t & euler) {
 		value_t c1 = std::cos(euler.x() / 2);
 		value_t s1 = std::sin(euler.x() / 2);
 		value_t c2 = std::cos(euler.y() / 2);
@@ -287,7 +294,7 @@ public:
 		value_t c1c2 = c1 * c2;
 		value_t s1s2 = s1 * s2;
 
-		return Quaternion(c1c2 * s3 + s1s2 * c3, s1 * c2 * c3 + c1 * s2 * s3, c1 * s2 * c3 - s1 * c2 * s3,
+		return quaternion_t(c1c2 * s3 + s1s2 * c3, s1 * c2 * c3 + c1 * s2 * s3, c1 * s2 * c3 - s1 * c2 * s3,
 						  c1c2 * c3 - s1s2 * s3);
 	}
 
@@ -302,19 +309,19 @@ public:
 		return p2;
 	}
 
-	static Quaternion lerp(const Quaternion & q1, const Quaternion & q2, value_t factor) {
+	static quaternion_t lerp(const quaternion_t & q1, const quaternion_t & q2, value_t factor) {
 		return Interpolation::linear(q1, q2, factor);
 	}
 
 	// source: http://number-none.com/product/Understanding%20Slerp,%20Then%20Not%20Using%20It/
-	static Quaternion slerp(const Quaternion & q1, const Quaternion & q2, value_t factor) {
+	static quaternion_t slerp(const quaternion_t & q1, const quaternion_t & q2, value_t factor) {
 		// Compute the cosine of the angle between the two
 		value_t dot = q1.dot(q2);
 
 		if (dot > 0.9995) {
 			// If the inputs are too close for comfort, linearly interpolate
 			// and normalize the result.
-			Quaternion q = lerp(q1, q2, factor);
+			quaternion_t q = lerp(q1, q2, factor);
 			q.normalize();
 			return q;
 		}
@@ -329,7 +336,7 @@ public:
 		value_t theta_0 = std::acos(dot); // theta_0 = angle between input vectors
 		value_t theta = theta_0 * factor; // theta = angle between q1 and result
 
-		Quaternion q = q2 - q1 * dot;
+		quaternion_t q = q2 - q1 * dot;
 		q.normalize();
 
 		return q1 * std::cos(theta) + q * std::sin(theta);
@@ -363,9 +370,9 @@ public:
 		makeRotate(angle_t::rad(rad), axis.x(), axis.y(), axis.z());
 	}
 
-	Quaternion(const angle_t & rotX, const angle_t & rotY, const angle_t & rotZ) {
+	_Quaternion(const angle_t & rotX, const angle_t & rotY, const angle_t & rotZ) {
 		set(0.0f, 0.0f, 0.0f, 1.0f);
-		Quaternion quatX, quatY, quatZ, target;
+		quaternion_t quatX, quatY, quatZ, target;
 		quatX.makeRotate(rotX, vec3_t(1, 0, 0));
 		quatY.makeRotate(rotY, vec3_t(0, 1, 0));
 		quatZ.makeRotate(rotZ, vec3_t(0, 0, 1));
@@ -379,10 +386,10 @@ public:
 
 	//! @name Serialization
 	//@{
-	friend std::ostream & operator<<(std::ostream & out, const Quaternion & q) {
+	friend std::ostream & operator<<(std::ostream & out, const quaternion_t & q) {
 		return out << q.values[0] << ' ' << q.values[1] << ' ' << q.values[2] << ' ' << q.values[3];
 	}
-	friend std::istream & operator>>(std::istream & in, Quaternion & q) {
+	friend std::istream & operator>>(std::istream & in, quaternion_t & q) {
 		return in >> q.values[0] >> q.values[1] >> q.values[2] >> q.values[3];
 	}
 	//@}
@@ -390,5 +397,8 @@ public:
 private:
 	value_t values[4];
 };
+
+typedef _Quaternion<float> Quaternion;
+typedef _Quaternion<double> Quaternion_d;
 }
 #endif /* GEOMETRY_QUATERNION_H */
