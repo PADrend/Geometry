@@ -103,12 +103,12 @@ public:
 	 */
 	//@{
 	/*! array-access operator */
-	inline value_t & operator[](uint_fast8_t nr) {
+	inline value_t & operator[](uint32_t nr) {
 		return vec[nr];
 	}
 
 	/*! const array-access operator	*/
-	inline const value_t & operator[](uint_fast8_t nr) const {
+	inline const value_t & operator[](uint32_t nr) const {
 		return vec[nr];
 	}
 
@@ -127,7 +127,7 @@ public:
 	}
 
 	/*! @return the i-th component of this	*/
-	inline const value_t get(const int & i) const {
+	inline const value_t get(uint32_t i) const {
 		return vec[i];
 	}
 

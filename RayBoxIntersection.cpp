@@ -16,8 +16,8 @@ namespace Intersection {
 template <typename value_t>
 Slope<value_t>::Slope(const ray_t & p_ray)
 		: ray(p_ray),
-		  inverseDirection(1.0 / p_ray.getDirection().getX(), 1.0 / p_ray.getDirection().getY(),
-						   1.0 / p_ray.getDirection().getZ()) {
+		  inverseDirection(static_cast<value_t>(1.0) / p_ray.getDirection().getX(), static_cast<value_t>(1.0) / p_ray.getDirection().getY(),
+						   static_cast<value_t>(1.0) / p_ray.getDirection().getZ()) {
 	const auto & ori = p_ray.getOrigin();
 	const auto & dir = p_ray.getDirection();
 	// Ray slope

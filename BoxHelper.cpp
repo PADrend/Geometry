@@ -133,7 +133,7 @@ std::vector<Box_f> splitUpBox(const Box_f & box, unsigned int partsX, unsigned i
 }
 
 std::vector<Box_f> splitBoxCubeLike(const Box_f & box) {
-	static float isq2 = 1.0 / sqrt(2);
+	static const float isq2 = 1.0f / std::sqrt(2.0f);
 
 	float x = box.getExtentX(), y = box.getExtentY(), z = box.getExtentZ();
 

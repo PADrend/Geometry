@@ -133,12 +133,12 @@ static bool mbBar(const _Vec3<_T> & point, AlgorithmData<Container, _T> & data) 
 
 		// Page 334: \alpha_{m,i} = (2 / z_i) * (Q_i - \bar{Q}_i)^T * Q_m   i < m
 		_Vec3<_T> alpha;
-		for (size_t i = 1; i < m; ++i) {
+		for (uint32_t i = 1; i < m; ++i) {
 			alpha[i] = (2 / data.stack[i].z) * data.stack[i].v.dot(current.v);
 		}
 
 		// Page 335: Store vector Q_m - \bar{Q}_m
-		for (size_t i = 1; i < m; ++i) {
+		for (uint32_t i = 1; i < m; ++i) {
 			current.v -= data.stack[i].v * alpha[i];
 		}
 
@@ -257,7 +257,7 @@ static Sphere_f computeMiniballList(std::list<Vec3d> & pointList) {
 	// Use double values here, because float values become instable in some cases.
 	const Sphere_d sphereDouble = pivot_mb<std::list<Vec3d>, double>(pointList);
 
-	return Sphere_f(Vec3f(sphereDouble.getCenter()), sphereDouble.getRadius());
+	return Sphere_f(Vec3f(sphereDouble.getCenter()), static_cast<float>(sphereDouble.getRadius()));
 }
 
 Sphere_f computeMiniball(const std::vector<Vec3f> & points) {
