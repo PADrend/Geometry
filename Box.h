@@ -41,18 +41,18 @@ public:
 	 * @name Main
 	 */
 	//@{
-	_Box() : min(-0.0, -0.0, -0.0), max(0.0, 0.0, 0.0) {
+	_Box() : min(static_cast<value_t>(-0.0), static_cast<value_t>(-0.0), static_cast<value_t>(-0.0)), max(static_cast<value_t>(0.0), static_cast<value_t>(0.0), static_cast<value_t>(0.0)) {
 	}
 	_Box(value_t minx, value_t maxx, value_t miny, value_t maxy, value_t minz, value_t maxz)
 			: min(minx, miny, minz), max(maxx, maxy, maxz) {
 	}
 	_Box(const vec3_t & center, value_t size)
-			: min(center.getX() - size * 0.5, center.getY() - size * 0.5, center.getZ() - size * 0.5),
-			  max(center.getX() + size * 0.5, center.getY() + size * 0.5, center.getZ() + size * 0.5) {
+			: min(center.getX() - static_cast<value_t>(size * 0.5), center.getY() - static_cast<value_t>(size * 0.5), center.getZ() - static_cast<value_t>(size * 0.5)),
+			  max(center.getX() + static_cast<value_t>(size * 0.5), center.getY() + static_cast<value_t>(size * 0.5), center.getZ() + static_cast<value_t>(size * 0.5)) {
 	}
 	_Box(const vec3_t & center, value_t dimX, value_t dimY, value_t dimZ)
-			: min(center.getX() - dimX * 0.5, center.getY() - dimY * 0.5, center.getZ() - dimZ * 0.5),
-			  max(center.getX() + dimX * 0.5, center.getY() + dimY * 0.5, center.getZ() + dimZ * 0.5) {
+			: min(center.getX() - static_cast<value_t>(dimX * 0.5), center.getY() - static_cast<value_t>(dimY * 0.5), center.getZ() - static_cast<value_t>(dimZ * 0.5)),
+			  max(center.getX() + static_cast<value_t>(dimX * 0.5), center.getY() + static_cast<value_t>(dimY * 0.5), center.getZ() + static_cast<value_t>(dimZ * 0.5)) {
 	}
 	_Box(const vec3_t & cornerA, const vec3_t & cornerB)
 			: min(vec3_t::pairwiseMin(cornerA, cornerB)), max(vec3_t::pairwiseMax(cornerA, cornerB)) {
@@ -161,10 +161,10 @@ public:
 	}
 
 	vec3_t getCenter() const {
-		return (min + max) * 0.5;
+		return (min + max) * static_cast<value_t>(0.5);
 	}
 	value_t getBoundingSphereRadius() const {
-		return getDiameter() * 0.5;
+		return getDiameter() * static_cast<value_t>(0.5);
 	}
 	//@}
 
@@ -309,7 +309,7 @@ inline value_t _Box<value_t>::getDiameterSquared() const {
 
 template <typename value_t>
 inline value_t _Box<value_t>::getSurfaceArea() const {
-	return 2.0 * getExtentX() * getExtentY() + 2.0 * getExtentY() * getExtentZ() + 2.0 * getExtentX() * getExtentZ();
+	return static_cast<value_t>(2.0) * getExtentX() * getExtentY() + static_cast<value_t>(2.0) * getExtentY() * getExtentZ() + static_cast<value_t>(2.0) * getExtentX() * getExtentZ();
 }
 
 template <typename value_t>
@@ -412,8 +412,8 @@ inline _Vec3<value_t> _Box<value_t>::getClosestPoint(const vec3_t & p) const {
 // ---- Modification
 template <typename value_t>
 inline void _Box<value_t>::invalidate() {
-	min.setX(1.0);
-	max.setX(0.0);
+	min.setX(static_cast<value_t>(1.0));
+	max.setX(static_cast<value_t>(0.0));
 }
 
 template <typename value_t>
@@ -521,9 +521,9 @@ inline void _Box<value_t>::resizeAbs(value_t sizeX, value_t sizeY, value_t sizeZ
 
 template <typename value_t>
 inline void _Box<value_t>::resizeRel(value_t relSizeX, value_t relSizeY, value_t relSizeZ) {
-	const value_t halfChangeLengthX = (relSizeX - 1.0) * getExtentX() * 0.5;
-	const value_t halfChangeLengthY = (relSizeY - 1.0) * getExtentY() * 0.5;
-	const value_t halfChangeLengthZ = (relSizeZ - 1.0) * getExtentZ() * 0.5;
+	const value_t halfChangeLengthX = (relSizeX - static_cast<value_t>(1.0)) * getExtentX() * static_cast<value_t>(0.5);
+	const value_t halfChangeLengthY = (relSizeY - static_cast<value_t>(1.0)) * getExtentY() * static_cast<value_t>(0.5);
+	const value_t halfChangeLengthZ = (relSizeZ - static_cast<value_t>(1.0)) * getExtentZ() * static_cast<value_t>(0.5);
 
 	const vec3_t resizeVec(halfChangeLengthX, halfChangeLengthY, halfChangeLengthZ);
 
@@ -540,24 +540,24 @@ inline void _Box<value_t>::setExtent(value_t ex) {
 
 template <typename value_t>
 inline void _Box<value_t>::setExtentX(value_t ex) {
-	const value_t center = (min.getX() + max.getX()) * 0.5;
-	const value_t halfEx = ex * 0.5;
+	const value_t center = (min.getX() + max.getX()) * static_cast<value_t>(0.5);
+	const value_t halfEx = ex * static_cast<value_t>(0.5);
 	min.setX(center - halfEx);
 	max.setX(center + halfEx);
 }
 
 template <typename value_t>
 inline void _Box<value_t>::setExtentY(value_t ey) {
-	const value_t center = (min.getY() + max.getY()) * 0.5;
-	const value_t halfEx = ey * 0.5;
+	const value_t center = (min.getY() + max.getY()) * static_cast<value_t>(0.5);
+	const value_t halfEx = ey * static_cast<value_t>(0.5);
 	min.setY(center - halfEx);
 	max.setY(center + halfEx);
 }
 
 template <typename value_t>
 inline void _Box<value_t>::setExtentZ(value_t ez) {
-	const value_t center = (min.getZ() + max.getZ()) * 0.5;
-	const value_t halfEx = ez * 0.5;
+	const value_t center = (min.getZ() + max.getZ()) * static_cast<value_t>(0.5);
+	const value_t halfEx = ez * static_cast<value_t>(0.5);
 	min.setZ(center - halfEx);
 	max.setZ(center + halfEx);
 }

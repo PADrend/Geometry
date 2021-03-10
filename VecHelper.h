@@ -44,16 +44,16 @@ _Vec2<value_t> createOrthogonal(const _Vec2<value_t> & vector) {
  */
 template <typename value_t>
 _Vec3<value_t> createOrthogonal(const _Vec3<value_t> & vector) {
-	const auto x = vector.getX();
-	const auto y = vector.getY();
-	const auto z = vector.getZ();
+	const value_t x = vector.getX();
+	const value_t y = vector.getY();
+	const value_t z = vector.getZ();
 	if (std::abs(x) >= std::abs(y)) {
 		// x or z is the largest magnitude component
-		const auto invLength = 1.0 / std::sqrt(x * x + z * z);
-		return _Vec3<value_t>(-z * invLength, 0.0, x * invLength);
+		const value_t invLength = static_cast<value_t>(1.0 / std::sqrt(x * x + z * z));
+		return _Vec3<value_t>(-z * invLength, static_cast<value_t>(0.0), x * invLength);
 	} else {
 		// y or z is the largest magnitude component
-		const auto invLength = 1.0 / std::sqrt(y * y + z * z);
+		const value_t invLength = static_cast<value_t>(1.0 / std::sqrt(y * y + z * z));
 		return _Vec3<value_t>(0.0, z * invLength, -y * invLength);
 	}
 }

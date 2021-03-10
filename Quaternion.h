@@ -245,15 +245,15 @@ public:
 		value_t zz = q.z() * q.z();
 
 		matrix3x3_t mat;
-		mat.set(0, 0, 1.0 - 2.0 * (yy + zz));
-		mat.set(0, 1, 2.0 * (xy - wz));
-		mat.set(0, 2, 2.0 * (xz + wy));
-		mat.set(1, 0, 2.0 * (xy + wz));
-		mat.set(1, 1, 1.0 - 2.0 * (xx + zz));
-		mat.set(1, 2, 2.0 * (yz - wx));
-		mat.set(2, 0, 2.0 * (xz - wy));
-		mat.set(2, 1, 2.0 * (yz + wx));
-		mat.set(2, 2, 1.0 - 2.0 * (xx + yy));
+		mat.set(0, 0, static_cast<value_t>(1) - static_cast<value_t>(2) * (yy + zz));
+		mat.set(0, 1, static_cast<value_t>(2) * (xy - wz));
+		mat.set(0, 2, static_cast<value_t>(2) * (xz + wy));
+		mat.set(1, 0, static_cast<value_t>(2) * (xy + wz));
+		mat.set(1, 1, static_cast<value_t>(1) - static_cast<value_t>(2) * (xx + zz));
+		mat.set(1, 2, static_cast<value_t>(2) * (yz - wx));
+		mat.set(2, 0, static_cast<value_t>(2) * (xz - wy));
+		mat.set(2, 1, static_cast<value_t>(2) * (yz + wx));
+		mat.set(2, 2, static_cast<value_t>(1) - static_cast<value_t>(2) * (xx + yy));
 
 		return mat;
 	}
@@ -269,11 +269,11 @@ public:
 		value_t sqz = values[2] * values[2];
 		value_t unit = sqx + sqy + sqz + sqw; // if normalised is one, otherwise is correction factor
 		value_t test = values[0] * values[1] + values[2] * values[3];
-		if (test > 0.499 * unit) { // singularity at north pole
-			return vec3_t(2 * std::atan2(values[0], values[3]), M_PI / 2, 0);
+		if (test > static_cast<value_t>(0.499 * unit)) { // singularity at north pole
+			return vec3_t(static_cast<value_t>(2 * std::atan2(values[0], values[3])), static_cast<value_t>(M_PI / 2), 0);
 		}
 		if (test < -0.499 * unit) { // singularity at south pole
-			return vec3_t(-2 * std::atan2(values[0], values[3]), -M_PI / 2, 0);
+			return vec3_t(static_cast<value_t>(-2 * std::atan2(values[0], values[3])), static_cast<value_t>(-M_PI / 2), 0);
 		}
 		return vec3_t(std::atan2(2 * values[1] * values[3] - 2 * values[0] * values[2], sqx - sqy - sqz + sqw),
 					  std::asin(2 * test / unit),
@@ -348,7 +348,7 @@ public:
 		const value_t rad = angle.rad();
 		// Used to normalize the rotation vector.
 		const value_t invLength = 1.0f / std::sqrt(_x * _x + _y * _y + _z * _z);
-		const value_t sinHalfAngle = std::sin(0.5 * rad);
+		const value_t sinHalfAngle = static_cast<value_t>(std::sin(0.5 * rad));
 		values[0] = sinHalfAngle * invLength * _x;
 		values[1] = sinHalfAngle * invLength * _y;
 		values[2] = sinHalfAngle * invLength * _z;

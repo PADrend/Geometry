@@ -76,7 +76,7 @@ struct Convert {
 	static signed_t toSigned(float_t f) {
 		const float_t fC = std::min(std::max(static_cast<float_t>(-1), f), static_cast<float_t>(1));
 		// max() is equal to 2^(b-1) - 1 for signed types with b bits
-		return fC * std::numeric_limits<signed_t>::max();
+		return static_cast<signed_t>(fC * std::numeric_limits<signed_t>::max());
 	}
 
 	/**
@@ -98,20 +98,20 @@ struct Convert {
 	static unsigned_t toUnsigned(float_t f) {
 		const float_t fC = std::min(std::max(static_cast<float_t>(0), f), static_cast<float_t>(1));
 		// max() is equal to 2^b - 1 for unsigned types with b bits
-		return fC * std::numeric_limits<unsigned_t>::max();
+		return static_cast<unsigned_t>(fC * std::numeric_limits<unsigned_t>::max());
 	}
 
 	template <typename _T>
 	static _T degToRad(_T f) {
 		static_assert(std::is_floating_point<_T>::value, "template argument not a floating point type");
-		const _T DEG_TO_RAD = 0.017453292519943295769236907684886;
+		const _T DEG_TO_RAD = static_cast<_T>(0.017453292519943295769236907684886);
 		return f * DEG_TO_RAD;
 	}
 
 	template <typename _T>
 	static _T radToDeg(_T f) {
 		static_assert(std::is_floating_point<_T>::value, "template argument not a floating point type");
-		const _T RAD_TO_DEG = 57.295779513082320876798154814105170;
+		const _T RAD_TO_DEG = static_cast<_T>(57.295779513082320876798154814105170);
 		return f * RAD_TO_DEG;
 	}
 	
@@ -137,7 +137,7 @@ struct Convert {
 		v.si ^= sign;
 		sign >>= 16; // logical shift
 		s.si = 0x52000000; // (1 << 23) / minN
-		s.si = s.f * v.f; // correct subnormals
+		s.si = static_cast<int32_t>(s.f * v.f); // correct subnormals
 		v.si ^= (s.si ^ v.si) & -(minN > v.si);
 		v.si ^= (infN ^ v.si) & -((infN > v.si) & (v.si > maxN));
 		v.si ^= (nanN ^ v.si) & -((nanN > v.si) & (v.si > infN));

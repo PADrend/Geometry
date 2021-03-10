@@ -57,14 +57,14 @@ bool getLineTriangleIntersection(const line_t & line, const Triangle<_Vec3<value
 	if (det > -epsilon && det < epsilon) {
 		return false;
 	}
-	const auto invDet = 1.0 / det;
+	const auto invDet = static_cast<value_t>(1.0) / det;
 
 	// Calculate distance from vertex A to line origin
 	const auto tVec = ori - triangle.getVertexA();
 
 	// Calculate u parameter and test bounds
 	const auto u = tVec.dot(pVec) * invDet;
-	if (u < 0.0 || u > 1.0) {
+	if (u < static_cast<value_t>(0.0) || u > static_cast<value_t>(1.0)) {
 		return false;
 	}
 
@@ -73,7 +73,7 @@ bool getLineTriangleIntersection(const line_t & line, const Triangle<_Vec3<value
 
 	// Calculate v parameter and test bounds
 	const auto v = dir.dot(qVec) * invDet;
-	if (v < 0.0 || u + v > 1.0) {
+	if (v < static_cast<value_t>(0.0) || u + v > static_cast<value_t>(1.0)) {
 		return false;
 	}
 

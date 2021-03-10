@@ -170,9 +170,9 @@ public:
 		return found ? cell : nullptr;
 	}
 
-	void getClosestPoints(const Vec3f & pos, size_t count, std::deque<Point_t> & out) const;
+	void getClosestPoints(const Vec3f & pos, uint64_t count, std::deque<Point_t> & out) const;
 
-	std::deque<Point_t> getSortedClosestPoints(const Vec3f & pos, size_t count) const;
+	std::deque<Point_t> getSortedClosestPoints(const Vec3f & pos, uint64_t count) const;
 };
 
 template <typename Point_t>
@@ -381,7 +381,7 @@ inline bool PointOctree<Point_t>::sphereBoxIntersection(const Sphere_f & sphere,
 }
 
 template <typename Point_t>
-inline void PointOctree<Point_t>::getClosestPoints(const Vec3f & pos, size_t count, std::deque<Point_t> & out) const {
+inline void PointOctree<Point_t>::getClosestPoints(const Vec3f & pos, uint64_t count, std::deque<Point_t> & out) const {
 	const PointOctree * leaf = findLeafCell(pos);
 	if (leaf == nullptr) {
 		return;
@@ -391,17 +391,17 @@ inline void PointOctree<Point_t>::getClosestPoints(const Vec3f & pos, size_t cou
 		return;
 	}
 	const float maxRadius = box.getDiameter();
-	for (float radius = leaf->box.getDiameter() * 0.25; radius <= maxRadius; radius *= 2.0) {
+	for (float radius = leaf->box.getDiameter() * 0.25f; radius <= maxRadius; radius *= 2.0f) {
 		out.clear();
 		collectPointsWithinSphere(Sphere_f(pos, radius), out);
 		if (out.size() >= count)
 			break;
 	}
 	if (out.size() > count) {
-		std::vector<std::pair<float, size_t>> sortedPoints;
+		std::vector<std::pair<float, uint64_t>> sortedPoints;
 
 		// store (distance,pointIndex) in sortedPoints
-		size_t i = 0;
+		uint64_t i = 0;
 		for (auto & point : out) {
 			sortedPoints.emplace_back(pos.distanceSquared(point.getPosition()), i++);
 		}
@@ -420,14 +420,14 @@ inline void PointOctree<Point_t>::getClosestPoints(const Vec3f & pos, size_t cou
 }
 
 template <typename Point_t>
-inline std::deque<Point_t> PointOctree<Point_t>::getSortedClosestPoints(const Vec3f & pos, size_t count) const {
+inline std::deque<Point_t> PointOctree<Point_t>::getSortedClosestPoints(const Vec3f & pos, uint64_t count) const {
 	std::deque<Point_t> closestPoints;
 	getClosestPoints(pos, count, closestPoints);
 
-	std::vector<std::pair<float, size_t>> sortingData;
+	std::vector<std::pair<float, uint64_t>> sortingData;
 
 	// store (distance,pointIndex) in sortingData
-	size_t i = 0;
+	uint64_t i = 0;
 	for (auto & point : closestPoints)
 		sortingData.emplace_back(pos.distanceSquared(point.getPosition()), i++);
 

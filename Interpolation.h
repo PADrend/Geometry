@@ -40,7 +40,7 @@ val_t clamp(val_t lower, val_t value, val_t upper) {
 template <class vec_t, class val_t>
 vec_t linear(vec_t p0, vec_t p1, val_t t) {
 	const val_t v = clamp(static_cast<val_t>(0), t, static_cast<val_t>(1));
-	const val_t oneMinusV = 1.0 - v;
+	const val_t oneMinusV = static_cast<val_t>(1.0) - v;
 	return p0 * oneMinusV + p1 * v;
 }
 
@@ -56,8 +56,8 @@ vec_t linear(vec_t p0, vec_t p1, val_t t) {
 template <class vec_t, class val_t>
 vec_t quadraticBezier(vec_t p0, vec_t p1, vec_t p2, val_t t) {
 	const val_t v = clamp(static_cast<val_t>(0), t, static_cast<val_t>(1));
-	const val_t oneMinusV = 1.0 - v;
-	return p0 * oneMinusV * oneMinusV + p1 * 2.0 * oneMinusV * v + p2 * v * v;
+	const val_t oneMinusV = static_cast<val_t>(1.0) - v;
+	return p0 * oneMinusV * oneMinusV + p1 * static_cast<val_t>(2.0) * oneMinusV * v + p2 * v * v;
 }
 
 /**
@@ -74,11 +74,10 @@ vec_t quadraticBezier(vec_t p0, vec_t p1, vec_t p2, val_t t) {
 template <class vec_t, class val_t>
 vec_t cubicBezier(vec_t p0, vec_t p1, vec_t p2, vec_t p3, val_t t) {
 	const val_t v = clamp(static_cast<val_t>(0), t, static_cast<val_t>(1));
-	const val_t oneMinusV = 1.0 - v;
+	const val_t oneMinusV = static_cast<val_t>(1.0) - v;
 	const val_t vSquared = v * v;
 	const val_t oneMinusVSquared = oneMinusV * oneMinusV;
-	return p0 * oneMinusVSquared * oneMinusV + p1 * 3.0 * oneMinusVSquared * v + p2 * 3.0 * oneMinusV * vSquared
-			+ p3 * vSquared * v;
+	return p0 * oneMinusVSquared * oneMinusV + p1 * static_cast<val_t>(3.0) * oneMinusVSquared * v + p2 * static_cast<val_t>(3.0) * oneMinusV * vSquared + p3 * vSquared * v;
 }
 }
 }

@@ -308,7 +308,8 @@ public:
 
 typedef _Vec2<float> Vec2;
 typedef _Vec2<float> Vec2f;
-typedef _Vec2<int> Vec2i;
+typedef _Vec2<int32_t> Vec2i;
+typedef _Vec2<uint32_t> Vec2ui;
 typedef _Vec2<double> Vec2d;
 }
 

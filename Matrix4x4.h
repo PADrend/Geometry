@@ -280,7 +280,7 @@ public:
 		const value_t d = angle.rad();
 		const value_t s = std::sin(d);
 		const value_t c = std::cos(d);
-		const value_t lengthInv = 1.0 / sqrt(x * x + y * y + z * z);
+		const value_t lengthInv = static_cast<value_t>(1.0 / std::sqrt(x * x + y * y + z * z));
 		x *= lengthInv, y *= lengthInv, z *= lengthInv;
 
 		const value_t xy = x * y, yz = y * z, xz = x * z, xs = x * s, ys = y * s, zs = z * s;
@@ -593,7 +593,7 @@ public:
 		const value_t l3 = ez.lengthSquared();
 
 		const value_t squaredLengthEpsilon = std::numeric_limits<value_t>::epsilon();
-		const value_t epsilon = 1.0e-3;
+		const value_t epsilon = static_cast<value_t>(1.0e-3);
 
 		return l1 >= squaredLengthEpsilon && l2 >= squaredLengthEpsilon && l3 >= squaredLengthEpsilon
 				&& std::abs((l1 / l2) - 1) <= epsilon && std::abs((l2 / l3) - 1) <= epsilon;
@@ -622,7 +622,7 @@ public:
 		const vec3_t dirNorm = dir / lengthDir;
 
 		// Check if the resulting coordinate system is right-handed.
-		if (!rightNorm.cross(upNorm).equals(dirNorm, 1.0e-3)) {
+		if (!rightNorm.cross(upNorm).equals(dirNorm, static_cast<value_t>(1.0e-3))) {
 			// Negative scaling.
 			return srt_t(pos, -dirNorm, -upNorm, -lengthDir);
 		}

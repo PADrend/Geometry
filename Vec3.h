@@ -516,7 +516,8 @@ public:
 typedef _Vec3<float> Vec3;
 typedef _Vec3<float> Vec3f;
 typedef _Vec3<double> Vec3d;
-typedef _Vec3<int> Vec3i;
+typedef _Vec3<int32_t> Vec3i;
+typedef _Vec3<uint32_t> Vec3ui;
 }
 
 #endif /* GEOMETRY_VEC3_H */

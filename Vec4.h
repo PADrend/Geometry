@@ -458,7 +458,8 @@ public:
 typedef _Vec4<float> Vec4;
 typedef _Vec4<float> Vec4f;
 typedef _Vec4<double> Vec4d;
-typedef _Vec4<int> Vec4i;
+typedef _Vec4<int32_t> Vec4i;
+typedef _Vec4<uint32_t> Vec4ui;
 }
 
 #endif /* GEOMETRY_VEC4_H */

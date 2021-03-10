@@ -145,7 +145,7 @@ public:
 	 */
 	value_t calcArea() const {
 		// Triangle area is half of the area of a parallelogram.
-		return 0.5 * getEdgeBA().cross(getEdgeBC()).length();
+		return 0.5f * getEdgeBA().cross(getEdgeBC()).length();
 	}
 
 	/**
