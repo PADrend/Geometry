@@ -14,6 +14,7 @@
 #include "Vec3.h"
 #include <istream>
 #include <ostream>
+#include <limits>
 
 namespace Geometry {
 template <typename vec_t>
