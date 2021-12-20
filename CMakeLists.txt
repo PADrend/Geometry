@@ -33,6 +33,7 @@ set_property(TARGET Geometry PROPERTY PUBLIC_HEADER
 	Box.h
 	BoxHelper.h
 	BoxIntersection.h
+	Cone.h
 	Convert.h
 	Definitions.h
 	DualQuaternion.h
